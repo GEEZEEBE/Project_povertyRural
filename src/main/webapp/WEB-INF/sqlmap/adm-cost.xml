@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="cost">
+	<typeAlias alias="cost" type="com.skt.mars.adm.op.Cost" />
+
+	<!-- getBoardList -->
+	<resultMap id="resultMapID" class="cost">
+		<result property="costpricID" column="COSTPRIC_ID" />
+		<result property="costpricNM" column="COSTPRIC_NM" />
+		<result property="assetTypeCD" column="ASSET_TYPE_CD" />
+		<result property="costpricType" column="COSTPRIC_TYPE" />
+		<result property="costpric" column="COSTPRIC" />
+		<result property="prftMrgin" column="PRFT_MRGIN" />
+		<result property="userMrgin" column="USER_MRGIN" />
+		<result property="fineMrgin" column="FINE_MRGIN" />
+		<result property="fine" column="FINE" />	
+								
+		<result property="frstRgstDT" column="FRST_RGST_DT" />
+		<result property="frstRgstUserID" column="FRST_RGST_USER_ID" />
+		<result property="latCrctDT" column="LAST_CRCT_DT" />
+		<result property="latCrctUserID" column="LAST_CRCT_USER_ID" />
+	</resultMap>
+	
+	<resultMap id="resultListMapID" class="cost">
+		<result property="rowNum" column="ROWNUM" />
+		<result property="costpricID" column="COSTPRIC_ID" />
+		<result property="costpricNM" column="COSTPRIC_NM" />
+		<result property="assetTypeCD" column="ASSET_TYPE_CD" />
+		<result property="assetTypeNM" column="ASSET_TYPE_NM" />
+		<result property="costpricType" column="COSTPRIC_TYPE" />
+		<result property="costpricTypeNM" column="COSTPRIC_TYPE_NM" />
+		<result property="costpric" column="COSTPRIC" />
+		<result property="prftMrgin" column="PRFT_MRGIN" />
+		<result property="userMrgin" column="USER_MRGIN" />
+		<result property="fineMrgin" column="FINE_MRGIN" />
+		<result property="fine" column="FINE" />	
+								
+		<result property="frstRgstDT" column="FRST_RGST_DT" />
+		<result property="frstRgstUserID" column="FRST_RGST_USER_ID" />
+		<result property="latCrctDT" column="LAST_CRCT_DT" />
+		<result property="latCrctUserID" column="LAST_CRCT_USER_ID" />
+	</resultMap>
+	<select id="cost.allList" parameterClass="hMap" resultClass="hMap">
+	    select COST.COSTPRIC_ID,
+	           COST.COSTPRIC_NM,
+	           COST.ASSET_TYPE_CD,
+	           CODE.CODE_NAME AS ASSET_TYPE_NM,
+               COST.COSTPRIC_TYPE,
+               CODE2.CODE_NAME AS COSTPRIC_TYPE_NM,
+	           COST.COSTPRIC,
+	           COST.PRFT_MRGIN,
+	           COST.USER_MRGIN,
+	           COST.FINE_MRGIN,
+	           COST.FINE
+	      from TB_UAST_COSTPRIC AS COST,
+	           TB_UAST_CODE as CODE,
+               TB_UAST_CODE AS CODE2
+	     where COST.ASSET_TYPE_CD = CODE.COMMON_CODE_ID
+           AND COST.COSTPRIC_TYPE = CODE2.COMMON_CODE_ID
+	     <isNotEmpty property="assetTypeCD">
+           and COST.ASSET_TYPE_CD = #assetTypeCD#
+         </isNotEmpty>
+           and COST.DEL_YN = 'N'
+         order by COST.FRST_RGST_DT DESC
+	</select>
+	
+	<select id="cost.list" parameterClass="hMap" resultMap="resultListMapID">
+		SELECT @RN:=@RN-1 AS ROWNUM, 
+		       TB.*
+			FROM(
+			    select a.*,c.CODE_NAME as ASSET_TYPE_NM,d.CODE_NAME as COSTPRIC_TYPE_NM from TB_UAST_COSTPRIC a
+			    left join TB_UAST_CODE c on a.ASSET_TYPE_CD=c.COMMON_CODE_ID
+			    left join TB_UAST_CODE d on a.COSTPRIC_TYPE=d.COMMON_CODE_ID
+				where 1=1
+				and a.DEL_YN='N'
+				
+			) AS TB, 
+			(
+				select @RN:=Count(*)+1 from TB_UAST_COSTPRIC a
+				where 1=1
+				and a.DEL_YN='N'
+				
+			) AS R
+			
+			order by TB.FRST_RGST_DT desc
+	</select>
+
+	<select id="cost.list.TotalCount" parameterClass="hMap" resultClass="Integer">
+		select count(*) from TB_UAST_COSTPRIC a
+		where 1=1
+		and a.DEL_YN='N'
+	</select>
+
+	<select id="cost.read" resultMap="resultMapID">
+		select * from TB_UAST_COSTPRIC
+		where 1=1
+		<isNotEmpty property="costpricID">
+				and COSTPRIC_ID=#costpricID#
+		</isNotEmpty>
+	</select>
+
+	<insert id="cost.insert" parameterClass="cost">
+		insert into TB_UAST_COSTPRIC (
+			COSTPRIC_ID,
+			COSTPRIC_NM,
+			ASSET_TYPE_CD, 
+			COSTPRIC_TYPE, 
+			COSTPRIC, 
+			PRFT_MRGIN, 
+			USER_MRGIN, 
+			FINE_MRGIN, 
+			FINE,
+			DEL_YN, 
+			FRST_RGST_DT,
+			FRST_RGST_USER_ID,
+			LAST_CRCT_DT,
+			LAST_CRCT_USER_ID		
+			)
+		values(
+			#costpricID#,
+			#costpricNM#,
+			#assetTypeCD#,
+			#costpricType#,
+			#costpric#,
+			#prftMrgin#,
+			#userMrgin#,
+			#fineMrgin#,
+			#fine#,
+			'N',
+			SYSDATE(),
+			#frstRgstUserID#,
+			SYSDATE(),
+			#latCrctUserID#			
+		)
+	</insert>
+
+	<update id="cost.edit" parameterClass="cost">
+		update TB_UAST_COSTPRIC set
+			COSTPRIC_ID=#costpricID#,
+			COSTPRIC_NM=#costpricNM#,
+			ASSET_TYPE_CD=#assetTypeCD#,  
+			COSTPRIC_TYPE=#costpricType#, 
+			COSTPRIC=#costpric#, 
+			PRFT_MRGIN=#prftMrgin#, 
+			USER_MRGIN=#userMrgin#, 
+			FINE_MRGIN=#fineMrgin#, 
+			FINE=#fine#, 
+			LAST_CRCT_DT= SYSDATE(),
+			LAST_CRCT_USER_ID = #latCrctUserID#			
+		where COSTPRIC_ID=#costpricID#
+	</update>
+
+	<update id="cost.del">
+		update TB_UAST_COSTPRIC set DEL_YN='Y'
+		<dynamic prepend="where COSTPRIC_ID IN">
+			<iterate open="(" conjunction="," close=")">#[]#</iterate>
+		</dynamic>
+		
+	</update>
+	
+	
+
+</sqlMap>

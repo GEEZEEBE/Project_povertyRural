@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="operator">
+	<typeAlias alias="operator" type="com.skt.mars.adm.ui.Operator" />
+
+	<!-- getBoardList -->
+	<resultMap id="resultMapID" class="operator">
+		<result property="userID" column="USER_ID" />
+		<result property="pw" column="PW" />
+		<result property="name" column="NAME" />
+		<result property="sex" column="SEX" />
+		<result property="birthDay" column="BIRTHDAY" />
+		<result property="tlNO" column="TLNO" />
+		<result property="eMail" column="EMAL" />
+		<result property="adrres" column="ADRRESS" />
+		<result property="delYN" column="DEL_YN" />
+		<result property="etc" column="ETC" />
+		<result property="authority" column="AUTHORITY" />
+								
+		<result property="frstRgstDT" column="FRST_RGST_DT" />
+		<result property="frstRgstUserID" column="FRST_RGST_USER_ID" />
+		<result property="latCrctDT" column="LAST_CRCT_DT" />
+		<result property="latCrctUserID" column="LAST_CRCT_USER_ID" />
+	</resultMap>
+	<resultMap id="resultMapKeyUser" class="operator">
+		<result property="userID" column="USER_ID" />
+	</resultMap>	
+	<select id="operator.selectKey" resultMap="resultMapKeyUser" remapResults="true">
+			select 1         	   
+	</select>
+
+	<select id="operator.list" resultMap="resultMapID">
+		select * from TB_UAST_USER
+		where 1 = 1
+		<isNotEmpty property="serCol">
+			<isNotEmpty property="serTxt">
+		    and $serCol$ LIKE CONCAT('%', replace(replace(#serTxt#,'%','\%'),'_','\_'), '%')
+			</isNotEmpty>
+		</isNotEmpty>
+		and AUTHORITY in ('M', 'S')
+		and DEL_YN='N'
+		ORDER BY FRST_RGST_DT DESC
+	</select>
+
+	<select id="operator.list.TotalCount" resultClass="Integer">
+		select count(*) from TB_UAST_USER
+		where 1 = 1
+		<isNotEmpty property="serCol">
+			<isNotEmpty property="serTxt">
+		    and $serCol$ LIKE CONCAT('%', replace(replace(#serTxt#,'%','\%'),'_','\_'), '%')
+			</isNotEmpty>
+		</isNotEmpty>
+		and AUTHORITY in ('M', 'S')
+		and DEL_YN='N'
+	</select>
+
+	<select id="operator.read" resultMap="resultMapID">
+		select * from TB_UAST_USER
+		where
+		USER_ID=#userID#
+		and AUTHORITY in ('M', 'S')
+	</select>
+
+	<insert id="operator.insert" parameterClass="operator">
+		insert into TB_UAST_USER (
+			USER_ID,
+			PW,
+			NAME,
+			SEX,
+			BIRTHDAY,
+			TLNO,
+			EMAL,
+			ADRRESS,
+			DEL_YN,
+			ETC,
+			AUTHORITY,
+			FRST_RGST_DT,
+			FRST_RGST_USER_ID,
+			LAST_CRCT_DT,
+			LAST_CRCT_USER_ID			
+			)
+		values(
+			#userID#,
+			#pw#,
+			#name#,
+			'ADMIN',
+			#birthDay#,
+			#tlNO#,
+			CONCAT(#eMail00#,'@',#eMail01#),
+			#adrres#,
+			'N',
+			#etc#,
+			'M',
+			SYSDATE(),
+			#frstRgstUserID#,
+			SYSDATE(),
+			#latCrctUserID#			
+		)
+	</insert>
+
+	<update id="operator.edit" parameterClass="operator">
+		update TB_UAST_USER set
+			PW= #pw#,
+			NAME= #name#,
+			TLNO= #tlNO#,
+			EMAL= CONCAT(#eMail00#,'@',#eMail01#),
+			ADRRESS= #adrres#,
+			ETC= #etc#,
+			AUTHORITY= 'M',
+			LAST_CRCT_DT= SYSDATE(),
+			LAST_CRCT_USER_ID = #latCrctUserID#			
+		where USER_ID=(#userID#)
+		and AUTHORITY in ('M', 'S')
+	</update>
+
+	<update id="operator.delete">
+		update TB_UAST_USER set
+		DEL_YN='Y'
+		where USER_ID in (<iterate conjunction=",">#[]#</iterate>)
+		and AUTHORITY='M'
+	</update>
+</sqlMap>

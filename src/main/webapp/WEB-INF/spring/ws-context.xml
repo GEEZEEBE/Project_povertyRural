@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+    xmlns:cxf="http://cxf.apache.org/core" xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:jaxws="http://cxf.apache.org/jaxws"
+    xsi:schemaLocation="
+      http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+      http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-3.0.xsd
+      http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+    <!--
+        ==================================================================
+    -->
+    <!--
+        CXF Spring configuration and binding
+    -->
+    <!--
+        ==================================================================
+    -->
+    <import resource="classpath:META-INF/cxf/cxf.xml"/>
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
+
+    <!-- common -->
+    <jaxrs:server id="commonServer" address="/">
+        <jaxrs:serviceBeans>
+            <ref bean="commonService"/>      <!-- CommonCodeService -->
+        </jaxrs:serviceBeans>
+
+        <jaxrs:extensionMappings>
+            <entry key="json" value="application/json" />
+            <entry key="xml" value="application/xml" />
+        </jaxrs:extensionMappings>
+    </jaxrs:server>
+   
+    <!-- common -->    
+    <bean id="commonService" class="com.skt.mars.adm.cm.InterfaceWService"></bean>
+    
+</beans>

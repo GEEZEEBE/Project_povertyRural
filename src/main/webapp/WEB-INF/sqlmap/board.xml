@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Board">
+	<typeAlias alias="Board" type="com.skt.mars.adm.sample.Board" />
+
+	<!-- getBoardList -->
+	<resultMap id="resultMapID" class="Board">
+		<result property="boredID" column="BOARD_ID" />
+		<result property="boredSubj" column="BOARD_SUBJ" />
+		<result property="boredCont" column="BOARD_CONT" />
+		<result property="frstRgstDT" column="FRST_RGST_DT" />
+		<result property="frstRgstUserID" column="FRST_RGST_USER_ID" />
+		<result property="latCrctDT" column="LAST_CRCT_DT" />
+		<result property="latCrctUserID" column="LAST_CRCT_USER_ID" />
+	</resultMap>
+
+	<select id="board.list" resultMap="resultMapID">
+		select * from TB_UAST_BOARD
+		where 1 = 1
+		<isNotEmpty property="boredSubj">
+		    and BOARD_SUBJ LIKE '%'+#boredSubj#+'%'
+		</isNotEmpty>
+	</select>
+
+	<select id="board.list.TotalCount" resultClass="Integer">
+		select count(*) from TB_UAST_BOARD
+		where 1 = 1
+		<isNotEmpty property="boredSubj">
+		    and BOARD_SUBJ LIKE '%'+#boredSubj#+'%'
+		</isNotEmpty>
+	</select>
+
+	<select id="board.select.ID" resultMap="resultMapID">
+		select * from TB_UAST_BOARD
+		where
+		BOARD_ID=(#boredID#)
+	</select>
+
+	<insert id="board.insert" parameterClass="Board">
+		insert into TB_UAST_BOARD (
+			BOARD_ID,
+			BOARD_SUBJ,
+			BOARD_CONT,
+			FRST_RGST_DT,
+			FRST_RGST_USER_ID,
+			LAST_CRCT_DT,
+			LAST_CRCT_USER_ID			
+			)
+		values(
+			#boredID#,
+			#boredSubj#,
+			#boredCont#,
+			SYSDATE(),
+			#frstRgstUserID#,
+			SYSDATE(),
+			#latCrctUserID#			
+		)
+	</insert>
+
+	<update id="board.update" parameterClass="Board">
+		update TB_UAST_BOARD set
+			BOARD_ID= #boredID#,
+			BOARD_SUBJ= #boredSubj#,
+			BOARD_CONT= #boredCont#,
+			LAST_CRCT_DT= SYSDATE(),
+			LAST_CRCT_USER_ID = #latCrctUserID#			
+		where BOARD_ID=(#boredID#)
+	</update>
+
+	<delete id="board.delete" parameterClass="Board">
+		delete from TB_UAST_BOARD
+		where BOARD_ID=(#boredID#)
+	</delete>
+</sqlMap>

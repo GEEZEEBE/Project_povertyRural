@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Gods">
+    
+    <typeAlias alias="Gods" type="com.skt.mars.adm.im.Gods" />
+
+    <!-- getBoardList -->
+    <resultMap id="resultMapID" class="Gods">
+        <result property="godsID" column="GODS_ID" />
+        <result property="godsDvsn" column="GODS_DVSN" />
+        <result property="godsStts" column="GODS_STTS" />
+        <result property="godsName" column="GODS_NAME" />
+        <result property="delYN" column="DEL_YN" />
+        <result property="srvcID" column="SRVC_ID" />
+        <result property="description" column="DESCRIPTION" />
+        <result property="frstRgstDT" column="FRST_RGST_DT" />
+        <result property="frstRgstUserID" column="FRST_RGST_USER_ID" />
+        <result property="latCrctDT" column="LAST_CRCT_DT" />
+        <result property="latCrctUserID" column="LAST_CRCT_USER_ID" />
+    </resultMap>
+    
+    <!-- 상품 목록 개수 -->
+    <select id="gods.list.TotalCount" parameterClass="hMap" resultClass="Integer">
+<!--         
+        SELECT COUNT(*)
+          FROM TB_UAST_GODS AS GODS,
+               TB_UAST_SRVC_CTGR AS CTGR,
+               TB_UAST_CODE AS CODE
+         WHERE GODS.SRVC_ID = CTGR.SRVC_ID
+           AND GODS.GODS_DVSN = CODE.COMMON_CODE_ID
+         <isNotEmpty property="searchSrvcID">
+           AND GODS.SRVC_ID IN (select A.SRVC_ID
+                                  FROM TB_UAST_SRVC_CTGR AS A,
+                                       (SELECT LEFT_SRVC_ID , RIGHT_SRVC_ID FROM TB_UAST_SRVC_CTGR WHERE SRVC_ID = #searchSrvcID#) AS B
+                                 WHERE A.LEFT_SRVC_ID >= B.LEFT_SRVC_ID
+                                   AND A.RIGHT_SRVC_ID<![CDATA[ <= ]]>B.RIGHT_SRVC_ID
+                                )
+         </isNotEmpty>
+         <isEmpty property="searchSrvcID">
+           AND GODS.SRVC_ID IN (select SRVC_ID FROM TB_UAST_SRVC_CTGR WHERE DEL_YN='N')             
+         </isEmpty>
+         <isNotEmpty property="searchGodsDvsn">
+           AND GODS.GODS_DVSN = #searchGodsDvsn#
+         </isNotEmpty>
+         <isNotEmpty property="searchGodsName">
+           AND GODS.GODS_NAME LIKE CONCAT('%', #searchGodsName# ,'%')
+         </isNotEmpty>
+         <isNotEmpty property="productType">
+           AND GODS.GODS_DVSN = #productType#  
+         </isNotEmpty>
+           AND GODS.DEL_YN != 'Y'
+            -->
+            
+        SELECT COUNT(*)
+          FROM TB_UAST_GODS AS GODS,
+               (SELECT A.*, B.NAME AS PARENT_NAME, C.NAME AS PARENT_PARENT_NAME, D.NAME AS BASIC_NAME
+                  FROM (SELECT  NODE.SRVC_ID AS NODE_CATEGORY, 
+                                NODE.LEFT_SRVC_ID AS NODE_LFT, 
+                                NODE.RIGHT_SRVC_ID AS NODE_RGT,
+                                CONCAT( REPEAT('', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS NAME, 
+                                (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+                            FROM TB_UAST_SRVC_CTGR AS NODE,
+                                 TB_UAST_SRVC_CTGR AS PARENT
+                            WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+                            GROUP BY NODE.SRVC_ID
+                        ) AS A,
+                        (SELECT NODE.SRVC_ID AS NODE_CATEGORY, 
+                                NODE.LEFT_SRVC_ID AS NODE_LFT, 
+                                NODE.RIGHT_SRVC_ID AS NODE_RGT,
+                                CONCAT( REPEAT('', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS NAME, 
+                                (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+                            FROM TB_UAST_SRVC_CTGR AS NODE,
+                                 TB_UAST_SRVC_CTGR AS PARENT
+                            WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+                            GROUP BY NODE.SRVC_ID
+                        ) AS B,
+                        (SELECT NODE.SRVC_ID AS NODE_CATEGORY, 
+                                NODE.LEFT_SRVC_ID AS NODE_LFT, 
+                                NODE.RIGHT_SRVC_ID AS NODE_RGT,
+                                CONCAT( REPEAT('', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS NAME, 
+                                (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+                            FROM TB_UAST_SRVC_CTGR AS NODE,
+                                 TB_UAST_SRVC_CTGR AS PARENT
+                            WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+                            GROUP BY NODE.SRVC_ID
+                        ) AS C,
+                        (SELECT NODE.SRVC_ID AS NODE_CATEGORY, 
+                                NODE.LEFT_SRVC_ID AS NODE_LFT, 
+                                NODE.RIGHT_SRVC_ID AS NODE_RGT,
+                                CONCAT( REPEAT('', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS NAME, 
+                                (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+                            FROM TB_UAST_SRVC_CTGR AS NODE,
+                                 TB_UAST_SRVC_CTGR AS PARENT
+                            WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+                            GROUP BY NODE.SRVC_ID
+                        ) AS D
+                     WHERE 1=1
+                       AND A.NODE_LFT >= B.NODE_LFT
+                       AND A.NODE_RGT <![CDATA[ <= ]]> B.NODE_RGT
+                       AND IF(CONVERT(A.DEPTH, UNSIGNED) = 0, 0, CONVERT(A.DEPTH, UNSIGNED) - 1) = CONVERT(B.DEPTH, UNSIGNED)
+                       AND B.NODE_LFT >= C.NODE_LFT
+                       AND B.NODE_RGT <![CDATA[ <= ]]> C.NODE_RGT
+                       AND IF(CONVERT(B.DEPTH, UNSIGNED) = 0, 0, CONVERT(B.DEPTH, UNSIGNED) - 1) = CONVERT(C.DEPTH, UNSIGNED)
+                       AND C.NODE_LFT >= D.NODE_LFT
+                       AND C.NODE_RGT <![CDATA[ <= ]]> D.NODE_RGT
+                       AND IF(CONVERT(C.DEPTH, UNSIGNED) = 0, 0, CONVERT(C.DEPTH, UNSIGNED) - 1) = CONVERT(D.DEPTH, UNSIGNED)
+                     ORDER BY A.NODE_CATEGORY) AS CTGR,
+               TB_UAST_CODE AS CODE
+         WHERE GODS.SRVC_ID = CTGR.NODE_CATEGORY
+           AND GODS.GODS_DVSN = CODE.COMMON_CODE_ID  
+         <isNotEmpty property="searchSrvcID">
+           AND GODS.SRVC_ID IN (select A.SRVC_ID
+                                  FROM TB_UAST_SRVC_CTGR AS A,
+                                       (SELECT LEFT_SRVC_ID , RIGHT_SRVC_ID FROM TB_UAST_SRVC_CTGR WHERE SRVC_ID = #searchSrvcID#) AS B
+                                 WHERE A.LEFT_SRVC_ID >= B.LEFT_SRVC_ID
+                                   AND A.RIGHT_SRVC_ID<![CDATA[ <= ]]>B.RIGHT_SRVC_ID
+                                )
+         </isNotEmpty>
+         <isNotEmpty property="searchGodsDvsn">
+           AND GODS.GODS_DVSN = #searchGodsDvsn#
+         </isNotEmpty>
+         <isNotEmpty property="searchGodsName">
+           AND GODS.GODS_NAME LIKE CONCAT('%', replace(replace(#searchGodsName#,'%','\%'),'_','\_') ,'%')
+         </isNotEmpty>
+         <isNotEmpty property="productType">
+           AND GODS.GODS_DVSN = #productType#  
+         </isNotEmpty>
+           AND GODS.DEL_YN IN('N','D')
+    </select>
+
+    <!-- 상품 목록 조회 -->
+	<select id="gods.list" parameterClass="hMap" resultClass="hMap">
+<!--          
+        SELECT GODS.GODS_ID,
+               GODS.GODS_DVSN,
+               GODS.GODS_STTS,
+               GODS.GODS_NAME,
+               GODS.DEL_YN,
+               GODS.SRVC_ID,
+               DATE_FORMAT(GODS.FRST_RGST_DT, '%Y-%m-%d') AS FRST_RGST_DT,
+               GODS.FRST_RGST_USER_ID,
+               DATE_FORMAT(GODS.LAST_CRCT_DT, '%Y-%m-%d') AS LAST_CRCT_DT,
+               GODS.LAST_CRCT_USER_ID,
+               CTGR.SRVC_CTGR_NM,
+               CODE.CODE_NAME
+          FROM TB_UAST_GODS AS GODS,
+               TB_UAST_SRVC_CTGR AS CTGR,
+               TB_UAST_CODE AS CODE
+         WHERE GODS.SRVC_ID = CTGR.SRVC_ID
+           AND GODS.GODS_DVSN = CODE.COMMON_CODE_ID
+         <isNotEmpty property="searchSrvcID">
+           AND GODS.SRVC_ID IN (select A.SRVC_ID
+                                  FROM TB_UAST_SRVC_CTGR AS A,
+                                       (SELECT LEFT_SRVC_ID , RIGHT_SRVC_ID FROM TB_UAST_SRVC_CTGR WHERE SRVC_ID = #searchSrvcID#) AS B
+                                 WHERE A.LEFT_SRVC_ID >= B.LEFT_SRVC_ID
+                                   AND A.RIGHT_SRVC_ID<![CDATA[ <= ]]>B.RIGHT_SRVC_ID
+                                )
+         </isNotEmpty>
+         <isEmpty property="searchSrvcID">
+           AND GODS.SRVC_ID IN (select SRVC_ID FROM TB_UAST_SRVC_CTGR WHERE DEL_YN='N')             
+         </isEmpty>
+         <isNotEmpty property="searchGodsDvsn">
+           AND GODS.GODS_DVSN = #searchGodsDvsn#
+         </isNotEmpty>
+         <isNotEmpty property="searchGodsName">
+           AND GODS.GODS_NAME LIKE CONCAT('%', #searchGodsName# ,'%')
+         </isNotEmpty>
+         <isNotEmpty property="productType">
+           AND GODS.GODS_DVSN = #productType#  
+         </isNotEmpty>
+           AND GODS.DEL_YN != 'Y'
+         ORDER BY CAST(GODS_ID AS UNSIGNED) DESC
+         ORDER BY GODS.LAST_CRCT_DT DESC, GODS_ID DESC
+          -->
+          
+        SELECT GODS.GODS_ID,
+               GODS.GODS_DVSN,
+               GODS.GODS_STTS,
+               GODS.GODS_NAME,
+               GODS.DEL_YN,
+               GODS.SRVC_ID,
+               DATE_FORMAT(GODS.FRST_RGST_DT, '%Y-%m-%d') AS FRST_RGST_DT,
+               GODS.FRST_RGST_USER_ID,
+               DATE_FORMAT(GODS.LAST_CRCT_DT, '%Y-%m-%d') AS LAST_CRCT_DT,
+               GODS.LAST_CRCT_USER_ID,
+               CTGR.BASIC_NAME AS SRVC_CTGR_NM,
+               CODE.CODE_NAME
+          FROM TB_UAST_GODS AS GODS,
+               (SELECT A.*, B.NAME AS PARENT_NAME, C.NAME AS PARENT_PARENT_NAME, D.NAME AS BASIC_NAME
+                  FROM (SELECT  NODE.SRVC_ID AS NODE_CATEGORY, 
+                                NODE.LEFT_SRVC_ID AS NODE_LFT, 
+                                NODE.RIGHT_SRVC_ID AS NODE_RGT,
+                                CONCAT( REPEAT('', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS NAME, 
+                                (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+                            FROM TB_UAST_SRVC_CTGR AS NODE,
+                                 TB_UAST_SRVC_CTGR AS PARENT
+                            WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+                            GROUP BY NODE.SRVC_ID
+                        ) AS A,
+                        (SELECT NODE.SRVC_ID AS NODE_CATEGORY, 
+                                NODE.LEFT_SRVC_ID AS NODE_LFT, 
+                                NODE.RIGHT_SRVC_ID AS NODE_RGT,
+                                CONCAT( REPEAT('', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS NAME, 
+                                (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+                            FROM TB_UAST_SRVC_CTGR AS NODE,
+                                 TB_UAST_SRVC_CTGR AS PARENT
+                            WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+                            GROUP BY NODE.SRVC_ID
+                        ) AS B,
+                        (SELECT NODE.SRVC_ID AS NODE_CATEGORY, 
+                                NODE.LEFT_SRVC_ID AS NODE_LFT, 
+                                NODE.RIGHT_SRVC_ID AS NODE_RGT,
+                                CONCAT( REPEAT('', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS NAME, 
+                                (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+                            FROM TB_UAST_SRVC_CTGR AS NODE,
+                                 TB_UAST_SRVC_CTGR AS PARENT
+                            WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+                            GROUP BY NODE.SRVC_ID
+                        ) AS C,
+                        (SELECT NODE.SRVC_ID AS NODE_CATEGORY, 
+                                NODE.LEFT_SRVC_ID AS NODE_LFT, 
+                                NODE.RIGHT_SRVC_ID AS NODE_RGT,
+                                CONCAT( REPEAT('', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS NAME, 
+                                (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+                            FROM TB_UAST_SRVC_CTGR AS NODE,
+                                 TB_UAST_SRVC_CTGR AS PARENT
+                            WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+                            GROUP BY NODE.SRVC_ID
+                        ) AS D
+                     WHERE 1=1
+                       AND A.NODE_LFT >= B.NODE_LFT
+                       AND A.NODE_RGT <![CDATA[ <= ]]> B.NODE_RGT
+                       AND IF(CONVERT(A.DEPTH, UNSIGNED) = 0, 0, CONVERT(A.DEPTH, UNSIGNED) - 1) = CONVERT(B.DEPTH, UNSIGNED)
+                       AND B.NODE_LFT >= C.NODE_LFT
+                       AND B.NODE_RGT <![CDATA[ <= ]]> C.NODE_RGT
+                       AND IF(CONVERT(B.DEPTH, UNSIGNED) = 0, 0, CONVERT(B.DEPTH, UNSIGNED) - 1) = CONVERT(C.DEPTH, UNSIGNED)
+                       AND C.NODE_LFT >= D.NODE_LFT
+                       AND C.NODE_RGT <![CDATA[ <= ]]> D.NODE_RGT
+                       AND IF(CONVERT(C.DEPTH, UNSIGNED) = 0, 0, CONVERT(C.DEPTH, UNSIGNED) - 1) = CONVERT(D.DEPTH, UNSIGNED)
+                     ORDER BY A.NODE_CATEGORY) AS CTGR,
+               TB_UAST_CODE AS CODE
+         WHERE GODS.SRVC_ID = CTGR.NODE_CATEGORY
+           AND GODS.GODS_DVSN = CODE.COMMON_CODE_ID
+         <isNotEmpty property="searchSrvcID">
+           AND GODS.SRVC_ID IN (select A.SRVC_ID
+                                  FROM TB_UAST_SRVC_CTGR AS A,
+                                       (SELECT LEFT_SRVC_ID , RIGHT_SRVC_ID FROM TB_UAST_SRVC_CTGR WHERE SRVC_ID = #searchSrvcID#) AS B
+                                 WHERE A.LEFT_SRVC_ID >= B.LEFT_SRVC_ID
+                                   AND A.RIGHT_SRVC_ID<![CDATA[ <= ]]>B.RIGHT_SRVC_ID
+                                )
+         </isNotEmpty>
+         <isNotEmpty property="searchGodsDvsn">
+           AND GODS.GODS_DVSN = #searchGodsDvsn#
+         </isNotEmpty>
+         <isNotEmpty property="searchGodsName">
+           AND GODS.GODS_NAME LIKE CONCAT('%', replace(replace(#searchGodsName#,'%','\%'),'_','\_') ,'%')
+         </isNotEmpty>
+         <isNotEmpty property="productType">
+           AND GODS.GODS_DVSN = #productType#  
+         </isNotEmpty>
+           AND GODS.DEL_YN IN('N','D')
+         <!-- ORDER BY CAST(GODS_ID AS UNSIGNED) DESC -->
+         ORDER BY GODS.LAST_CRCT_DT DESC, GODS_ID DESC
+	</select>
+	
+	<!-- 상품 상세정보 조회 -->
+	<select id="gods.read" parameterClass="hMap" resultMap="resultMapID">
+		SELECT GODS.GODS_ID,
+               <!-- GODS.GODS_DVSN,
+               GODS.GODS_STTS, -->
+               GODS.GODS_NAME,
+               GODS.DEL_YN,
+               GODS.SRVC_ID,
+               DATE_FORMAT(GODS.FRST_RGST_DT, '%Y-%m-%d') AS FRST_RGST_DT,
+               GODS.FRST_RGST_USER_ID,
+               DATE_FORMAT(GODS.LAST_CRCT_DT, '%Y-%m-%d') AS LAST_CRCT_DT,
+               GODS.LAST_CRCT_USER_ID,
+               GODS.DESCRIPTION,
+               DVSN.CODE_NAME AS GODS_DVSN,
+               STTS.CODE_NAME AS GODS_STTS,
+               GODS.DESCRIPTION
+          FROM TB_UAST_GODS AS GODS,
+               TB_UAST_CODE AS DVSN,
+               TB_UAST_CODE AS STTS
+         WHERE GODS.GODS_DVSN = DVSN.COMMON_CODE_ID
+           AND GODS.GODS_STTS = STTS.COMMON_CODE_ID
+           AND GODS.GODS_ID = #godsID#
+	</select>
+	
+	
+	<!-- 상품 등록, 상품ID 반환 -->
+	<insert id="gods.insert" >
+ 	    <!-- <selectKey keyProperty="godsId" resultClass="String">
+            SELECT IFNULL(MAX(CAST(GODS_ID AS UNSIGNED)), 0) + 1 AS GODS_ID
+              FROM TB_UAST_GODS
+        </selectKey> -->
+        INSERT INTO TB_UAST_GODS (
+            GODS_ID,
+            GODS_DVSN,
+            GODS_STTS,
+            GODS_NAME,
+            DEL_YN,
+            SRVC_ID,
+            FRST_RGST_DT,
+            FRST_RGST_USER_ID,
+            LAST_CRCT_DT,
+            LAST_CRCT_USER_ID,
+            DESCRIPTION        
+          ) VALUES (
+            #godsId#,
+            #godsDvsn#,
+            #godsStts#,
+            #godsName#,
+            'N',
+            #srvcID#,
+            SYSDATE(),
+            #frstRgstUserID#,
+            SYSDATE(),
+            #latCrctUserID#,
+            #description#        
+        )
+    </insert>
+    
+	<!-- 상품 삭제, flag값변경 -->
+	<update id="gods.delete">
+        UPDATE TB_UAST_GODS SET
+               DEL_YN = 'Y'
+         WHERE GODS_ID IN (<iterate conjunction=",">#[]#</iterate>)
+         <!-- WHERE GODS_ID=#godsID# -->
+    </update>
+
+   
+    <!-- 상품정보 수정 -->
+	<update id="gods.update" parameterClass="hMap">
+        UPDATE TB_UAST_GODS SET
+            GODS_DVSN = #godsDvsn#,
+            GODS_STTS = #godsStts#,
+            GODS_NAME = #godsName#,
+            SRVC_ID = #srvcID#,
+            LAST_CRCT_DT= SYSDATE(),
+            LAST_CRCT_USER_ID = #latCrctUserID#,  
+            DESCRIPTION = #description#
+        WHERE GODS_ID = #godsID#
+    </update>
+
+    <select id="gods.priceList.TotalCount" parameterClass="hMap" resultClass="Integer">
+        SELECT COUNT(*) 
+		FROM TB_UAST_GODS GODS
+			, TB_UAST_SRVC_CTGR CTGR
+			, TB_UAST_PRIC PRIC
+			, TB_UAST_CODE GODS_DVSN_CD
+			, TB_UAST_CODE PRIC_TYPE
+		WHERE 1 = 1
+		AND GODS.DEL_YN in ('N', 'D')
+		AND GODS.SRVC_ID = CTGR.SRVC_ID
+		<isNotEmpty property="categoryValue">
+			AND CTGR.SRVC_ID IN (
+									  select NODE_CATEGORY from (
+										    SELECT NODE_CATEGORY,       NODE_LFT,       NODE_RGT,       PARENT_CATEGORY,       PARENT_LFT,       PARENT_RGT,       SRVC_CTGR_NM,       DEPTH     FROM 
+										      (     
+										          SELECT          NODE.SRVC_ID AS NODE_CATEGORY,          NODE.LEFT_SRVC_ID AS NODE_LFT,         NODE.RIGHT_SRVC_ID AS NODE_RGT,         PARENT.SRVC_ID AS PARENT_CATEGORY,          PARENT.LEFT_SRVC_ID AS PARENT_LFT,          PARENT.RIGHT_SRVC_ID  AS PARENT_RGT,        
+										           CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM,          
+										          (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH      
+										           FROM TB_UAST_SRVC_CTGR AS NODE,          
+										           TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID      GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID       
+										    			         
+										       ) AS A 
+										       ,(
+										    			
+										            SELECT          @SER_LEFT:=NODE.LEFT_SRVC_ID,@SER_RIGHT:=NODE.RIGHT_SRVC_ID ,@SER_DEPTH:=(COUNT(PARENT.SRVC_ID) - 1)      
+										           FROM TB_UAST_SRVC_CTGR AS NODE,          
+										           TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+										           and NODE.SRVC_ID=#categoryValue#       
+										           GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID
+										                         	          
+										       ) AS b
+										       group by NODE_CATEGORY ORDER BY NODE_LFT
+										) as d   
+									   where 1=1
+									   AND d.DEPTH <![CDATA[ >= ]]> @SER_DEPTH  AND d.NODE_LFT BETWEEN @SER_LEFT AND @SER_RIGHT
+									
+                                )
+		</isNotEmpty>
+		<isNotEmpty property="searchGodsDvsn">
+			AND GODS.GODS_DVSN = #searchGodsDvsn#
+		</isNotEmpty>
+		<isNotEmpty property="searchGodsName">
+			AND GODS.GODS_NAME LIKE CONCAT('%', replace(replace(#searchGodsName#,'%','\%'),'_','\_'), '%')	<!-- terms item name	-->
+		</isNotEmpty>
+		AND GODS.GODS_ID = PRIC.TAGET_ID
+		AND GODS.GODS_DVSN = GODS_DVSN_CD.COMMON_CODE_ID
+		AND PRIC.PRIC_TYPE = PRIC_TYPE.COMMON_CODE_ID
+    </select>
+
+    <!-- 상품 목록 조회 -->
+	<select id="gods.priceList" parameterClass="hMap" resultClass="hMap">
+		SELECT GODS.SRVC_ID
+			, GODS.GODS_ID
+			, CTGR.SRVC_CTGR_NM
+			, GODS_DVSN_CD.CODE_NAME GODS_DVSN_NM	<!-- need to check sub_code_id -->
+			, GODS.GODS_NAME
+			, PRIC_TYPE.CODE_NAME PRIC_TYPE_NM
+			, PRIC.*
+		FROM TB_UAST_GODS GODS
+			, TB_UAST_SRVC_CTGR CTGR
+			, TB_UAST_PRIC PRIC
+			, TB_UAST_CODE GODS_DVSN_CD
+			, TB_UAST_CODE PRIC_TYPE
+		WHERE 1 = 1
+		AND GODS.DEL_YN in ('N', 'D')
+		AND GODS.SRVC_ID = CTGR.SRVC_ID
+		<isNotEmpty property="categoryValue">
+			AND CTGR.SRVC_ID IN (
+									  select NODE_CATEGORY from (
+										    SELECT NODE_CATEGORY,       NODE_LFT,       NODE_RGT,       PARENT_CATEGORY,       PARENT_LFT,       PARENT_RGT,       SRVC_CTGR_NM,       DEPTH     FROM 
+										      (     
+										          SELECT          NODE.SRVC_ID AS NODE_CATEGORY,          NODE.LEFT_SRVC_ID AS NODE_LFT,         NODE.RIGHT_SRVC_ID AS NODE_RGT,         PARENT.SRVC_ID AS PARENT_CATEGORY,          PARENT.LEFT_SRVC_ID AS PARENT_LFT,          PARENT.RIGHT_SRVC_ID  AS PARENT_RGT,        
+										           CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM,          
+										          (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH      
+										           FROM TB_UAST_SRVC_CTGR AS NODE,          
+										           TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID      GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID       
+										    			         
+										       ) AS A 
+										       ,(
+										    			
+										            SELECT          @SER_LEFT:=NODE.LEFT_SRVC_ID,@SER_RIGHT:=NODE.RIGHT_SRVC_ID ,@SER_DEPTH:=(COUNT(PARENT.SRVC_ID) - 1)      
+										           FROM TB_UAST_SRVC_CTGR AS NODE,          
+										           TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+										           and NODE.SRVC_ID=#categoryValue#       
+										           GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID
+										                         	          
+										       ) AS b
+										       group by NODE_CATEGORY ORDER BY NODE_LFT
+										) as d   
+									   where 1=1
+									   AND d.DEPTH <![CDATA[ >= ]]> @SER_DEPTH  AND d.NODE_LFT BETWEEN @SER_LEFT AND @SER_RIGHT
+									
+                                )
+		</isNotEmpty>
+		<isNotEmpty property="searchGodsDvsn">
+			AND GODS.GODS_DVSN = #searchGodsDvsn#
+		</isNotEmpty>
+		<isNotEmpty property="searchGodsName">
+			AND GODS.GODS_NAME LIKE CONCAT('%', replace(replace(#searchGodsName#,'%','\%'),'_','\_'), '%')	<!-- terms item name	-->
+		</isNotEmpty>
+		AND GODS.GODS_ID = PRIC.TAGET_ID
+		AND GODS.GODS_DVSN = GODS_DVSN_CD.COMMON_CODE_ID
+		AND PRIC.PRIC_TYPE = PRIC_TYPE.COMMON_CODE_ID
+	</select>
+
+</sqlMap>

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Using">
+
+	<!-- table schema -->    
+	<select id="traffic.assetMacaddressList.select" resultClass="hMap">
+		select *
+		from TB_UAST_ASSETS
+		where 1 = 1
+		and LAST_CRCT_DT between STR_TO_DATE(#maxStrtTm#, '%Y%m%d%H%i') 
+										and STR_TO_DATE( #currentDate#, '%Y%m%d%H%i')
+		and ASSET_TYPE_CD IN ('00606','00602')
+	</select>
+
+	<!-- table schema -->    
+	<select id="traffic.processLog.select.max" resultClass="hMap">
+		select IFNULL(max(AC_STRT_TM),DATE_FORMAT(SYSDATE(), '%Y-%m-%d %H:%i')) as AC_STRT_TM 
+				, IFNULL(max(STRT_TM),DATE_FORMAT(SYSDATE(), '%Y%m%d%H%i')) as STRT_TM
+		from TRAFFIC_PROCESS_LOG
+		where 1 = 1
+		and TRAFFIC_TYPE = #TRAFFIC_TYPE#
+	</select>
+
+	<!-- table schema -->    
+	<select id="traffic.processLogForMac.select.max" resultClass="hMap">
+		select IFNULL(max(AC_STRT_TM),DATE_FORMAT(DATE_ADD(SYSDATE(), INTERVAL -1 YEAR), '%Y-%m-%d %H:%i')) as AC_STRT_TM 
+				, IFNULL(max(STRT_TM),DATE_FORMAT(DATE_ADD(SYSDATE(), INTERVAL -1 YEAR), '%Y%m%d%H%i')) as STRT_TM
+		from TRAFFIC_PROCESS_LOG
+		where 1 = 1
+		and TRAFFIC_TYPE = #TRAFFIC_TYPE#
+	</select>
+
+	<!-- process traffic log by acStrtTm-->
+	<insert id="traffic.processLog.insert" parameterClass="hMap">
+	   	insert into TRAFFIC_PROCESS_LOG( 
+	    	STRT_TM
+	    	, END_TM
+	    	, AC_STRT_TM
+	    	, AC_END_TM
+	    	, TRAFFIC_TYPE
+	    	, SUCESS_YN
+	    	, PROCESS_DATE
+	    )
+		select STRT_TM
+	    	, END_TM
+	    	, AC_STRT_TM
+	    	, AC_END_TM
+	    	, #trafficType#	<!-- common Code -->
+	    	, 'Y'
+			,  SYSDATE()
+		from $table_name$
+		where 1 = 1
+		and STRT_TM >= #acStrtTM#
+	</insert>	
+
+	<!-- process traffic log by hMap-->
+	<insert id="traffic.processLogByMap.insert" parameterClass="hMap">
+	   	insert into TRAFFIC_PROCESS_LOG( 
+	    	STRT_TM
+	    	, END_TM
+	    	, AC_STRT_TM
+	    	, AC_END_TM
+	    	, TRAFFIC_TYPE
+	    	, SUCESS_YN
+	    	, PROCESS_DATE
+	    ) value (
+			#strtTM#
+	    	, #endTM#
+	    	, #acStrtTM#
+	    	, #acEndTM#
+	    	, #trafficType#	<!-- common Code -->
+	    	, #sucessYN#
+			,  SYSDATE()
+		)
+	</insert>	
+
+	<insert id="traffic.ac_stat_alarm.insert" parameterClass="hMap">
+	   	insert into AC_STAT_ALARM( 
+	    	STRT_TM
+	    	, END_TM
+	    	, AC_STRT_TM
+	    	, AC_END_TM
+			, CPU_CRITICAL
+			, CPU_MAJOR
+			, MEMORY_CRITICAL
+			, MEMORY_MAJOR
+			, MEMORY_MINOR
+			, DISK_CRITICAL
+			, DISK_MAJOR
+			, DISK_MINOR
+	    ) value (
+	    	#STRT_TM#
+	    	, #END_TM#
+	    	, #AC_STRT_TM#
+	    	, #AC_END_TM#
+			, #CPU_CRITICAL#
+			, #CPU_MAJOR#
+			, #MEMORY_CRITICAL#
+			, #MEMORY_MAJOR#
+			, #MEMORY_MINOR#
+			, #DISK_CRITICAL#
+			, #DISK_MAJOR#
+			, #DISK_MINOR#
+	    )
+	</insert>	
+	
+	<insert id="traffic.ac_stat_ap_traffic.insert" parameterClass="hMap">
+	   	insert into AC_STAT_AP_TRAFFIC( 
+	    	STRT_TM
+	    	, END_TM
+	    	, AC_STRT_TM
+	    	, AC_END_TM
+			, TX_BYTE
+			, RX_BYTE
+			, TX_BPS
+			, RX_BPS
+	    ) value (
+	    	#STRT_TM#
+	    	, #END_TM#
+	    	, #AC_STRT_TM#
+	    	, #AC_END_TM#
+			, #TX_BYTE#
+			, #RX_BYTE#
+			, #TX_BPS#
+			, #RX_BPS#
+	    )
+	</insert>	
+
+	<insert id="traffic.ac_stat_call.insert" parameterClass="hMap">
+	   	insert into AC_STAT_CALL( 
+	    	STRT_TM
+	    	, END_TM
+	    	, AC_STRT_TM
+	    	, AC_END_TM
+			, ATTEMPT
+			, SUCCESS
+			, ASSOC_TOT
+			, AUTH_TOT
+			, AUTH_FAIL
+			, DHCP_TOT
+			, DHCP_FAIL
+			, STATE_MISMATCH
+			, ROAMING_ATT
+			, ROAMING_SUC
+			, ROAMING_FAIL
+			, CUR_USER
+	    ) value (
+	    	#STRT_TM#
+	    	, #END_TM#
+	    	, #AC_STRT_TM#
+	    	, #AC_END_TM#
+			, #ATTEMPT#
+			, #SUCCESS#
+			, #ASSOC_TOT#
+			, #AUTH_TOT#
+			, #AUTH_FAIL#
+			, #DHCP_TOT#
+			, #DHCP_FAIL#
+			, #STATE_MISMATCH#
+			, #ROAMING_ATT#
+			, #ROAMING_SUC#
+			, #ROAMING_FAIL#
+			, #CUR_USER#
+	    )
+	</insert>	
+
+	<insert id="traffic.ac_stat_traffic.insert" parameterClass="hMap">
+	   	insert into AC_STAT_TRAFFIC( 
+	    	STRT_TM
+	    	, END_TM
+	    	, AC_STRT_TM
+	    	, AC_END_TM
+			, TX_OCTET
+			, RX_OCTET
+			, TX_PACKET
+			, RX_PACKET
+			, TX_ERROR
+			, RX_ERROR
+			, TX_OCTET_BPS
+			, RX_OCTET_BPS
+	    ) value (
+	    	#STRT_TM#
+	    	, #END_TM#
+	    	, #AC_STRT_TM#
+	    	, #AC_END_TM#
+			, #TX_OCTET#
+			, #RX_OCTET#
+			, #TX_PACKET#
+			, #RX_PACKET#
+			, #TX_ERROR#
+			, #RX_ERROR#
+			, #TX_OCTET_BPS#
+			, #RX_OCTET_BPS#
+	    )
+	</insert>	
+
+	<select id="traffic.today.load" resultClass="hMap">
+		select ifnull(sum(TX_BYTE),0) download, ifnull(sum(RX_BYTE),0) upload
+		from AC_STAT_AP_TRAFFIC
+		where STRT_TM like CONCAT((DATE_FORMAT(SYSDATE(), '%Y%m%d')), '%')	
+	</select>
+</sqlMap>

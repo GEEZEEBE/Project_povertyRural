@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="assetUtil">
+	<typeAlias alias="assetUtil" type="com.skt.mars.adm.op.AssetUtil" />
+
+	<!-- getBoardList -->
+	<resultMap id="rentListMapID" class="assetUtil">
+		<result property="srvcID" column="SRVC_ID" />
+		<result property="srvcCtgrNM" column="SRVC_CTGR_NM" />
+		<result property="itemID" column="ITEM_ID" />
+		<result property="itemNM" column="ITEM_NM" />
+		<result property="item05" column="ITEM_05" />
+		<result property="godsID" column="GODS_ID" />
+		<result property="assetID" column="ASSET_ID" />
+		<result property="payKind" column="PAY_KIND" />
+		<result property="pricType" column="PRIC_TYPE" />
+		<result property="pricUnit" column="PRIC_UNIT" />
+		<result property="flatRate" column="FLAT_RATE" />
+		<result property="depositRate" column="DEPOSIT_RATE" />
+		<result property="rentDay" column="RENT_DAY" />
+		<result property="returnDay" column="RETURN_DAY" />
+		<result property="userID" column="USER_ID" />
+		<result property="userName" column="USER_NAME" />
+		<result property="cmplYN" column="CMPL_YN" />
+		<result property="CNTS_NAME" column="CNTS_NAME" />
+		
+		<result property="frstRgstDT" column="FRST_RGST_DT" />
+		<result property="frstRgstUserID" column="FRST_RGST_USER_ID" />
+		<result property="latCrctDT" column="LAST_CRCT_DT" />
+		<result property="latCrctUserID" column="LAST_CRCT_USER_ID" />
+	</resultMap>
+	
+	<resultMap id="returnListMapID" class="assetUtil">
+		<result property="srvcCtgrNM" column="SRVC_CTGR_NM" />
+		<result property="itemNM" column="ITEM_NM" />
+		<result property="item05" column="ITEM_05" />
+		<result property="useHsNmbrID" column="USE_HS_NMBR_ID" />
+		<result property="userID" column="USER_ID" />
+		<result property="depositRate" column="DEPOSIT_RATE" />
+		<result property="startTm" column="STRT_TM" />
+		<result property="endTm" column="END_TM" />
+		<result property="flatRate" column="FLAT_RATE" />
+		<result property="payKind" column="PAY_KIND" />
+		<result property="userName" column="USER_NAME" />
+		<result property="fine" column="FINE" />
+		<result property="CNTS_NAME" column="CNTS_NAME" />
+								
+		<result property="frstRgstDT" column="FRST_RGST_DT" />
+		<result property="frstRgstUserID" column="FRST_RGST_USER_ID" />
+		<result property="latCrctDT" column="LAST_CRCT_DT" />
+		<result property="latCrctUserID" column="LAST_CRCT_USER_ID" />
+	</resultMap>
+	
+	<resultMap id="printListMapID" class="assetUtil">
+		<result property="srvcCtgrNM" column="SRVC_CTGR_NM" />
+		<result property="godsNM" column="GODS_NAME" />
+		<result property="depositRate" column="DEPOSIT_RATE" />
+		<result property="userID" column="USER_ID" />
+		<result property="rentDay" column="RENT_DAY" />
+		<result property="useHsNmbrID" column="USE_HS_NMBR_ID" />
+								
+		<result property="frstRgstDT" column="FRST_RGST_DT" />
+		<result property="frstRgstUserID" column="FRST_RGST_USER_ID" />
+		<result property="latCrctDT" column="LAST_CRCT_DT" />
+		<result property="latCrctUserID" column="LAST_CRCT_USER_ID" />
+	</resultMap>
+	
+	<resultMap id="printGodsListMapID" class="assetUtil">
+		<result property="srvcCtgrNM" column="SRVC_CTGR_NM" />
+		<result property="godsNM" column="GODS_NAME" />
+		<result property="godsID" column="GODS_ID" />
+								
+		<result property="frstRgstDT" column="FRST_RGST_DT" />
+		<result property="frstRgstUserID" column="FRST_RGST_USER_ID" />
+		<result property="latCrctDT" column="LAST_CRCT_DT" />
+		<result property="latCrctUserID" column="LAST_CRCT_USER_ID" />
+	</resultMap>
+	
+	<resultMap id="printUseHs" class="assetUtil">
+		<result property="flatRate" column="FLAT_RATE" />
+		<result property="rentDay" column="RENT_DAY" />
+	</resultMap>
+	
+	<select id="assetUtil.rentList" resultMap="rentListMapID">				
+       select * from (		
+            select b.CNTS_NAME,f.CMPL_YN,f.LAST_CRCT_DT as RETURN_DAY ,g.NAME as USER_NAME ,g.USER_ID
+			,a.GODS_ID,a.SRVC_ID,b.ITEM_ID,d.SRVC_CTGR_NM,e.PAY_KIND,e.PRIC_TYPE,e.PRIC_UNIT,e.FLAT_RATE,e.DEPOSIT_RATE,e.RENT_DAY,c.* from tb_uast_gods a 
+			left join tb_uast_item b on a.GODS_ID=b.GODS_ID
+			left join tb_uast_assets c on b.ASSET_ID=c.ASSET_ID 
+			left join 
+			(
+			    SELECT NODE_CATEGORY,       NODE_LFT,       NODE_RGT,       PARENT_CATEGORY,       PARENT_LFT,       PARENT_RGT,       SRVC_CTGR_NM,       DEPTH     FROM 
+			    (     
+			        SELECT          NODE.SRVC_ID AS NODE_CATEGORY,          NODE.LEFT_SRVC_ID AS NODE_LFT,         NODE.RIGHT_SRVC_ID AS NODE_RGT,         PARENT.SRVC_ID AS PARENT_CATEGORY,          PARENT.LEFT_SRVC_ID AS PARENT_LFT,          PARENT.RIGHT_SRVC_ID  AS PARENT_RGT,        
+			         CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM,          
+			        (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH      
+			         FROM TB_UAST_SRVC_CTGR AS NODE,          
+			         TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID      GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID       
+			         
+			     ) AS A 
+			     ,(
+			
+			          SELECT          @SER_LEFT:=NODE.LEFT_SRVC_ID,@SER_RIGHT:=NODE.RIGHT_SRVC_ID ,@SER_DEPTH:=(COUNT(PARENT.SRVC_ID) - 1)      
+			         FROM TB_UAST_SRVC_CTGR AS NODE,          
+			         TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID 
+			         GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID              	          
+			     ) AS b
+			     group by NODE_CATEGORY ORDER BY NODE_LFT
+			) as h on a.SRVC_ID = h.NODE_CATEGORY
+            left join tb_uast_srvc_ctgr d on h.PARENT_CATEGORY = d.SRVC_ID 
+			left join tb_uast_pric e on a.GODS_ID = e.TAGET_ID
+            left join (
+            	select CMPL_YN,GODS_ID,ITEM_ID,LAST_CRCT_DT,USER_ID from tb_uast_use_hs order by FRST_RGST_DT desc
+            ) f on a.GODS_ID=f.GODS_ID and b.ITEM_ID=f.ITEM_ID
+            left join tb_uast_user g on f.USER_ID=g.USER_ID
+			where 1=1
+			and a.DEL_YN != 'Y'
+			and b.DEL_YN='N' 
+			and a.GODS_DVSN='00101' 
+			and b.GODS_ID IS NOT NULL
+			<isNotEmpty property="assetTypeCD">
+		    and c.ASSET_TYPE_CD LIKE CONCAT('%', #assetTypeCD#, '%')
+			</isNotEmpty>  
+            group by a.GODS_ID,b.ITEM_ID
+            order by b.FRST_RGST_DT desc  
+       ) as a  where 1=1  
+      and CMPL_YN IS NULL or CMPL_YN='E'  
+			  		
+	</select>
+
+	<select id="assetUtil.rentList.TotalCount" resultClass="Integer">
+		select Count(*) from (		
+            select f.CMPL_YN,f.LAST_CRCT_DT as RETURN_DAY ,g.NAME as USER_NAME ,g.USER_ID
+			,a.GODS_ID,a.SRVC_ID,b.ITEM_ID,d.SRVC_CTGR_NM,e.PAY_KIND,e.PRIC_TYPE,e.PRIC_UNIT,e.FLAT_RATE,e.DEPOSIT_RATE,e.RENT_DAY,c.* from tb_uast_gods a 
+			left join tb_uast_item b on a.GODS_ID=b.GODS_ID
+			left join tb_uast_assets c on b.ASSET_ID=c.ASSET_ID 
+			left join 
+			(
+			    SELECT NODE_CATEGORY,       NODE_LFT,       NODE_RGT,       PARENT_CATEGORY,       PARENT_LFT,       PARENT_RGT,       SRVC_CTGR_NM,       DEPTH     FROM 
+			    (     
+			        SELECT          NODE.SRVC_ID AS NODE_CATEGORY,          NODE.LEFT_SRVC_ID AS NODE_LFT,         NODE.RIGHT_SRVC_ID AS NODE_RGT,         PARENT.SRVC_ID AS PARENT_CATEGORY,          PARENT.LEFT_SRVC_ID AS PARENT_LFT,          PARENT.RIGHT_SRVC_ID  AS PARENT_RGT,        
+			         CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM,          
+			        (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH      
+			         FROM TB_UAST_SRVC_CTGR AS NODE,          
+			         TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID      GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID       
+			         
+			     ) AS A 
+			     ,(
+			
+			          SELECT          @SER_LEFT:=NODE.LEFT_SRVC_ID,@SER_RIGHT:=NODE.RIGHT_SRVC_ID ,@SER_DEPTH:=(COUNT(PARENT.SRVC_ID) - 1)      
+			         FROM TB_UAST_SRVC_CTGR AS NODE,          
+			         TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID 
+			         GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID              	          
+			     ) AS b
+			     group by NODE_CATEGORY ORDER BY NODE_LFT
+			) as h on a.SRVC_ID = h.NODE_CATEGORY
+            left join tb_uast_srvc_ctgr d on h.PARENT_CATEGORY = d.SRVC_ID 
+			left join tb_uast_pric e on a.GODS_ID = e.TAGET_ID
+            left join (
+            	select CMPL_YN,GODS_ID,ITEM_ID,LAST_CRCT_DT,USER_ID from tb_uast_use_hs order by FRST_RGST_DT desc
+            ) f on a.GODS_ID=f.GODS_ID and b.ITEM_ID=f.ITEM_ID
+            left join tb_uast_user g on f.USER_ID=g.USER_ID
+			where 1=1
+			and a.DEL_YN != 'Y'
+			and b.DEL_YN='N' 
+			and a.GODS_DVSN='00101' 
+			and b.GODS_ID IS NOT NULL
+			<isNotEmpty property="assetTypeCD">
+		    and c.ASSET_TYPE_CD LIKE CONCAT('%', #assetTypeCD#, '%')
+			</isNotEmpty>  
+            group by a.GODS_ID,b.ITEM_ID
+       ) as a  where 1=1  
+      and CMPL_YN IS NULL or CMPL_YN='E'  
+	</select>
+
+	<insert id="assetUtil.rentInsert" parameterClass="assetUtil">
+	    	insert into tb_uast_use_hs( 
+	    	USE_HS_NMBR_ID,
+	    	STRT_TM,
+	    	END_TM,
+	    	CMPL_YN,
+	    	PAY_KIND,
+	    	PRIC_TYPE,
+	    	PRIC_UNIT,
+	    	FLAT_RATE,
+	    	DEPOSIT_RATE,
+	    	RENT_DAY,
+	    	USER_ID,
+	    	GODS_ID,
+	    	ITEM_ID,
+	    	FRST_RGST_DT,
+	    	FRST_RGST_USER_ID,
+	    	LAST_CRCT_DT,
+	    	LAST_CRCT_USER_ID )
+			values( 
+			#useHsNmbrID#, 
+			#startTm#, 
+			#endTm#, 
+			#cmplYN#, 
+			#depositYN#, 
+			#pricType#, 
+			#pricUnit#, 
+			#flatRate#, 
+			#depositRate#, 
+			#rentDay#, 
+			#userID#, 
+			#godsID#, 
+			#itemID#, 
+			SYSDATE(),
+			#frstRgstUserID#,
+			SYSDATE(),
+			#latCrctUserID# 
+			 )
+	    	
+	</insert>
+	
+	<select id="assetUtil.returnList" resultMap="returnListMapID">				
+			select b.CNTS_NAME,f.FINE,e.NAME as USER_NAME,d.SRVC_CTGR_NM,c.ITEM_NM,c.ITEM_05,a.* from tb_uast_use_hs a 
+			left join tb_uast_gods a1 on a.GODS_ID=a1.GODS_ID
+			left join tb_uast_item b on a.ITEM_ID=b.ITEM_ID
+			left join tb_uast_assets c on b.ASSET_ID=c.ASSET_ID 
+			left join 
+			(
+			    SELECT NODE_CATEGORY,       NODE_LFT,       NODE_RGT,       PARENT_CATEGORY,       PARENT_LFT,       PARENT_RGT,       SRVC_CTGR_NM,       DEPTH     FROM 
+			    (     
+			        SELECT          NODE.SRVC_ID AS NODE_CATEGORY,          NODE.LEFT_SRVC_ID AS NODE_LFT,         NODE.RIGHT_SRVC_ID AS NODE_RGT,         PARENT.SRVC_ID AS PARENT_CATEGORY,          PARENT.LEFT_SRVC_ID AS PARENT_LFT,          PARENT.RIGHT_SRVC_ID  AS PARENT_RGT,        
+			         CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM,          
+			        (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH      
+			         FROM TB_UAST_SRVC_CTGR AS NODE,          
+			         TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID      GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID       
+			         
+			     ) AS A 
+			     ,(
+			
+			          SELECT          @SER_LEFT:=NODE.LEFT_SRVC_ID,@SER_RIGHT:=NODE.RIGHT_SRVC_ID ,@SER_DEPTH:=(COUNT(PARENT.SRVC_ID) - 1)      
+			         FROM TB_UAST_SRVC_CTGR AS NODE,          
+			         TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID 
+			         GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID              	          
+			     ) AS b
+			     group by NODE_CATEGORY ORDER BY NODE_LFT
+			) as h on a1.SRVC_ID = h.NODE_CATEGORY
+            left join tb_uast_srvc_ctgr d on h.PARENT_CATEGORY = d.SRVC_ID 
+			left join tb_uast_user e on a.USER_ID=e.USER_ID
+			left join tb_uast_costpric f on c.COSTPRIC_ID=f.COSTPRIC_ID
+			where 1=1
+			and a.CMPL_YN='S'
+			and a1.GODS_DVSN='00101' 
+			and b.GODS_ID IS NOT NULL
+			<isNotEmpty property="assetTypeCD">
+		    and c.ASSET_TYPE_CD LIKE CONCAT('%', #assetTypeCD#, '%')
+			</isNotEmpty>
+			<isNotEmpty property="strPayKind">
+		    and a.PAY_KIND=#strPayKind#
+			</isNotEmpty>
+			order by a.FRST_RGST_DT desc  		
+	</select>
+
+	<select id="assetUtil.returnList.TotalCount" resultClass="Integer">
+			select count(*) from tb_uast_use_hs a 
+			left join tb_uast_gods a1 on a.GODS_ID=a1.GODS_ID
+			left join tb_uast_item b on a.ITEM_ID=b.ITEM_ID
+			left join tb_uast_assets c on b.ASSET_ID=c.ASSET_ID 
+			left join 
+			(
+			    SELECT NODE_CATEGORY,       NODE_LFT,       NODE_RGT,       PARENT_CATEGORY,       PARENT_LFT,       PARENT_RGT,       SRVC_CTGR_NM,       DEPTH     FROM 
+			    (     
+			        SELECT          NODE.SRVC_ID AS NODE_CATEGORY,          NODE.LEFT_SRVC_ID AS NODE_LFT,         NODE.RIGHT_SRVC_ID AS NODE_RGT,         PARENT.SRVC_ID AS PARENT_CATEGORY,          PARENT.LEFT_SRVC_ID AS PARENT_LFT,          PARENT.RIGHT_SRVC_ID  AS PARENT_RGT,        
+			         CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM,          
+			        (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH      
+			         FROM TB_UAST_SRVC_CTGR AS NODE,          
+			         TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID      GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID       
+			         
+			     ) AS A 
+			     ,(
+			
+			          SELECT          @SER_LEFT:=NODE.LEFT_SRVC_ID,@SER_RIGHT:=NODE.RIGHT_SRVC_ID ,@SER_DEPTH:=(COUNT(PARENT.SRVC_ID) - 1)      
+			         FROM TB_UAST_SRVC_CTGR AS NODE,          
+			         TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID 
+			         GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID              	          
+			     ) AS b
+			     group by NODE_CATEGORY ORDER BY NODE_LFT
+			) as h on a1.SRVC_ID = h.NODE_CATEGORY
+            left join tb_uast_srvc_ctgr d on h.PARENT_CATEGORY = d.SRVC_ID 
+			
+			where 1=1
+			and a.CMPL_YN='S'
+			and a1.GODS_DVSN='00101' 
+			and b.GODS_ID IS NOT NULL
+			<isNotEmpty property="assetTypeCD">
+		    and c.ASSET_TYPE_CD LIKE CONCAT('%', #assetTypeCD#, '%')
+			</isNotEmpty> 
+			<isNotEmpty property="strPayKind">
+		    and a.PAY_KIND=#strPayKind#
+			</isNotEmpty> 		
+	</select>
+	
+	
+	<update id="assetUtil.returnUpdate" parameterClass="assetUtil">
+		update tb_uast_use_hs set
+			CMPL_YN = #cmplYN#,
+			LAST_CRCT_DT= SYSDATE(),
+			LAST_CRCT_USER_ID = #latCrctUserID#			
+		where USE_HS_NMBR_ID=(#useHsNmbrID#)
+	</update>
+	
+	<select id="assetUtil.printList" resultMap="printListMapID">				
+			select e.SRVC_CTGR_NM,a1.GODS_NAME,a.* from tb_uast_use_hs a 
+			left join tb_uast_gods a1 on a.GODS_ID=a1.GODS_ID
+			left join 
+			(
+			    SELECT NODE_CATEGORY,       NODE_LFT,       NODE_RGT,       PARENT_CATEGORY,       PARENT_LFT,       PARENT_RGT,       SRVC_CTGR_NM,       DEPTH     FROM 
+			    (     
+			        SELECT          NODE.SRVC_ID AS NODE_CATEGORY,          NODE.LEFT_SRVC_ID AS NODE_LFT,         NODE.RIGHT_SRVC_ID AS NODE_RGT,         PARENT.SRVC_ID AS PARENT_CATEGORY,          PARENT.LEFT_SRVC_ID AS PARENT_LFT,          PARENT.RIGHT_SRVC_ID  AS PARENT_RGT,        
+			         CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM,          
+			        (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH      
+			         FROM TB_UAST_SRVC_CTGR AS NODE,          
+			         TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID      GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID       
+			         
+			     ) AS A 
+			     ,(
+			
+			          SELECT          @SER_LEFT:=NODE.LEFT_SRVC_ID,@SER_RIGHT:=NODE.RIGHT_SRVC_ID ,@SER_DEPTH:=(COUNT(PARENT.SRVC_ID) - 1)      
+			         FROM TB_UAST_SRVC_CTGR AS NODE,          
+			         TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID 
+			         <isNotEmpty property="strSrvcID">
+				    	and NODE.SRVC_ID=#strSrvcID# <!-- cate code --> 
+					 </isNotEmpty> 
+			         GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID              	          
+			     ) AS b
+			     group by NODE_CATEGORY ORDER BY NODE_LFT
+			) as d on a1.SRVC_ID = d.NODE_CATEGORY
+			left join TB_UAST_SRVC_CTGR e on d.PARENT_CATEGORY=e.SRVC_ID
+			WHERE 1=1          
+			and a1.GODS_DVSN='00105'
+			<isNotEmpty property="strSrvcID">
+			AND d.DEPTH >= @SER_DEPTH  AND d.NODE_LFT BETWEEN @SER_LEFT AND @SER_RIGHT
+			</isNotEmpty>
+			order by a.FRST_RGST_DT desc	
+	</select>
+
+	<select id="assetUtil.printList.TotalCount" resultClass="Integer">
+			select count(*) from tb_uast_use_hs a 
+			left join tb_uast_gods a1 on a.GODS_ID=a1.GODS_ID
+			left join 
+			(
+			    SELECT NODE_CATEGORY,       NODE_LFT,       NODE_RGT,       PARENT_CATEGORY,       PARENT_LFT,       PARENT_RGT,       SRVC_CTGR_NM,       DEPTH     FROM 
+			    (     
+			        SELECT          NODE.SRVC_ID AS NODE_CATEGORY,          NODE.LEFT_SRVC_ID AS NODE_LFT,         NODE.RIGHT_SRVC_ID AS NODE_RGT,         PARENT.SRVC_ID AS PARENT_CATEGORY,          PARENT.LEFT_SRVC_ID AS PARENT_LFT,          PARENT.RIGHT_SRVC_ID  AS PARENT_RGT,        
+			         CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM,          
+			        (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH      
+			         FROM TB_UAST_SRVC_CTGR AS NODE,          
+			         TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID      GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID       
+			         
+			     ) AS A 
+			     ,(
+			
+			          SELECT          @SER_LEFT:=NODE.LEFT_SRVC_ID,@SER_RIGHT:=NODE.RIGHT_SRVC_ID ,@SER_DEPTH:=(COUNT(PARENT.SRVC_ID) - 1)      
+			         FROM TB_UAST_SRVC_CTGR AS NODE,          
+			         TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID 
+			         <isNotEmpty property="strSrvcID">
+				    	and NODE.SRVC_ID=#strSrvcID# <!-- cate code --> 
+					 </isNotEmpty>  
+			         GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID              
+			          
+			     ) AS b
+			      group by NODE_CATEGORY ORDER BY NODE_LFT
+			) as d on a1.SRVC_ID = d.NODE_CATEGORY
+			left join TB_UAST_SRVC_CTGR e on d.PARENT_CATEGORY=e.SRVC_ID
+			WHERE 1=1          
+			and a1.GODS_DVSN='00105'
+			and a1.DEL_YN != 'Y'
+			<isNotEmpty property="strSrvcID">
+			AND d.DEPTH >= @SER_DEPTH  AND d.NODE_LFT BETWEEN @SER_LEFT AND @SER_RIGHT 
+			</isNotEmpty> 	 
+	</select>
+	
+	<select id="assetUtil.printGodsList" resultMap="printGodsListMapID">				
+			select e.SRVC_CTGR_NM,a1.* from tb_uast_gods a1
+			left join 
+			(
+			    SELECT NODE_CATEGORY,       NODE_LFT,       NODE_RGT,       PARENT_CATEGORY,       PARENT_LFT,       PARENT_RGT,       SRVC_CTGR_NM,       DEPTH     FROM 
+			    (     
+			        SELECT          NODE.SRVC_ID AS NODE_CATEGORY,          NODE.LEFT_SRVC_ID AS NODE_LFT,         NODE.RIGHT_SRVC_ID AS NODE_RGT,         PARENT.SRVC_ID AS PARENT_CATEGORY,          PARENT.LEFT_SRVC_ID AS PARENT_LFT,          PARENT.RIGHT_SRVC_ID  AS PARENT_RGT,        
+			         CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM,          
+			        (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH      
+			         FROM TB_UAST_SRVC_CTGR AS NODE,          
+			         TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID      GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID       
+			         
+			     ) AS A 
+			     ,(
+			
+			          SELECT          @SER_LEFT:=NODE.LEFT_SRVC_ID,@SER_RIGHT:=NODE.RIGHT_SRVC_ID ,@SER_DEPTH:=(COUNT(PARENT.SRVC_ID) - 1)      
+			         FROM TB_UAST_SRVC_CTGR AS NODE,          
+			         TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID 
+			         <isNotEmpty property="srvcID">
+				    	and NODE.SRVC_ID=#srvcID# <!-- cate code --> 
+					 </isNotEmpty> 
+			         GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID              	          
+			     ) AS b
+			     group by NODE_CATEGORY ORDER BY NODE_LFT
+			) as d on a1.SRVC_ID = d.NODE_CATEGORY
+			left join TB_UAST_SRVC_CTGR e on d.PARENT_CATEGORY=e.SRVC_ID
+			WHERE 1=1          
+			and a1.GODS_DVSN='00105'
+			and a1.DEL_YN != 'Y'
+			<isNotEmpty property="srvcID">
+			AND d.DEPTH >= @SER_DEPTH  AND d.NODE_LFT BETWEEN @SER_LEFT AND @SER_RIGHT
+			</isNotEmpty>  		
+	</select>
+
+	<select id="assetUtil.printGodsList.TotalCount" resultClass="Integer">
+			select 1 	 
+	</select>
+	
+	<insert id="assetUtil.printInsert" parameterClass="assetUtil">
+	    	insert into tb_uast_use_hs( 
+	    	USE_HS_NMBR_ID,
+	    	STRT_TM,
+	    	END_TM,
+	    	CMPL_YN,
+	    	PAY_KIND,
+	    	PRIC_TYPE,
+	    	PRIC_UNIT,
+	    	FLAT_RATE,
+	    	DEPOSIT_RATE,
+	    	RENT_DAY,
+	    	USER_ID,
+	    	GODS_ID,
+	    	ITEM_ID,
+	    	FRST_RGST_DT,
+	    	FRST_RGST_USER_ID,
+	    	LAST_CRCT_DT,
+	    	LAST_CRCT_USER_ID )
+			values( 
+			#useHsNmbrID#, 
+			#startTm#, 
+			#endTm#, 
+			#cmplYN#, 
+			#payKind#, 
+			#pricType#, 
+			#pricUnit#, 
+			#flatRate#, 
+			#depositRate#, 
+			#rentDay#, 
+			#userID#, 
+			#godsID#, 
+			null, 
+			SYSDATE(),
+			#frstRgstUserID#,
+			SYSDATE(),
+			#latCrctUserID# 
+			 )
+	    	
+	</insert>
+	
+	<update id="assetUtil.printUpdate" parameterClass="assetUtil">
+		update tb_uast_use_hs a left join tb_uast_pric b on a.GODS_ID=b.TAGET_ID and b.MANAGER_KIND='GOOD'
+		set a.PAY_KIND=b.PAY_KIND,a.PRIC_TYPE=b.PRIC_TYPE,a.PRIC_UNIT=b.PRIC_UNIT,a.FLAT_RATE=b.FLAT_RATE 
+		where a.USE_HS_NMBR_ID=(#useHsNmbrID#)
+	</update>
+	
+	<select id="assetUtil.printSelect" resultMap="printUseHs">				
+			select a.* from tb_uast_use_hs a
+			where a.USE_HS_NMBR_ID=(#useHsNmbrID#)	
+	</select>
+	
+	<select id="assetUtil.selectUseHsCmplList" parameterClass="hMap" resultClass="hMap">
+	    SELECT USE_HS_NMBR_ID,
+	           STRT_TM,
+	           END_TM,
+	           CMPL_YN,
+	           PAY_KIND,
+	           PRIC_TYPE,
+	           PRIC_UNIT,
+	           FLAT_RATE,
+	           DEPOSIT_RATE,
+	           RENT_DAY,
+	           USER_ID,
+	           GODS_ID,
+	           ITEM_ID,
+	           FRST_RGST_USER_ID,
+	           DATE_FORMAT(FRST_RGST_DT, '%y/%m/%d') AS FRST_RGST_DT,
+               FRST_RGST_USER_ID,
+               DATE_FORMAT(LAST_CRCT_DT, '%y/%m/%d') AS LAST_CRCT_DT
+		  FROM TB_UAST_USE_HS
+		 WHERE 1=1
+		   AND USER_ID = #userID#
+		   AND ITEM_ID IN (<iterate property="itemID" conjunction=",">#itemID[]#</iterate>)
+	</select>
+	
+	<select id="assetUtil.returnRemainList" resultClass="hMap">				
+			
+			select * from (
+			    select datediff(now(),a.STRT_TM) as REMAIN_DATE,d.SRVC_CTGR_NM,c.ITEM_NM,c.ITEM_05,a.* from tb_uast_use_hs a 
+			    left join tb_uast_gods a1 on a.GODS_ID=a1.GODS_ID
+			    left join tb_uast_item b on a.ITEM_ID=b.ITEM_ID
+			    left join tb_uast_assets c on b.ASSET_ID=c.ASSET_ID 
+			    left join tb_uast_srvc_ctgr d on a1.SRVC_ID = d.SRVC_ID
+			    			
+			    where 1=1
+			    and a.CMPL_YN='S'
+			) as a
+			where a.REMAIN_DATE <![CDATA[ > ]]>0
+			 		
+	</select>
+
+	<delete id="assetUtil.rentdelete">
+		delete from TB_UAST_USE_HS
+		where 1=1
+		and USE_HS_NMBR_ID=#checkItem#
+	</delete>
+	
+	<delete id="assetUtil.printDeletePayment">
+        delete from tb_uast_payment
+        <dynamic prepend="where USE_HS_NMBR_ID IN">
+			<iterate property="del" open="(" conjunction="," close=")">#del[]#</iterate>
+		</dynamic>
+    </delete>
+	<delete id="assetUtil.printDelete">
+        delete from TB_UAST_USE_HS
+        <dynamic prepend="where USE_HS_NMBR_ID IN">
+			<iterate property="del" open="(" conjunction="," close=")">#del[]#</iterate>
+		</dynamic>
+    </delete>
+	
+</sqlMap>

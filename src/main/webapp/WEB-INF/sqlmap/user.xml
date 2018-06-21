@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="user">
+	<typeAlias alias="user" type="com.skt.mars.adm.ui.User" />
+
+	<!-- getBoardList -->
+	<resultMap id="resultMapID" class="user">
+		<result property="userID" column="USER_ID" />
+		<result property="pw" column="PW" />
+		<result property="name" column="NAME" />
+		<result property="sex" column="SEX" />
+		<result property="birthDay" column="BIRTHDAY" />
+		<result property="tlNO" column="TLNO" />
+		<result property="eMail" column="EMAL" />
+		<result property="adrres" column="ADRRESS" />
+		<result property="delYN" column="DEL_YN" />
+		<result property="etc" column="ETC" />
+		<result property="authority" column="AUTHORITY" />
+								
+		<result property="frstRgstDT" column="FRST_RGST_DT" />
+		<result property="frstRgstUserID" column="FRST_RGST_USER_ID" />
+		<result property="latCrctDT" column="LAST_CRCT_DT" />
+		<result property="latCrctUserID" column="LAST_CRCT_USER_ID" />
+	</resultMap>
+
+	<select id="user.list.popup" resultMap="resultMapID">
+		select * from TB_UAST_USER
+		where 1 = 1
+		    and name LIKE CONCAT('%', #serTxt#, '%')
+		    or user_id LIKE CONCAT('%', #serTxt#, '%')
+		and AUTHORITY='U'
+		and DEL_YN='N'
+		order by user_id desc
+	</select>
+	
+	<select id="user.list.popup2" resultMap="resultMapID">
+		select * from TB_UAST_USER
+		where 1 = 1
+		and (NAME LIKE CONCAT('%', #serTxt#, '%') or USER_ID LIKE CONCAT('%', #serTxt#, '%'))
+		and AUTHORITY='U'
+		and DEL_YN='N'
+		order by USER_ID desc
+	</select>
+
+	<select id="user.list" resultMap="resultMapID">
+		select * from TB_UAST_USER
+		where 1 = 1
+		<isNotEmpty property="serCol">
+			<isNotEmpty property="serTxt">
+		    and $serCol$ LIKE CONCAT('%', replace(replace(#serTxt#,'%','\%'),'_','\_'), '%')
+			</isNotEmpty>
+		</isNotEmpty>
+		and AUTHORITY='U'
+		and DEL_YN='N'
+		order by FRST_RGST_DT desc
+	</select>
+
+	<select id="user.check.login" resultMap="resultMapID">
+		select * from TB_UAST_USER
+		where 1 = 1
+		and USER_ID = #userID#
+		and DEL_YN='N'
+	</select>
+
+	<select id="user.list.TotalCount" resultClass="Integer">
+		select count(*) from TB_UAST_USER
+		where 1 = 1
+		<isNotEmpty property="serCol">
+			<isNotEmpty property="serTxt">
+		    and $serCol$ LIKE CONCAT('%', replace(replace(#serTxt#,'%','\%'),'_','\_'), '%')
+			</isNotEmpty>
+		</isNotEmpty>
+		and AUTHORITY='U'
+		and DEL_YN='N'
+	</select>
+
+	<select id="user.read" resultMap="resultMapID">
+		select * from TB_UAST_USER
+		where
+		USER_ID=#userID#
+		and AUTHORITY='U'
+	</select>
+
+	<insert id="user.insert" parameterClass="user">
+		insert into TB_UAST_USER (
+			USER_ID,
+			PW,
+			NAME,
+			SEX,
+			BIRTHDAY,
+			TLNO,
+			EMAL,
+			ADRRESS,
+			DEL_YN,
+			ETC,
+			AUTHORITY,
+			FRST_RGST_DT,
+			FRST_RGST_USER_ID,
+			LAST_CRCT_DT,
+			LAST_CRCT_USER_ID			
+			)
+		values(
+			#userID#,
+			#pw#,
+			#name#,
+			#sex#,
+			#birthDay#,
+			#tlNO#,
+			#eMail#,
+			#adrres#,
+			'N',
+			#etc#,
+			'U',
+			SYSDATE(),
+			#frstRgstUserID#,
+			SYSDATE(),
+			#latCrctUserID#			
+		)
+	</insert>
+
+	<update id="user.edit" parameterClass="user">
+		update TB_UAST_USER set
+			PW= #pw#,
+			NAME= #name#,
+			SEX= #sex#,
+			BIRTHDAY= #birthDay#,
+			TLNO= #tlNO#,
+			EMAL= #eMail#,
+			ADRRESS= #adrres#,
+			ETC= #etc#,
+			AUTHORITY= 'U',
+			LAST_CRCT_DT= SYSDATE(),
+			LAST_CRCT_USER_ID = #latCrctUserID#			
+		where USER_ID=(#userID#)
+	</update>
+
+	<update id="user.delete">
+		update TB_UAST_USER set
+		DEL_YN='Y'
+		where 1=1
+		<dynamic prepend="AND USER_ID IN">
+			<iterate property="del" open="(" conjunction="," close=")">#del[]#</iterate>
+		</dynamic>
+		and AUTHORITY='U'
+	</update>
+	
+	<update id="user.update.NewPasswordByEmail">
+		update TB_UAST_USER set
+			PW= #pw#
+			, LAST_CRCT_DT= SYSDATE()
+			, LAST_CRCT_USER_ID = #latCrctUserID#			
+		where 1=1
+		and EMAL= #EMAL#
+	</update>
+
+	<select id="user.select.max" resultClass="String">
+		select max(USER_ID) from TB_UAST_USER
+		where 1 = 1
+		and AUTHORITY = #authority# 
+	</select>
+
+	<select id="user.select.check" resultClass="hMap">
+		select IFNULL((select ITEM_01 from TB_UAST_ASSETS
+								where 1 = 1
+								and DEL_YN = 'N'
+								AND ITEM_01 = trim(#macaddress#)),'301') AS macaddress
+				, IFNULL((SELECT USER_ID
+					from TB_UAST_USER USR
+					where 1 = 1
+					and DEL_YN = 'N'
+					and USER_ID = #userid#),'302') AS USER_ID  
+				, IFNULL((SELECT NAME
+					from TB_UAST_USER USR
+					where 1 = 1
+					and DEL_YN = 'N'
+					and USER_ID = #userid# 
+					and PW = #password#),'303') AS USERNAME
+				, IFNULL((SELECT AUTHORITY
+					from TB_UAST_USER USR
+					where 1 = 1
+					and DEL_YN = 'N'
+					and USER_ID = #userid# 
+					and PW = #password#),'304') AS AUTHORITY
+				, IFNULL((SELECT EMAL
+					from TB_UAST_USER USR
+					where 1 = 1
+					and DEL_YN = 'N'
+					and USER_ID = #userid#
+					and PW = #password#),'') AS EMAL
+				, IFNULL((SELECT TLNO
+					from TB_UAST_USER USR
+					where 1 = 1
+					and DEL_YN = 'N'
+					and USER_ID = #userid#
+					and PW = #password#),'') AS TLNO
+	</select>
+	
+	<select id="user.select.white" resultClass="hMap">
+		select IFNULL((SELECT USER_ID
+					from TB_UAST_USER USR
+					where 1 = 1
+					and DEL_YN = 'N'
+					and USER_ID = #userid#),'302') AS USER_ID  
+				, IFNULL((SELECT NAME
+					from TB_UAST_USER USR
+					where 1 = 1
+					and DEL_YN = 'N'
+					and USER_ID = #userid# 
+					and PW = #password#),'303') AS USERNAME				
+				, IFNULL((SELECT EMAL
+					from TB_UAST_USER USR
+					where 1 = 1
+					and DEL_YN = 'N'
+					and USER_ID = #userid#
+					and PW = #password#),'') AS EMAL
+				, IFNULL((SELECT TLNO
+					from TB_UAST_USER USR
+					where 1 = 1
+					and DEL_YN = 'N'
+					and USER_ID = #userid#
+					and PW = #password#),'') AS TLNO
+	</select>
+
+	<select id="user.select.limit" resultClass="hMap">
+		SELECT * 
+		FROM TB_UAST_USER
+		WHERE 1 = 1 
+		AND AUTHORITY = 'U'
+		AND DEL_YN = 'N'
+		ORDER BY FRST_RGST_DT DESC limit 5
+	</select>
+
+	<select id="user.select.email" resultClass="hMap">
+		select * from TB_UAST_USER
+		where 1 = 1
+		and EMAL = #emailAddress#
+		and DEL_YN='N'
+	</select>
+	
+</sqlMap>

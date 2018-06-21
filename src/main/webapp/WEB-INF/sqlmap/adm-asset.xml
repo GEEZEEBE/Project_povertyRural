@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="asset">
+	<typeAlias alias="asset" type="com.skt.mars.adm.op.Asset" />
+
+	<!-- getBoardList -->
+	<resultMap id="resultMapID" class="asset">
+		<result property="assetID" column="ASSET_ID" />
+		<result property="assetTypeCD" column="ASSET_TYPE_CD" />
+		<result property="itemNM" column="ITEM_NM" />
+		<result property="item01" column="ITEM_01" />
+		<result property="item02" column="ITEM_02" />
+		<result property="item03" column="ITEM_03" />
+		<result property="item04" column="ITEM_04" />
+		<result property="item05" column="ITEM_05" />
+		<result property="item06" column="ITEM_06" />
+		<result property="item07" column="ITEM_07" />
+		<result property="item08" column="ITEM_08" />
+		<result property="item09" column="ITEM_09" />
+		<result property="assetYN" column="ASSET_YN" />
+		<result property="delYN" column="DEL_YN" />
+		<result property="costpricID" column="COSTPRIC_ID" />
+								
+		<result property="frstRgstDT" column="FRST_RGST_DT" />
+		<result property="frstRgstUserID" column="FRST_RGST_USER_ID" />
+		<result property="latCrctDT" column="LAST_CRCT_DT" />
+		<result property="latCrctUserID" column="LAST_CRCT_USER_ID" />
+	</resultMap>
+	
+	<resultMap id="resultListMapID" class="asset">
+		<result property="rowNum" column="ROWNUM" />
+		<result property="assetID" column="ASSET_ID" />
+		<result property="assetTypeCD" column="ASSET_TYPE_CD" />
+		<result property="assetTypeNM" column="ASSET_TYPE_NM" />
+		<result property="itemNM" column="ITEM_NM" />
+		<result property="item01" column="ITEM_01" />
+		<result property="item02" column="ITEM_02" />
+		<result property="item03" column="ITEM_03" />
+		<result property="item04" column="ITEM_04" />
+		<result property="item05" column="ITEM_05" />
+		<result property="item06" column="ITEM_06" />
+		<result property="item07" column="ITEM_07" />
+		<result property="item08" column="ITEM_08" />
+		<result property="item09" column="ITEM_09" />
+		<result property="assetYN" column="ASSET_YN" />
+		<result property="delYN" column="DEL_YN" />
+		<result property="costpricID" column="COSTPRIC_ID" />
+		<result property="costpric" column="COSTPRIC" />
+		<result property="costpricNM" column="COSTPRIC_NM" />
+								
+		<result property="frstRgstDT" column="FRST_RGST_DT" />
+		<result property="frstRgstUserID" column="FRST_RGST_USER_ID" />
+		<result property="latCrctDT" column="LAST_CRCT_DT" />
+		<result property="latCrctUserID" column="LAST_CRCT_USER_ID" />
+	</resultMap>
+	
+	<resultMap id="resultSelectID" class="asset">
+		<result property="assetID" column="ASSET_ID" />
+		<result property="assetTypeCD" column="ASSET_TYPE_CD" />
+		<result property="itemNM" column="ITEM_NM" />
+		<result property="item01" column="ITEM_01" />
+		<result property="item02" column="ITEM_02" />
+		<result property="item03" column="ITEM_03" />
+		<result property="item04" column="ITEM_04" />
+		<result property="item05" column="ITEM_05" />
+		<result property="item06" column="ITEM_06" />
+		<result property="item07" column="ITEM_07" />
+		<result property="item08" column="ITEM_08" />
+		<result property="item09" column="ITEM_09" />
+		<result property="assetYN" column="ASSET_YN" />
+		<result property="delYN" column="DEL_YN" />
+		<result property="costpricID" column="COSTPRIC_ID" />
+		<result property="costpric" column="COSTPRIC" />
+		<result property="arrAssetChild" column="ASSET_CHILD_CONT" />
+								
+		<result property="frstRgstDT" column="FRST_RGST_DT" />
+		<result property="frstRgstUserID" column="FRST_RGST_USER_ID" />
+		<result property="latCrctDT" column="LAST_CRCT_DT" />
+		<result property="latCrctUserID" column="LAST_CRCT_USER_ID" />
+	</resultMap>
+	
+	<select id="asset.list" resultMap="resultListMapID">				
+				    select a.*,b.COSTPRIC_NM,b.COSTPRIC,c.CODE_NAME as ASSET_TYPE_NM,0 as ROWNUM from TB_UAST_ASSETS a
+					left join TB_UAST_COSTPRIC b on a.COSTPRIC_ID=b.COSTPRIC_ID
+					left join TB_UAST_CODE c on a.ASSET_TYPE_CD=c.COMMON_CODE_ID
+					where 1=1
+					and a.DEL_YN='N'
+					<isNotEmpty property="strAssetTypeCD">
+					and a.ASSET_TYPE_CD=#strAssetTypeCD#
+					</isNotEmpty>
+					<isNotEmpty property="strItemNM">
+					and	a.ITEM_NM LIKE CONCAT('%', replace(replace(trim(#strItemNM#),'%','\%'),'_','\_'), '%')
+					</isNotEmpty>
+					order by a.FRST_RGST_DT DESC
+				
+	</select>
+
+	<select id="asset.list.TotalCount" resultClass="Integer">
+		select count(*) from TB_UAST_ASSETS a
+		where 1=1
+		AND a.DEL_YN = 'N'
+		<isNotEmpty property="strAssetTypeCD">
+				and a.ASSET_TYPE_CD=#strAssetTypeCD#
+		</isNotEmpty>
+		<isNotEmpty property="strItemNM">
+			and	a.ITEM_NM LIKE CONCAT('%', replace(replace(trim(#strItemNM#),'%','\%'),'_','\_'), '%')
+		</isNotEmpty>
+	</select>
+	
+	<select id="asset.MaxCount" resultClass="Integer">
+		select count(*) from TB_UAST_ASSETS a
+	</select>
+	
+	<select id="asset.read" resultMap="resultSelectID">
+			select c.COSTPRIC,c.COSTPRIC_ID,a.*,
+			group_concat(
+				concat_ws('|',b.LANGUAGE_TYPE,b.INSTRUCTOR_NAME_FIRST,b.INSTRUCTOR_NAME_LAST,b.EDUCATION_QUALIFICATION,b.WORKING_PERIOD,b.HONORS_AND_AWARDS,b.MAJOR,b.OTHER)
+				SEPARATOR '@'
+			)
+			as ASSET_CHILD_CONT
+			from TB_UAST_ASSETS a 
+			left join TB_UAST_ASSETS_CHILD b on a.ASSET_ID=b.ASSET_ID
+			left join tb_uast_costpric c on a.COSTPRIC_ID = c.COSTPRIC_ID
+			where 1=1
+			<isNotEmpty property="assetID">
+			and a.ASSET_ID = #assetID#
+			</isNotEmpty>
+			group by a.ASSET_ID
+			
+	</select>
+
+
+	<insert id="asset.insert" parameterClass="asset">
+	    <!-- <selectKey keyProperty="assetID" resultClass="String">
+            SELECT IFNULL(MAX(CAST(ASSET_ID AS UNSIGNED)), 0) + 1 AS ASSET_ID
+              FROM TB_UAST_ASSETS
+        </selectKey> -->
+		insert into TB_UAST_ASSETS (
+			ASSET_ID,
+			ASSET_TYPE_CD,
+			ITEM_NM,
+			ITEM_01,
+			ITEM_02,
+			ITEM_03,
+			ITEM_04,
+			ITEM_05,
+			ITEM_06,
+			ITEM_07,
+			ITEM_08,
+			ITEM_09,
+			ASSET_YN,
+			DEL_YN,
+			COSTPRIC_ID,
+			FRST_RGST_DT,
+			FRST_RGST_USER_ID,
+			LAST_CRCT_DT,
+			LAST_CRCT_USER_ID		
+			)
+		values(
+			#assetID#,
+			#assetTypeCD#,
+			#itemNM#,
+			#item01#,
+			#item02#,
+			#item03#,
+			#item04#,
+			#item05#,
+			#item06#,
+			#item07#,
+			#item08#,
+			#item09#,
+			#assetYN#,
+			'N',
+			<isNotEmpty property="costpricID">
+			#costpricID#,
+			</isNotEmpty>
+			<isEmpty property="costpricID">
+			null,
+			</isEmpty>
+			SYSDATE(),
+			#frstRgstUserID#,
+			SYSDATE(),
+			#latCrctUserID#			
+		)
+	</insert>
+	
+	<insert id="assetChild.insert" parameterClass="hMap">
+	    insert into TB_UAST_ASSETS_CHILD (
+	        LANGUAGE_TYPE,
+	        INSTRUCTOR_NAME_FIRST,
+	        INSTRUCTOR_NAME_LAST,
+	        MAJOR,
+	        EDUCATION_QUALIFICATION,
+	        WORKING_PERIOD,
+	        HONORS_AND_AWARDS,
+	        OTHER,
+            ASSET_ID
+            )
+        values(
+            #langType#,
+            #fristName#,
+            #lastName#,
+            #vodMajor#,
+            #qualification#,
+            #period#,
+            #honors#,
+            #other#,
+            #assetID#
+            )
+	    
+	</insert>
+	
+	<select id="assetChild.read" resultClass="hMap">
+	    SELECT * 
+	      FROM TB_UAST_ASSETS_CHILD
+	     WHERE ASSET_ID = #assetID#
+        
+    </select>
+	
+	
+	<delete id="assetChild.del">
+		delete from TB_UAST_ASSETS_CHILD
+		where 1=1
+		and ASSET_ID=#assetID#
+	</delete>
+	<update id="asset.edit" parameterClass="asset">
+		update TB_UAST_ASSETS set
+			ASSET_ID=#assetID#,
+			ASSET_TYPE_CD=#assetTypeCD#,
+			ITEM_NM=#itemNM#,
+			ITEM_01=#item01#,
+			ITEM_02=#item02#,
+			ITEM_03=#item03#,
+			ITEM_04=#item04#,
+			ITEM_05=#item05#,
+			ITEM_06=#item06#,
+			ITEM_07=#item07#,
+			ITEM_08=#item08#,
+			ITEM_09=#item09#,
+			ASSET_YN=#assetYN#,
+			DEL_YN='N',
+			<isNotEmpty property="costpricID">
+			COSTPRIC_ID=#costpricID#,
+			</isNotEmpty>
+			LAST_CRCT_DT= SYSDATE(),
+			LAST_CRCT_USER_ID = #latCrctUserID#			
+		where ASSET_ID=#assetID#
+	</update>
+
+	<update id="asset.del">
+		update TB_UAST_ASSETS set DEL_YN='Y'
+		,LAST_CRCT_DT= SYSDATE()
+		,LAST_CRCT_USER_ID = #latCrctUserID#		
+		<dynamic prepend="where ASSET_ID IN">
+			<iterate property="del" open="(" conjunction="," close=")">#del[]#</iterate>
+		</dynamic>
+	</update>
+	
+	<select id="asset.popList" parameterClass="hMap" resultClass="hMap">
+	    SELECT ASSETS.ASSET_ID,
+               ASSETS.ITEM_NM,
+               ASSETS.ASSET_TYPE_CD,
+               CODE.CODE_NAME,
+               COSTPRIC.COSTPRIC
+	      FROM TB_UAST_ASSETS AS ASSETS,
+	           TB_UAST_COSTPRIC AS COSTPRIC,
+	           TB_UAST_CODE AS CODE
+	     WHERE ASSETS.COSTPRIC_ID = COSTPRIC.COSTPRIC_ID
+	       AND ASSETS.ASSET_TYPE_CD = CODE.COMMON_CODE_ID
+	       AND ASSETS.DEL_YN = 'N'
+	       <isNotEmpty property="assetType">
+	       AND ASSETS.ASSET_TYPE_CD = #assetType# 
+	       </isNotEmpty>
+	       <isNotEmpty property="assetName">
+	       AND ASSETS.ITEM_NM LIKE CONCAT('%', #assetName# ,'%')
+	       </isNotEmpty>
+	       <isNotEmpty>
+	       AND ASSETS.ASSET_ID NOT IN(<iterate property="exceptAssetID" conjunction=",">#exceptAssetID[]#</iterate>);        
+	       </isNotEmpty>
+	</select>
+	
+	<select id="asset.fileList" parameterClass="hMap" resultClass="hMap">
+        SELECT UNIQUE_KEY,
+               PHYSICAL_FILE_NAME,
+               LOGICAL_FILE_NAME,
+               PHYSICAL_FILE_DIRECTORY,
+               FILE_SIZE,
+               FILE_TYPE,
+               FILE_CONTENTTYPE,
+               PHYSICAL_THUMBNAIL_DIRECTORY,
+               PHYSICAL_THUMBNAIL_FILE_NAME,
+               TAGET_ID 
+          FROM TB_UAST_FILE_INFOR AS INFOR
+         WHERE TAGET_ID = #assetID#
+         <isNotEmpty property="imageType">
+           AND FILE_TYPE = #imageType#
+         </isNotEmpty>
+    </select>
+    
+	<update id="asset.fileUpdate" parameterClass="hMap">
+        update TB_UAST_FILE_INFOR set
+            PHYSICAL_FILE_NAME = #attachFileName#,
+            LOGICAL_FILE_NAME = #originalFileName#,
+            LAST_CRCT_DT= SYSDATE(),
+            LAST_CRCT_USER_ID = 'SYSTEM'         
+        where TAGET_ID=#assetID#
+        <isNotEmpty property="fileType">
+          AND FILE_TYPE = #fileType#
+        </isNotEmpty>
+    </update>
+
+</sqlMap>

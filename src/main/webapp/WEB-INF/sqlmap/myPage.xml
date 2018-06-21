@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="myPage">
+    <typeAlias alias="myPage" type="com.skt.mars.usr.mp.MyPage" />
+    
+    <!-- getBoardList -->
+    <resultMap id="resultMapID" class="myPage">
+        <result property="userID" column="USER_ID" />
+        <result property="pw" column="PW" />
+        <result property="name" column="NAME" />
+        <result property="sex" column="SEX" />
+        <result property="birthDay" column="BIRTHDAY" />
+        <result property="tlNO" column="TLNO" />
+        <result property="eMail" column="EMAL" />
+        <result property="adrres" column="ADRRESS" />
+        <result property="delYN" column="DEL_YN" />
+        <result property="etc" column="ETC" />
+        <result property="authority" column="AUTHORITY" />
+                                
+        <result property="frstRgstDT" column="FRST_RGST_DT" />
+        <result property="frstRgstUserID" column="FRST_RGST_USER_ID" />
+        <result property="latCrctDT" column="LAST_CRCT_DT" />
+        <result property="latCrctUserID" column="LAST_CRCT_USER_ID" />
+    </resultMap>
+	
+    <select id="myPage.read" resultMap="resultMapID">
+        SELECT USER_ID,
+               PW,
+               NAME,
+               SEX,
+               BIRTHDAY,
+               TLNO,
+               EMAL,
+               ADRRESS,
+               ETC,
+               DEL_YN,
+               AUTHORITY,
+               FRST_RGST_DT,
+               FRST_RGST_USER_ID,
+               LAST_CRCT_DT,
+               LAST_CRCT_USER_ID
+          FROM TB_UAST_USER
+         WHERE USER_ID = #userID# 
+    </select>
+
+    <update id="myPage.update" parameterClass="hMap">
+        UPDATE TB_UAST_USER SET
+            PW = #pwd#     
+         WHERE USER_ID=#userID#
+    </update>
+
+</sqlMap>

@@ -1,0 +1,134 @@
+@charset "utf-8";
+
+/*mypage popup type2*/
+.detailPopup.type2 { position:absolute; z-index:9; top:200px; left:50%; margin-left:-239px; width:478px; height:344px; padding:0 15px; border:1px solid #cfcfcf; box-shadow:0 0 6px #bbb; background:#fff;}
+.detailPopup.type2 h1 { width:auto; height:55px; border-bottom:2px solid #f44962; color:#717171; margin:0 auto; font-size:18px; line-height:70px; text-indent:10px; font-family:arial Rounded MT Bold;}
+.detailPopup.type2 .innerBox { width:auto; height:210px; margin:18px auto 0; overflow-y:scroll;}
+.detailPopup.type2 .innerBox ul.box-type li {background:#f7f7f7; padding:13px 15px; margin-bottom:10px; border:1px solid #e4e4e4;}
+.detailPopup.type2 .innerBox ul.box-type dl {text-align:left;}
+.detailPopup.type2 .innerBox ul.box-type dl dt {height:20px; padding-left:20px; font-weight:bold; color:#757575;}
+.detailPopup.type2 .innerBox ul.box-type dl dd {padding-left:20px; font-size:12px; color:#6c6c6c;}
+.detailPopup.type2 .innerBox ul.box-type dl.fb dt {background:url(../images/ico_fb.gif) left 1px no-repeat;}
+.detailPopup.type2 .innerBox ul.box-type dl.tw dt {background:url(../images/ico_tw.gif) left 1px no-repeat;}
+.detailPopup.type2 .innerBox ul.box-type dl.blg dt {background:url(../images/ico_blg.gif) left 1px no-repeat;}
+
+
+/*홍보글 상세*/
+.boardView01 .templete-area:after{clear: both; content: "."; display: block; height: 0; visibility: hidden; font-size: 0;}
+.boardView01 .viewTemplete {float:left; width:330px; height:386px; margin:30px 25px 0; border:1px solid #dbdbdb;}
+.boardView01 .viewTempleteInfo {float:left; padding-top:130px; padding-left:25px; color:#646464; line-height:20px;}
+.boardView01 .viewTempleteInfo span {font-weight:bold; color:inherit; color:#000;}
+.boardView01 .viewTempleteInfo ul.sns-acc {margin-top:25px;}
+.boardView01 .viewTempleteInfo ul.sns-acc li {display:block; height:25px; padding-left:20px; vertical-align:middle; line-height:17px;}
+.boardView01 .viewTempleteInfo ul.sns-acc li.fb  {background:url(../images/ico_fb.gif) left 3px no-repeat;}
+.boardView01 .viewTempleteInfo ul.sns-acc li.tw  {background:url(../images/ico_tw.gif) left 3px no-repeat;}
+.boardView01 .viewTempleteInfo ul.sns-acc li.blg {background:url(../images/ico_blg.gif) left 3px no-repeat;}
+.boardView01 .viewTempleteInfo ul.sns-acc li span {display:inline-block; min-width:130px; font-size:12px; font-weight:bold; color:#6e6e6e;  vertical-align:middle; line-height:17px;}
+.boardView01 .viewTempleteInfo ul.sns-acc li a {vertical-align:middle; line-height:17px;}
+.boardView01 .viewTempleteInfo ul.sns-acc li a img {vertical-align:middle;}
+
+
+/*커머스가이드 상세*/
+.boardView01 .viewVod {padding:40px 20px 0px 20px; }
+.boardView01 .viewVod:after{clear: both; content: "."; display: block; height: 0; visibility: hidden; font-size: 0;}
+.boardView01 .viewVod .vod-box {float:left; background:url(../images/skin/mini_bg_jplayer.png) no-repeat; width:488px; height:330px; margin:0; padding:0; overflow:hidden;}
+.boardView01 .viewVod .dsc-box {float:left; width:360px; margin-left:30px; color:#646464; font-size:12px; line-height:20px;}
+
+
+/*홍보글 목록*/
+.boardTable01 td.sns a {text-decoration:none;}
+.boardTable01 td.sns img {margin-left:2px; vertical-align:middle;}
+.boardTable01 td.sns img:first-child {margin-left:0;}
+
+/*커머스가이드 목록*/
+.boardTable01 td.play a {vertical-align:middle;}
+.boardTable01 td.play img {vertical-align:middle;}
+
+
+
+/* jplayer mini  */
+div.jp-mini.jp-video {width:457px; margin:15px auto;}
+div.jp-mini div.jp-interface {background:url(../images/skin/mini_bg_all.gif) 0 4px repeat-x;}
+div.jp-mini a.jp-play {background: url("../images/skin/mini_btn_play.gif") no-repeat;}
+div.jp-mini a.jp-play:hover {background: url("../images/skin/mini_btn_play_on.gif") no-repeat;}
+div.jp-mini a.jp-pause {background: url("../images/skin/mini_btn_pause.gif") no-repeat; display: none;}
+div.jp-mini a.jp-pause:hover {background: url("../images/skin/mini_btn_pause_on.gif") no-repeat;}
+div.jp-mini a.jp-stop {background: url("../images/skin/mini_btn_stop.gif") no-repeat;}
+div.jp-mini a.jp-stop:hover {background: url("../images/skin/mini_btn_stop_on.gif") no-repeat;}
+div.jp-mini div.jp-seek-bar {background: url("../images/skin/mini_play_bar_bg.gif") repeat-x;}
+div.jp-mini div.jp-play-bar {background: url("../images/skin/mini_play_bar.gif") repeat-x ;}
+div.jp-mini a.jp-mute {	background: url("../images/skin/mini_btn_mute.gif") no-repeat;}
+div.jp-mini a.jp-mute:hover {background: url("../images/skin/mini_btn_mute_on.gif") no-repeat;}
+div.jp-mini a.jp-unmute {background: url("../images/skin/mini_btn_unmute.gif") no-repeat; display: none;}
+div.jp-mini a.jp-unmute:hover {	background: url("../images/skin/mini_btn_unmute_on.gif") no-repeat;}
+div.jp-mini div.jp-volume-bar-value div.volume-icon {background: url(../images/skin/mini_vol_ico.png) no-repeat;}
+div.jp-mini div.jp-current-time {background:url(../images/skin/mini_bg_time.gif) no-repeat;}
+div.jp-mini a.jp-full-screen {background: url("../images/skin/mini_btn_full.gif") no-repeat;}
+div.jp-mini a.jp-full-screen:hover {background: url("../images/skin/mini_btn_full_on.gif") no-repeat;}
+div.jp-mini a.jp-restore-screen {background: url("../images/skin/mini_btn_basic.gif") no-repeat;}
+div.jp-mini a.jp-restore-screen:hover {	background: url("../images/skin/mini_btn_basic_on.gif") no-repeat;}
+
+div.jp-mini div.jp-progress {
+	height: 4px!important;
+}
+
+div.jp-mini div.jp-video-play {
+	margin-top: -259px;
+	height: 259px;
+}
+
+div.jp-mini.jp-video div.jp-type-single ul.jp-controls {
+	width: 210px;
+}
+
+div.jp-mini a.jp-play,
+div.jp-mini a.jp-pause {
+	width:52px;
+	height:38px;
+}
+
+div.jp-mini a.jp-stop, 
+div.jp-mini a.jp-previous, 
+div.jp-mini a.jp-next {
+	width:42px;
+	height:38px;
+}
+
+div.jp-mini a.jp-mute,
+div.jp-mini a.jp-unmute,
+div.jp-mini a.jp-volume-max {
+	width:32px;
+	height:38px;
+}
+
+div.jp-mini.jp-video a.jp-mute,
+div.jp-mini.jp-video a.jp-unmute {
+	left: 94px;
+}
+
+div.jp-mini.jp-video div.jp-volume-bar {
+	top: 8px;
+	left: 130px;
+	width: 90px;
+}
+
+div.jp-mini div.jp-volume-bar-value div.volume-icon {
+	width: 12px;
+	height:12px;
+	right: -6px;
+	top: 4px;
+}
+
+div.jp-mini div.jp-current-time {
+	width: 80px;
+	height: 26px;
+	font-size: 10px;
+	color: #fff;
+	padding:12px 0 0 40px;
+}
+
+div.jp-mini ul.jp-toggles li a {
+	width: 107px;
+	height: 38px;
+}
+

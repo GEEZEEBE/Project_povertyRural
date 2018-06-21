@@ -1,0 +1,785 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+    <!-- admin layout -->
+	<definition name="admin.layout"
+		template="/WEB-INF/tiles2def/template/layout.jsp" preparer="menuPreparer">
+		<put-attribute name="title" value="SK CBC admin" />
+		<put-attribute name="header"
+			value="/WEB-INF/tiles2def/template/header.jsp" />
+		<put-attribute name="menuTop"
+			value="/WEB-INF/tiles2def/template/menuTop.jsp" />
+		<put-attribute name="menuLeft"
+			value="/WEB-INF/tiles2def/template/menuLeft.jsp" />
+				<put-attribute name="currentDirectory"
+			value="/WEB-INF/tiles2def/template/currentDirectory.jsp" />
+		<put-attribute name="footer"
+			value="/WEB-INF/tiles2def/template/footer.jsp" />
+	</definition>
+	
+	<!-- admin login layout -->
+	<definition name="admin.login.layout"
+		template="/WEB-INF/tiles2def/template/layoutLogin.jsp">
+		<put-attribute name="title" value="SK CBC admin" />
+		<put-attribute name="header"
+			value="/WEB-INF/tiles2def/template/header.jsp" />
+	</definition>
+	
+	<!-- main layout -->
+	<definition name="main.layout"
+		template="/WEB-INF/tiles2def/template/layoutMain.jsp"  preparer="menuPreparer">
+		<put-attribute name="title" value="SK CBC admin" />
+		<put-attribute name="header"
+			value="/WEB-INF/tiles2def/template/header.jsp" />
+		<put-attribute name="menuTop"
+			value="/WEB-INF/tiles2def/template/menuTop.jsp" />
+		<put-attribute name="footer"
+			value="/WEB-INF/tiles2def/template/footer.jsp" />
+	</definition>
+	
+	<!-- user layout -->
+	<definition name="user.layout"
+		template="/WEB-INF/tiles2def/template/layoutUser.jsp" preparer="menuPreparer">
+		<put-attribute name="title" value="SK CBC" />
+	</definition>
+	
+	<!-- user login layout -->
+	<definition name="user.login.layout"
+		template="/WEB-INF/tiles2def/template/layoutUserLogin.jsp">
+		<put-attribute name="title" value="SK CBC" />
+	</definition>
+
+	<!-- usr/lg user login,id/pw init -->
+	<definition name="loginUserForm" extends="user.login.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/usr/lg/loginUserForm.jsp" />
+	</definition>
+	<definition name="USRC_M100020" extends="user.login.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/usr/lg/USRC_M100020.jsp" />
+	</definition>
+	
+	<!-- user learningService layout -->
+    <definition name="user.learningService.layout"
+        template="/WEB-INF/tiles2def/template/layoutLearning.jsp"  preparer="menuPreparer">
+        <put-attribute name="title" value="SK LearningService" />
+    </definition>
+	<!-- user SamrtClass layout -->
+    <definition name="user.smartClass.layout"
+        template="/WEB-INF/tiles2def/template/layoutSmartClass.jsp"  preparer="menuPreparer">
+        <put-attribute name="title" value="SK SmartClass" />
+    </definition>
+    <!-- user EnglishVillage layout -->
+    <definition name="user.englishVillage.layout"
+        template="/WEB-INF/tiles2def/template/layoutEnglishVillage.jsp"  preparer="menuPreparer">
+        <put-attribute name="title" value="SK EnglishVillage" />
+    </definition>
+	
+	
+	<!-- usr/myPage -->
+    <definition name="myPage.read" extends="user.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/usr/mp/myPage.jsp" />
+    </definition>
+    <definition name="myUsePage.read" extends="user.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/usr/mh/myUsePage.jsp" />
+    </definition>
+    <definition name="myUsePage.list" extends="user.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/usr/mh/myUsePage.jsp" />
+    </definition>
+    
+    <!-- usr/smartClass/malay -->
+    <definition name="smartClass.list" extends="user.smartClass.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/usr/sc/list.jsp" />
+    </definition>
+    
+	<!-- index or home nothing Exend tile -->
+	<definition name="home">
+		<put-attribute name="body"
+			value="/WEB-INF/views/home.jsp" />
+	</definition>
+	
+	<!-- adm/lg/login -->
+	<definition name="loginForm" extends="admin.login.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/lg/loginForm.jsp" />
+	</definition>
+	<definition name="loginSuccess" extends="admin.login.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/loginSuccess.jsp" />
+	</definition>
+	<definition name="adm.forgatIdPw" extends="admin.login.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/lg/idPw.jsp" />
+	</definition>
+	
+	<!-- main-->
+	<!-- Admin Home  -->
+	<definition name="main.home" extends="main.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/mi/main.jsp" />
+	</definition>
+	<!-- user Home  -->
+	<definition name="usr.home" extends="user.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/usr/mi/home.jsp" />
+	</definition>
+	
+	<!-- ui/user (modify name and value)-->
+	<!-- Admin Home > User management > CBC members > Read  -->
+	<definition name="user.read" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/ui/read.jsp" />
+	</definition>
+	<!-- Admin Home > User management > CBC members > Insert   -->
+	<definition name="user.insert" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/ui/insert.jsp" />
+	</definition>
+	<!-- Admin Home > User management > CBC members > List  -->
+	<definition name="user.list" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/ui/list.jsp" />
+	</definition>	
+	<!-- ui/operator  -->
+	<!-- Admin Home > User management > System operator > List  -->
+	<definition name="operator.list" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/ui/operatorList.jsp" />
+	</definition>
+	<!-- Admin Home > User management > System operator > Read  -->
+	<definition name="operator.read" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/ui/operatorRead.jsp" />
+	</definition>
+	<!-- Admin Home > User management > System operator > Insert  -->
+	<definition name="operator.insert" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/ui/operatorInsert.jsp" />
+	</definition>
+	
+	<!-- im/gods -->
+	<!-- Admin Home > Product management > Product management > Read  -->
+	<definition name="gods.read" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/im/read.jsp" />
+	</definition>
+	<!-- Admin Home > Product management > Product management > Insert  -->
+	<definition name="gods.insert" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/im/insert.jsp" />
+	</definition>
+	<!-- Admin Home > Product management > Product management > List  -->
+	<definition name="gods.list" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/im/list.jsp" />
+	</definition>
+	<!-- Admin Home > Product management > Product management > Edit  -->
+	<definition name="gods.edit" extends="admin.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/adm/im/edit.jsp" />
+    </definition>    
+    <!-- Admin Home > Billing > Price check > Product > List  -->
+	<definition name="gods.priceList" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/bm/bmProductList.jsp" />
+	</definition>
+
+	<!-- bm/payment -->
+    <!-- Admin Home > Billing > Storage management > Receipt > Read  -->
+	<definition name="payment.read" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/bm/paymentRead.jsp" />
+	</definition>
+    <!-- Admin Home > Billing > Storage management > Receipt > Insert  -->
+	<definition name="payment.insert" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/bm/paymentInsert.jsp" />
+	</definition>
+    <!-- Admin Home > Billing > Storage management > Receipt > List  -->
+	<definition name="payment.list" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/bm/paymentList.jsp" />
+	</definition>
+    <!-- Admin Home > Billing > Storage management > Receipt > Edit  -->
+	<definition name="payment.edit" extends="admin.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/adm/bm/paymentEdit.jsp" />
+    </definition>
+
+	<!-- bm/refund -->
+    <!-- Admin Home > Billing > Storage management > Refund > Insert  -->
+	<definition name="refund.insert" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/bm/refundInsert.jsp" />
+	</definition>
+    <!-- Admin Home > Billing > Storage management > Refund > List  -->
+	<definition name="refund.list" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/bm/refundList.jsp" />
+	</definition>
+	
+	<!-- sm/item -->
+	<!-- Admin Home > Service management > Item > Read  -->
+	<definition name="item.read" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/sm/read.jsp" />
+	</definition>
+	<!-- Admin Home > Service management > Item > Insert  -->
+	<definition name="item.insert" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/sm/insert.jsp" />
+	</definition>
+	<!-- Admin Home > Service management > Item > List  -->
+	<definition name="item.list" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/sm/list.jsp" />
+	</definition>
+	<!-- Admin Home > Service management > Item > Edit  -->
+	<definition name="item.edit" extends="admin.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/adm/sm/edit.jsp" />
+    </definition>
+	<!-- Admin Home > Billing > Price check > Item  -->
+	<definition name="item.priceList" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/bm/bmItemList.jsp" />
+	</definition>
+	
+	<!-- categoryList -->
+	<definition name="category.categoryList" extends="admin.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/adm/sm/categoryList.jsp" />
+    </definition>
+	
+	
+	<!-- board -->
+	<definition name="board.read" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/board/read.jsp" />
+	</definition>
+	<!-- http://localhost:8080/abc/board/ -->
+	<definition name="board.insert" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/board/insert.jsp" />
+	</definition>
+	<!-- http://localhost:8080/abc/board/list -->	
+	<definition name="board.list" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/board/list.jsp" />
+	</definition>	
+	
+
+	<!-- ajax -->
+	<definition name="ajax" extends="main.layout">
+		<put-attribute name="title" value="jquery ajax" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/jquery_ajax.jsp" />
+	</definition>
+	
+	<!-- op/notice -->
+	<!-- Admin Home > CBC management > Notice management > Read  -->
+	<definition name="notice.ntRead" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/op/ntRead.jsp" />
+	</definition>
+	<!-- Admin Home > CBC management > Notice management > List  -->
+	<definition name="notice.ntList" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/op/ntList.jsp" />
+	</definition>
+	<!-- Admin Home > CBC management > Notice management > Insert  -->
+	<definition name="notice.ntInsert" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/op/ntInsert.jsp" />
+	</definition>
+	<!-- op/free board -->
+	<!-- Admin Home > CBC management > Free board admin > Read  -->
+	<definition name="free.read" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/op/frRead.jsp" />
+	</definition>
+	<!-- Admin Home > CBC management > Free board admin > List  -->
+	<definition name="free.list" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/op/frList.jsp" />
+	</definition>
+	<!-- op/asset and cost -->
+	<!-- Admin Home > CBC management > Asset management > List  -->
+	<definition name="asset.list" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/op/assetList.jsp" />
+	</definition>
+	<!-- Admin Home > CBC management > Asset management > Delete  -->
+	<definition name="asset.del" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/op/assetList.jsp" />
+	</definition>
+	<!-- Admin Home > CBC management > Asset management > Insert  -->
+	<definition name="asset.insert" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/op/assetInsert.jsp" />
+	</definition>
+	<!-- Admin Home > CBC management > Asset management > Edit  -->
+	<definition name="asset.edit" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/op/assetInsert.jsp" />
+	</definition>
+	<!-- Admin Home > CBC management > Asset management > Read  -->
+	<definition name="asset.read" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/op/assetRead.jsp" />
+	</definition>
+	<!-- Admin Home > CBC management > Asset management > Cost management > List  -->
+	<definition name="cost.list" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/op/costList.jsp" />
+	</definition>
+	<!-- Admin Home > CBC management > Asset management > Cost management > Delete  -->
+	<definition name="cost.del" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/op/costList.jsp" />
+	</definition>
+	<!-- Admin Home > CBC management > Asset management > Cost management > Insert  -->
+	<definition name="cost.insert" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/op/costInsert.jsp" />
+	</definition>
+	<!-- Admin Home > CBC management > Asset management > Cost management > Edit  -->
+	<definition name="cost.edit" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/op/costInsert.jsp" />
+	</definition>
+	
+	<!-- op/asset Util -->
+	<!-- Admin Home > CBC management > Asset utilization > Rent > List  -->
+	<definition name="assetUtil.rentList" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/op/rentList.jsp" />
+	</definition>
+	<!-- Admin Home > CBC management > Asset utilization > Return > List  -->
+	<definition name="assetUtil.returnList" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/op/returnList.jsp" />
+	</definition>
+	<!-- Admin Home > CBC management > Asset utilization > Print > List  -->
+	<definition name="assetUtil.printList" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/op/printList.jsp" />
+	</definition>
+	<!-- system/pcMonitoring -->
+	<!-- Admin Home > System management > PC monitoring  -->
+	<definition name="pcMonitoring.list" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/rm/pcMonitoring.jsp" />
+	</definition>
+	
+	<!-- adm/bm - billing -->
+	<!-- Admin Home > Billing > Using > List  -->
+	<definition name="using.list" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/bm/bmUsingList.jsp" />
+	</definition>
+	<!-- Admin Home > Billing > Using > Read  -->
+	<definition name="using.read" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/bm/bmUsingView.jsp" />
+	</definition>
+	
+	<!-- adm/st - States -->
+	<!-- Admin Home > Stats > 통계요약    -->
+	<definition name="states.sumComul" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/sumComul.jsp" />
+	</definition>
+	<definition name="states.sumMonth" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/sumMonth.jsp" />
+	</definition>
+	
+	<!-- Admin Home > Stats > 운영자 접속 현황 > Month   -->
+	<definition name="states.operatorMonth" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/operatorMonth.jsp" />
+	</definition>
+	<!-- Admin Home > Stats > 운영자 접속 현황 > Day   -->
+	<definition name="states.operatorDay" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/operatorDay.jsp" />
+	</definition>
+	
+	<!-- Admin Home > Stats > 네트워크 통계 > Traffic > Month   -->
+	<definition name="states.trMonth" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/trMonth.jsp" />
+	</definition>
+	<!-- Admin Home > Stats > 네트워크 통계 > Traffic > Day   -->
+	<definition name="states.trDay" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/trDay.jsp" />
+	</definition>
+	<!-- Admin Home > Stats > 네트워크 통계 > Traffic > Time   -->
+	<definition name="states.trTime" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/trTime.jsp" />
+	</definition>
+	
+	<!-- Admin Home > Stats > 네트워크 통계 > Internet Speed > Month   -->
+	<definition name="states.spMonth" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/spMonth.jsp" />
+	</definition>
+	<!-- Admin Home > Stats > 네트워크 통계 > Internet Speed > Day   -->
+	<definition name="states.spDay" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/spDay.jsp" />
+	</definition>
+	<!-- Admin Home > Stats > 네트워크 통계 > Internet Speed > Time   -->
+	<definition name="states.spTime" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/spTime.jsp" />
+	</definition>
+	
+	<!-- Admin Home > Stats > 네트워크 통계 > AC monitoring > Month   -->
+	<definition name="states.acMonth" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/acMonth.jsp" />
+	</definition>
+	<!-- Admin Home > Stats > 네트워크 통계 > AC monitoring > Day   -->
+	<definition name="states.acDay" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/acDay.jsp" />
+	</definition>
+	<!-- Admin Home > Stats > 네트워크 통계 > AC monitoring > Time   -->
+	<definition name="states.acTime" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/acTime.jsp" />
+	</definition>
+	
+	<!-- Admin Home > Stats > Learning 통계 > Learning 공통 > Month   -->
+	<definition name="states.learnMonth" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/learnMonth.jsp" />
+	</definition>
+	<!-- Admin Home > Stats > Learning 통계 > Learning 공통 > Day   -->
+	<definition name="states.learnDay" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/learnDay.jsp" />
+	</definition>
+	
+	<!-- Admin Home > Stats > Learning 통계 > Smart Class > Month   -->
+	<definition name="states.smartMonth" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/smartMonth.jsp" />
+	</definition>
+	<definition name="states.smartMonth.years" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/smartMonthYears.jsp" />
+	</definition>
+	<!-- Admin Home > Stats > Learning 통계 > Smart Class > Day   -->
+	<definition name="states.smartDay" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/smartDay.jsp" />
+	</definition>
+	<definition name="states.smartDay.days" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/smartDayDetail.jsp" />
+	</definition>
+	<!-- Admin Home > Stats > Learning 통계 > English Village > Month   -->
+	<definition name="states.engVillageMonth" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/engVillageMonth.jsp" />
+	</definition>
+	<!-- Admin Home > Stats > Learning 통계 > English Village > Day   -->
+	<definition name="states.engVillageDay" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/engVillageDay.jsp" />
+	</definition>
+	
+	<!-- Admin Home > Stats > CBC Basic 통계 > 이용 통계 > Month   -->
+	<definition name="states.basicUseMonth" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/basicUseMonth.jsp" />
+	</definition>
+	<!-- Admin Home > Stats > CBC Basic 통계 > 이용 통계 > Day   -->
+	<definition name="states.basicUseDay" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/basicUseDay.jsp" />
+	</definition>
+	
+	<!-- Admin Home > Stats > CBC Basic 통계 > 수납 통계 > Month   -->
+	<definition name="states.basicPayMonth" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/basicPayMonth.jsp" />
+	</definition>
+	
+	<!-- Admin Home > Stats > CBC Basic 통계 > 자산 통계    -->
+	<definition name="states.basicAsset" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/basicAsset.jsp" />
+	</definition>
+	
+	<!-- Admin Home > Stats > Health통계 > Month   -->
+	<definition name="states.healthMonth" extends="admin.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/adm/st/healthMonth.jsp" />
+    </definition>
+	<!-- Admin Home > Stats > Health통계 > Day   -->
+    <definition name="states.healthDay" extends="admin.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/adm/st/healthDay.jsp" />
+    </definition>
+	
+	<!-- adm/st - Commerce States -->
+	<!-- Admin Home > Stats > Commerce 통계 > Month   -->
+	<definition name="commerce.commerceMonth" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/commerceMonth.jsp" />
+	</definition>
+	<!-- Admin Home > Stats > Commerce 통계 > Day   -->
+	<definition name="commerce.commerceDay" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/st/commerceDay.jsp" />
+	</definition>
+
+	<!-- Admin Home > Service management > Commerce management > Templet > Read   -->
+	<definition name="commerce.read" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/co/read.jsp" />
+	</definition>
+	<!-- insert -->
+	<!-- Admin Home > Service management > Commerce management > Templet > Insert   -->
+	<definition name="commerce.insert" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/co/insert.jsp" />
+	</definition>
+	<!-- list -->
+	<!-- Admin Home > Service management > Commerce management > Templet > List   -->
+	<definition name="commerce.list" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/co/list.jsp" />
+	</definition>
+	<!-- Admin Home > Service management > Commerce management > Templet > Edit   -->
+	<definition name="commerce.edit" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/co/edit.jsp" />
+	</definition>
+	
+	<definition name="commerce.defaultSettingAjax" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/co/insert.jsp" />
+	</definition>
+	
+	<!-- promote list -->
+	<!-- Admin Home > Service management > Commerce management > PR Post > List   -->
+	<definition name="promote.list" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/co/prList.jsp" />
+	</definition>
+	<!-- promote view -->
+	<!-- Admin Home > Service management > Commerce management > PR Post > Read   -->
+	<definition name="promote.read" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/co/prRead.jsp" />
+	</definition>
+	
+	<!-- Admin Home > Service management > Commerce management > PR Post > List   -->
+	<definition name="promote.fbDel" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/co/twDel_pop.jsp" />
+	</definition>
+	
+	<!-- guide list -->
+	<!-- Admin Home > Service management > Commerce management > Guide > List   -->
+	<definition name="guide.list" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/co/guideList.jsp" />
+	</definition>
+	<!-- guide read -->
+	<!-- Admin Home > Service management > Commerce management > Guide > Read   -->
+	<definition name="guide.read" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/co/guideRead.jsp" />
+	</definition>
+	
+	<!-- guide insert -->
+	<!-- Admin Home > Service management > Commerce management > Guide > Insert   -->
+	<definition name="guide.insert" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/co/guideInsert.jsp" />
+	</definition>
+	
+	<!-- guide edit -->
+	<!-- Admin Home > Service management > Commerce management > Guide > Edit   -->
+	<definition name="guide.edit" extends="admin.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/adm/co/guideEdit.jsp" />
+	</definition>
+	
+	<!-- guide User List -->
+	<definition name="usrGuide.list" extends="user.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/usr/co/guideUsrList.jsp" />
+	</definition>
+
+	<!-- guide User View -->
+	<definition name="usrGuide.read" extends="user.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/usr/co/guideUsrRead.jsp" />
+	</definition>
+	
+	<!-- promote User List -->
+	<definition name="usrPromote.list" extends="user.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/usr/co/prUsrList.jsp" />
+	</definition>
+	
+	<!-- promote User View -->
+	<definition name="usrPromote.read" extends="user.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/usr/co/prUsrRead.jsp" />
+	</definition>
+	
+	<!-- stats User List -->
+	<definition name="commStats.list" extends="user.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/usr/co/commStatsList.jsp" />
+	</definition>  
+	
+	<!-- co/commerce End -->
+	
+	<!-- usr/ci user CBC information -->
+	<definition name="cbcintro" extends="user.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/usr/ci/cbcintro.jsp" />
+	</definition>
+	<!-- usr/fb user free board -->
+	<definition name="usrFree.list" extends="user.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/usr/fb/list.jsp" />
+	</definition>
+	<definition name="usrFree.read" extends="user.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/usr/fb/read.jsp" />
+	</definition>
+	<definition name="usrFree.insert" extends="user.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/usr/fb/insert.jsp" />
+	</definition>
+
+	<!-- usr/mi user main -->
+	<definition name="USRC_M100002" extends="user.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/usr/mi/USRC_M100002.jsp" />
+	</definition>
+	<!-- usr/nt user notice -->
+	<definition name="notice.usrList" extends="user.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/usr/nt/list.jsp" />
+	</definition>
+	<definition name="notice.usrRead" extends="user.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/usr/nt/read.jsp" />
+	</definition>
+	<!-- usr/si user Service information -->
+	<definition name="learningsi" extends="user.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/usr/si/learningsi.jsp" />
+	</definition>
+	<definition name="commercesi" extends="user.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/usr/si/commercesi.jsp" />
+	</definition>
+	<definition name="healthsi" extends="user.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/usr/si/healthsi.jsp" />
+	</definition>
+	<definition name="healthse" extends="user.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/usr/si/healthse.jsp" />
+	</definition>
+	<!-- usr/sk user SKT information -->
+	<definition name="sktintro" extends="user.layout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/usr/sk/sktintro.jsp" />
+	</definition>
+	
+    <!-- usr/sitemap -->
+    <definition name="sitemap" extends="user.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/usr/ma/sitemap.jsp" />
+    </definition>
+	
+	<!-- usr/myPage -->
+    <definition name="myPage.read" extends="user.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/usr/mp/myPage.jsp" />
+    </definition>
+    <definition name="myUsePage.read" extends="user.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/usr/mh/myUsePage.jsp" />
+    </definition>
+    <definition name="myUsePage.list" extends="user.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/usr/mh/myUsePage.jsp" />
+    </definition>
+    
+    <!-- usr/learningService -->
+    <definition name="learningse" extends="user.learningService.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/usr/si/learningse.jsp" />
+    </definition>
+    
+    <!-- usr/smartClass -->
+    <definition name="smartmain" extends="user.smartClass.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/usr/si/smartmain.jsp" />
+    </definition>
+    <definition name="smartClass.list" extends="user.smartClass.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/usr/sc/list.jsp" />
+    </definition>
+    <definition name="smartClass.read" extends="user.smartClass.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/usr/sc/read.jsp" />
+    </definition>
+    <definition name="smartClass.calendar" extends="user.smartClass.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/usr/sc/calendar.jsp" />
+    </definition>
+    <definition name="smartClass.lessonsList" extends="user.smartClass.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/usr/sc/lessonsList.jsp" />
+    </definition>
+    
+    <!-- usr/englishVillage -->
+    <definition name="englishvi" extends="user.englishVillage.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/usr/si/englishvi.jsp" />
+    </definition>
+    <definition name="englishVillage.list" extends="user.englishVillage.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/usr/ev/list.jsp" />
+    </definition>
+    <definition name="englishVillage.read" extends="user.englishVillage.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/usr/ev/read.jsp" />
+    </definition>
+    <definition name="englishVillage.calendar" extends="user.englishVillage.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/usr/ev/calendar.jsp" />
+    </definition>
+    <definition name="englishVillage.lessonsList" extends="user.englishVillage.layout">
+        <put-attribute name="body"
+            value="/WEB-INF/views/usr/ev/lessonsList.jsp" />
+    </definition>
+	
+</tiles-definitions>

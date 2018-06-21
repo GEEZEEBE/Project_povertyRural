@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PCMonitoring">
+	
+
+	<select id="pcMonitoring.list" resultClass="hMap">				
+
+			
+			SELECT CT_GOS.CNTS_NAME CNTS_NAME
+						, USE_HIS.*
+			FROM (
+		                	SELECT * FROM TB_UAST_USE_HS
+	          ) USE_HIS
+	          right join (
+	                     select ITEM.*
+	                     		from TB_UAST_ITEM ITEM
+							,TB_UAST_GODS GODS
+					where 1 = 1
+					and GODS.GODS_ID = ITEM.GODS_ID
+					AND GODS.SRVC_ID = 31
+					and ITEM.del_yn = 'N'
+					<!-- and GODS.del_yn = 'N' -->
+				) CT_GOS
+	     			on CT_GOS.GODS_ID = USE_HIS.GODS_ID
+	     			 and CT_GOS.ITEM_ID = USE_HIS.ITEM_ID
+	     			AND USE_HIS.CMPL_YN = 'S'        <!--not  end using -->
+
+	</select>
+	
+</sqlMap>

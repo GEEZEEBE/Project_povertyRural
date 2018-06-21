@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Price">
+	<typeAlias alias="Price" type="com.skt.mars.adm.bm.Price" />
+
+	<!-- getBoardList -->
+	<resultMap id="resultMapID" class="Price">
+	    <result property="pricID" column="PRIC_ID" />
+	    <result property="payKind" column="PAY_KIND" />
+	    <result property="pricType" column="PRIC_TYPE" />
+	    <result property="pricUnit" column="PRIC_UNIT" />
+	    <result property="flatRate" column="FLAT_RATE" />
+	    <result property="depositRate" column="DEPOSIT_RATE" />
+	    <result property="rentDay" column="RENT_DAY" />
+	    <result property="tagetID" column="TAGET_ID" />
+	    <result property="managerKind" column="MANAGER_KIND" />
+	    <result property="frstRgstDT" column="FRST_RGST_DT" />
+        <result property="frstRgstUserID" column="FRST_RGST_USER_ID" />
+        <result property="latCrctDT" column="LAST_CRCT_DT" />
+        <result property="latCrctUserID" column="LAST_CRCT_USER_ID" />
+	</resultMap>
+	
+	<resultMap id="resultMap" class="Price">
+        <result property="pricID" column="PRIC_ID" />
+        <result property="payKind" column="PAY_KIND" />
+        <result property="pricType" column="PRIC_TYPE" />
+        <result property="pricUnit" column="PRIC_UNIT" />
+        <result property="payKindCd" column="PAY_KIND_CD" />
+        <result property="pricTypeCd" column="PRIC_TYPE_CD" />
+        <result property="pricUnitCd" column="PRIC_UNIT_CD" />
+        <result property="flatRate" column="FLAT_RATE" />
+        <result property="depositRate" column="DEPOSIT_RATE" />
+        <result property="rentDay" column="RENT_DAY" />
+        <result property="tagetID" column="TAGET_ID" />
+        <result property="managerKind" column="MANAGER_KIND" />
+        <result property="frstRgstDT" column="FRST_RGST_DT" />
+        <result property="frstRgstUserID" column="FRST_RGST_USER_ID" />
+        <result property="latCrctDT" column="LAST_CRCT_DT" />
+        <result property="latCrctUserID" column="LAST_CRCT_USER_ID" />
+    </resultMap>
+	
+	<!-- 가격 상세정보 조회 -->
+    <select id="price.read" parameterClass="Price" resultMap="resultMap">
+        SELECT PRIC.PRIC_ID,
+               PRIC.PAY_KIND AS PAY_KIND_CD,
+               PRIC.PRIC_TYPE AS PRIC_TYPE_CD,
+               PRIC.PRIC_UNIT AS PRIC_UNIT_CD,
+               PRIC.FLAT_RATE,
+               PRIC.DEPOSIT_RATE,
+               PRIC.RENT_DAY,
+               PRIC.TAGET_ID,
+               PRIC.MANAGER_KIND,
+               PRIC.FRST_RGST_DT,
+               PRIC.FRST_RGST_USER_ID,
+               PRIC.LAST_CRCT_DT,
+               PRIC.LAST_CRCT_USER_ID,
+               PRIC.FRST_RGST_DT,
+               PRIC.FRST_RGST_USER_ID,
+               PRIC.LAST_CRCT_DT,
+               PRIC.LAST_CRCT_USER_ID,
+               KIND.CODE_NAME AS PAY_KIND,
+               TYPE.CODE_NAME AS PRIC_TYPE,
+               UNIT.CODE_NAME AS PRIC_UNIT
+          FROM TB_UAST_PRIC AS PRIC,
+               TB_UAST_CODE AS KIND,
+               TB_UAST_CODE AS TYPE,
+               TB_UAST_CODE AS UNIT
+         WHERE PRIC.PAY_KIND = KIND.COMMON_CODE_ID
+           AND PRIC.PRIC_TYPE = TYPE.COMMON_CODE_ID
+           AND PRIC.PRIC_UNIT = UNIT.COMMON_CODE_ID
+         <isNotEmpty property="pricID">
+           AND PRIC_ID = #pricID#
+         </isNotEmpty>
+         <isNotEmpty property="managerKind">
+           AND MANAGER_KIND = #managerKind#  
+         </isNotEmpty>
+         <isNotEmpty property="tagetID">
+           AND TAGET_ID = #tagetID#
+         </isNotEmpty>
+    </select>
+	
+	
+    <!-- 가격 등록 -->
+	<insert id="price.insert">
+	    <!-- <selectKey keyProperty="pricId" resultClass="String">
+            SELECT IFNULL(MAX(CAST(PRIC_ID AS UNSIGNED)), 0) + 1 AS PRIC_ID
+              FROM TB_UAST_PRIC
+        </selectKey> -->
+		INSERT INTO TB_UAST_PRIC (
+			PRIC_ID,
+			PAY_KIND,
+			PRIC_TYPE,
+			PRIC_UNIT,
+			FLAT_RATE,
+			DEPOSIT_RATE,
+			RENT_DAY,
+			TAGET_ID,
+			MANAGER_KIND,
+			FRST_RGST_DT,
+			FRST_RGST_USER_ID,
+			LAST_CRCT_DT,
+			LAST_CRCT_USER_ID			
+			)
+		values(
+			#pricId#,
+			#payKind#,
+			#pricType#,
+			#pricUnit#,
+			<isNotEmpty property="flatRate">
+			#flatRate#,    
+			</isNotEmpty>
+			<isEmpty property="flatRate">
+			0,    
+			</isEmpty>
+			<isNotEmpty property="depositRate">
+            #depositRate#,    
+            </isNotEmpty>
+            <isEmpty property="depositRate">
+            0,
+            </isEmpty>
+			#rentDay#,
+			#tagetID#,
+			#managerKind#,		
+			SYSDATE(),
+			#frstRgstUserID#,
+			SYSDATE(),
+			#latCrctUserID#			
+		)
+	</insert>
+	
+	<insert id="itemPrice.insert">
+	    <selectKey keyProperty="pricId" resultClass="String">
+            SELECT IFNULL(MAX(CAST(PRIC_ID AS UNSIGNED)), 0) + 1 AS PRIC_ID
+              FROM TB_UAST_PRIC
+        </selectKey>
+        INSERT INTO TB_UAST_PRIC (
+            PRIC_ID,
+            FLAT_RATE,   
+            TAGET_ID,
+            MANAGER_KIND,
+            FRST_RGST_DT,
+            FRST_RGST_USER_ID,
+            LAST_CRCT_DT,
+            LAST_CRCT_USER_ID           
+            )
+        values(
+            #pricId#,
+            #flatRate#,       
+            #tagetID#,
+            #managerKind#,      
+            SYSDATE(),
+            #frstRgstUserID#,
+            SYSDATE(),
+            #latCrctUserID#         
+        )
+	    
+	</insert>
+	
+	
+    <update id="price.update" parameterClass="hMap">
+        UPDATE TB_UAST_PRIC SET
+            PAY_KIND = #payKind#,
+            PRIC_TYPE = #pricType#,
+            PRIC_UNIT = #pricUnit#,
+            FLAT_RATE = #flatRate#,
+            DEPOSIT_RATE = #depositRate#,
+            RENT_DAY = #rentDay#,
+            LAST_CRCT_DT= SYSDATE(),
+            LAST_CRCT_USER_ID = #latCrctUserID#         
+        WHERE TAGET_ID = #tagetID#
+          AND MANAGER_KIND = #managerKind#
+    </update>
+
+
+</sqlMap>

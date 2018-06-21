@@ -1,0 +1,274 @@
+@charset "utf-8";
+
+/*layout - login*/
+header hgroup { position:relative;}
+header hgroup h1 {height: 50px;background: #51b50d; border-bottom:1px solid #41910a; box-sizing:border-box;}
+header hgroup h1 img {margin: 17px 0 0 29px;}
+header hgroup nav { position:absolute; top:6px; right:20px; height: 44px;}
+header hgroup nav h2 {display: inline-block;float: right;margin: 0;padding: 0;}
+header hgroup nav h2.eng {}
+header hgroup nav h2 a { display:inline-block; height:44px; padding: 0 20px;font-size: 16px; line-height:44px; font-family: arial;font-weight: bold;color: #fff; border:1px solid #448015; border-radius:15px 15px 0  0; background:#58a11d; box-sizing:border-box; box-shadow:inset 0 0 10px #74b735;}
+header hgroup nav h2 a:hover,
+header hgroup nav h2 a.hover {color: #4e9516; background:#fff; border-bottom:none; box-shadow:none;}
+section.login {margin: 0 auto;margin-top: 150px;width: 560px;}
+section.login div {margin: 72px 0 22px;height: 94px;padding: 0 6px;}
+section.login div input,
+section.login div a {display: block;}
+section.login div input {
+clear: left;
+padding-left: 8px;
+width: 381px;
+height: 39px;
+line-height: 39px;
+color: #000;
+font-size: 20px;
+border: 2px solid #bebebe;
+box-shadow: inset 0 1px 8px 1px #e7e7e7;
+-webkit-box-shadow: inset 0 1px 8px 1px #e7e7e7;
+background-image: -webkit-gradient(linear, left top, left 10px, from(#e7e7e7), to(#ffffff));
+border-radius:4px;
+}
+section.login div input:focus { border: 2px solid #51b50d;}
+section.login img.loginTitle { margin-left:28px;}
+section.login div input.inputID {margin-bottom: 10px;}
+section.login div input.inputPW {padding-top: 6px;height: 33px;}
+section.login div a.btnLogin {
+float: right;
+margin-top: -96px;
+width: 142px;
+height: 94px;
+line-height: 94px;
+text-align: center;
+border: 1px solid #448015;
+background-image: -webkit-gradient(linear, left top, left bottom, from(#65b226), to(#4e9416));
+border-radius:4px;
+}
+section.login .loginTxt { position:absolute; top:430px; left:340px; width:600px; height:100px; line-height:18px; border:1px solid #eee; border-radius:15px; padding:5px 20px 0 78px; margin:0; box-sizing:border-box; background:#f8f9f9 url(../images/login_info.png) 22px 22px no-repeat;}
+section.login .loginTxt p { color:#6e7f8a; font-size:14px; font-family:Tahoma; margin-top:10px; text-indent:-9px;}
+section.healthWrap {
+overflow: hidden;
+width: 1280px;
+height: 702px;
+text-align: center;
+background: url(../images/bg_health.gif) no-repeat left 265px;
+}
+section.healthWrap p.mainTXT {margin-top: 72px;}
+section.healthWrap p.mainTXT img {display: block;margin: 0 auto;}
+section.healthWrap p.mainTXT img.smallTXT {margin-top: 35px;}
+nav.healthMenu {
+display: inline-block;
+position: relative;
+margin: 0 auto;
+margin-top: 87px;
+overflow: hidden;
+}
+nav.healthMenu h2 {
+display: inline-block;
+float: left;
+margin: 0 30px 2px 0;
+width: 187px;
+height: 185px;
+text-align: center;
+border: 1px solid #bbbbbb;
+border-bottom: 1px solid #7e7e7e;
+background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f5f5f5));
+}
+nav.healthMenu h2.systole,
+nav.healthMenu h2.diastol {margin: 0;}
+nav.healthMenu h2.systole {border-right: 0;width: 158px;}
+nav.healthMenu h2.diastol {border-left: 0;width: 160px;}
+nav.healthMenu h2.diastol span {display: inline-block;float: left;margin-top: 34px;width: 1px;height: 117px;background-color: #c2c2c2;}
+nav.healthMenu h2.diastol span.white {background-color: #fff;}
+nav.healthMenu h2 a {width: 187px;height: 183px;}
+nav.healthMenu h2.systole a.systole {width: 158px;}
+nav.healthMenu h2.diastol a.diastol {width: 158px;}
+nav.healthMenu h2 a.height {background: url(../images/btn_img_height.png) no-repeat center center;}
+nav.healthMenu h2 a.height.hover {background: url(../images/btn_img_height_on.png) no-repeat center center;}
+nav.healthMenu h2 a.weight {background: url(../images/btn_img_weight.png) no-repeat center center;}
+nav.healthMenu h2 a.weight.hover {background: url(../images/btn_img_weight_on.png) no-repeat center center;}
+nav.healthMenu h2 a.obesity {background: url(../images/btn_img_obesity.png) no-repeat center center;}
+nav.healthMenu h2 a.obesity.hover {background: url(../images/btn_img_obesity_on.png) no-repeat center center;}
+nav.healthMenu h2 a.temperature {background: url(../images/btn_img_temperature.png) no-repeat center center;}
+nav.healthMenu h2 a.temperature.hover {background: url(../images/btn_img_temperature_on.png) no-repeat center center;}
+nav.healthMenu h2 a.systole {background: url(../images/btn_img_systole.png) no-repeat center center;}
+nav.healthMenu h2 a.systole.hover {background: url(../images/btn_img_systole_on.png) no-repeat center center;}
+nav.healthMenu h2 a.diastol {background: url(../images/btn_img_diastol.png) no-repeat center center;}
+nav.healthMenu h2 a.diastol.hover {background: url(../images/btn_img_diastol_on.png) no-repeat center center;}
+section.healthWrap div {
+position: absolute;
+top: 506px;
+margin-top: 0;
+padding-top: 8px;
+width: 115px;
+height: 22px;
+color: #5d9907;
+font-size: 16px;
+font-family: Droid Sans;
+border: 1px solid #bbbbbb;
+border-bottom: 1px solid #7e7e7e;
+background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f5f5f5));
+border-radius: 3px;
+}
+section.healthWrap div em {font-size: 11px;}
+section.healthWrap div.hei {left: 78px;}
+section.healthWrap div.wei {left: 298px;}
+section.healthWrap div.obe {left: 518px;}
+section.healthWrap div.tem {left: 738px;}
+section.healthWrap div.sys {left: 940px;}
+section.healthWrap div.dia {left: 1100px;}
+section.healthWrap a.print {
+clear: both; 
+margin-top: 121px;
+width: 374px;
+height: 55px;
+border-left: 1px solid #686b72;
+border-right: 1px solid #6676970;
+border-top: 1px solid #36393e;
+border-bottom: 1px solid #42454d;
+background-image: -webkit-gradient(linear, left top, left bottom, from(#51545d), to(#42454d));
+border-radius: 5px;
+}
+section.healthWrap a.print img {margin-top: 17px;}
+section.healthWrap a.logout {
+clear: both;
+position: absolute;
+top: 628px;
+left: 39px;
+width: 87px;
+height: 87px;
+background: url(../images/btn_logout.png) no-repeat left top;
+}
+/*record popup*/
+.recordPopup {
+position: fixed;
+left: 0;
+top: 0;
+display: none;
+z-index: 99;
+width: 432px;
+height: 256px;
+border: 0;
+background-image: -webkit-gradient(linear, left top, left bottom, from(#f8f8f8), to(#e8e8e8));
+}
+.recordPopup a.iconClose {
+float: right;
+margin: 4px 8px 0 0;
+width: 30px;
+height: 30px;
+background: url(../images/btn_icon_popup_close.png) no-repeat center center;
+}
+.recordPopup .inputBox {
+clear: both;
+margin: 0 auto;
+margin-top: 36px;
+width: 418px;
+height: 165px;
+border: 1px solid #c4c4c4;
+-webkit-box-shadow: inset 0 0 8px 2px #cdcdcd;
+}
+.recordPopup .inputBox div {width: 404px;height: 139px;margin: 0 auto;margin-top: 10px;}
+.recordPopup .inputBox div input {margin: 20px 0 0 35px;padding: 2px;width: 300px;height: 120px;color: #77d00f;font-size: 110px;font-family: Droid Sans;font-weight: bold;text-align: right;border: 0;-webkit-box-shadow: none;background: none;letter-spacing: -3px;}
+.recordPopup .inputBox div.pophei {background: url(../images/bg_popup_height.png) no-repeat left top;}
+.recordPopup .inputBox div.popwei {background: url(../images/bg_popup_weight.png) no-repeat left top;}
+.recordPopup .inputBox div.popobe {background: url(../images/bg_popup_obesity.png) no-repeat left top;}
+.recordPopup .inputBox div.poptem {background: url(../images/bg_popup_temperature.png) no-repeat left top;}
+.recordPopup .inputBox div.popsys {background: url(../images/bg_popup_systole.png) no-repeat left top;}
+.recordPopup .inputBox div.popdia {background: url(../images/bg_popup_diastol.png) no-repeat left top;}
+.recordPopup a.enterClose {
+clear: both;
+margin: -7px 0 0 6px;
+padding-top: 17px;
+width: 420px;
+height: 37px;
+text-align: center;
+background-color: #52555a;
+}
+#popMask { position:absolute; left:0; top:0; z-index:98; background-color:#000; display:none;}
+/*record popup - error*/
+.recordPopup.error {
+position: fixed;
+left: 0;
+top: 0;
+display: none;
+z-index: 99;
+width: 432px;
+height: 203px;
+border: 0;
+border-bottom: 1px solid #979797;
+background-image: -webkit-gradient(linear, left top, left bottom, from(#f8f8f8), to(#e8e8e8));
+}
+.recordPopup.error .inputBox {
+clear: both;
+margin: 0 auto;
+margin-top: 8px;
+width: 414px;
+height: 140px;
+border: 1px solid #c4c4c4;
+-webkit-box-shadow: inset 0 0 8px 2px #cdcdcd;
+background-color: #ffffff;
+text-align: center;
+}
+.recordPopup.error .inputBox img {margin-top: 45px;}
+.recordPopup a.okClose {
+clear: both;
+margin: -7px 0 0 8px;
+padding-top: 17px;
+width: 416px;
+height: 35px;
+text-align: center;
+background-color: #52555a;
+}
+/*loading - health*/
+body.healthLoading {background: none;}
+section.healthLoading {
+clear: both;
+margin: 0;
+padding: 0;
+width: 1280px;
+height: 752px;
+background-image: -webkit-gradient(linear, left top, left bottom, from(#51b50d), to(#46a207));
+}
+section.healthLoading header h1 {
+margin: 0;
+padding: 16px 0 0 22px;
+height: 34px;
+line-height: 34px;
+-webkit-box-shadow: none;
+}
+section.healthLoading header h2 {
+clear: both;
+margin-top: 150px;
+height: 185px;
+line-height: 185px;
+text-align: center;
+}
+section.healthLoading section {margin-top: 204px;text-align: center;}
+section.healthLoading section img {display: block;clear: both;margin: 0 auto;margin-bottom: 12px;padding: 0;}
+
+/*loading - commerce*/
+body.commerceLoading {background: none;}
+section.commerceLoading {
+clear: both;
+margin: 0;
+padding: 0;
+width: 1280px;
+height: 752px;
+background-image: -webkit-gradient(linear, left top, left bottom, from(#e51a31), to(#d50f25));
+}
+section.commerceLoading header h1 {
+margin: 0;
+padding: 16px 0 0 22px;
+height: 34px;
+line-height: 34px;
+-webkit-box-shadow: none;
+background-image: -webkit-gradient(linear, left top, left bottom, from(#e51a31), to(#e41a30));
+}
+section.commerceLoading header h2 {
+clear: both;
+margin-top: 172px;
+height: 163px;
+line-height: 163px;
+text-align: center;
+}
+section.commerceLoading section {margin-top: 204px;text-align: center;}
+section.commerceLoading section img {display: block;clear: both;margin: 0 auto;margin-bottom: 12px;}

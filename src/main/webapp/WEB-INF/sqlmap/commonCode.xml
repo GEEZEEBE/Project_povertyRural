@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="commonCode">
+	<typeAlias alias="commonCode" type="com.skt.mars.adm.cm.CommonCode" />
+
+	<!-- getBoardList -->
+	<resultMap id="resultMapID" class="commonCode">
+		<result property="commonCodeID" column="COMMON_CODE_ID" />
+		<result property="codeID" column="CODE_ID" />
+		<result property="subCodeID" column="SUB_CODE_ID" />
+		<result property="codeName" column="CODE_NAME" />
+	</resultMap>
+
+	<select id="commonCode.list" parameterClass="hMap" resultMap="resultMapID">
+		SELECT * FROM TB_UAST_CODE
+		WHERE 1 = 1
+		  AND DEL_YN = 'N'
+		<isNotEmpty property="keyID">
+		  AND CODE_ID = #keyID#
+		</isNotEmpty>
+	</select>
+	
+	<select id="commonCode.list2" parameterClass="hMap" resultClass="hMap">
+		SELECT * FROM TB_UAST_CODE
+		WHERE 1 = 1
+		  AND DEL_YN = 'N'
+		<isNotEmpty property="keyID">
+		  AND CODE_ID = #keyID#
+		</isNotEmpty>
+	</select>
+
+</sqlMap>

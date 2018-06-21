@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="usrFree">
+
+	<typeAlias alias="userFree" type="com.skt.mars.usr.fb.UserFree" />
+
+	<!-- get Free BoardList -->
+	<resultMap id="resultMapListFree" class="userFree">
+		<result property="boardID" column="BOARD_ID" />
+		<result property="boardSubj" column="BOARD_SUBJ" />
+		<result property="boardCont" column="BOARD_CONT" />
+		<result property="replyCnt" column="REPLY_CNT" />		
+		<result property="fileCnt" column="FILE_CNT" />
+		<result property="viewCnt" column="VIEW_COUNT" />
+						
+		<result property="frstRgstDT" column="FRST_RGST_DT" />
+		<result property="frstRgstUserID" column="FRST_RGST_USER_ID" />
+		<result property="frstRgstName" column="FRST_RGST_NAME" />
+		<result property="latCrctDT" column="LAST_CRCT_DT" />
+		<result property="latCrctUserID" column="LAST_CRCT_USER_ID" />
+	</resultMap>
+	
+	<resultMap id="resultMapFree" class="userFree">
+		<result property="boardID" column="BOARD_ID" />
+		<result property="boardSubj" column="BOARD_SUBJ" />
+		<result property="boardCont" column="BOARD_CONT" />	
+		<result property="replyCnt" column="REPLY_CNT" />
+		<result property="frstRgstName" column="FRST_RGST_NAME" />
+						
+		<result property="frstRgstDT" column="FRST_RGST_DT" />
+		<result property="frstRgstUserID" column="FRST_RGST_USER_ID" />
+		<result property="latCrctDT" column="LAST_CRCT_DT" />
+		<result property="latCrctUserID" column="LAST_CRCT_USER_ID" />
+	</resultMap>
+	
+	<resultMap id="resultPrevNext" class="userFree">
+		<result property="boardID" column="BOARD_ID" />
+		<result property="boardSubj" column="BOARD_SUBJ" />
+		<result property="replyCnt" column="REPLY_CNT" />				
+	</resultMap>
+	
+	<resultMap id="resultMapKeyFree" class="userFree">
+		<result property="boardKey" column="BOARD_ID" />
+	</resultMap>
+	
+	<!-- get Reply BoardList -->
+	<resultMap id="resultMapReply" class="userFree">
+		<result property="boardID" column="BOARD_ID" />
+		<result property="replyID" column="REPLY_ID" />
+		<result property="replyCont" column="REPLY_CONT" />
+								
+		<result property="frstRgstDT" column="FRST_RGST_DT" />
+		<result property="frstRgstUserID" column="FRST_RGST_USER_ID" />
+		<result property="latCrctDT" column="LAST_CRCT_DT" />
+		<result property="latCrctUserID" column="LAST_CRCT_USER_ID" />
+	</resultMap>
+	<select id="usrFree.list.TotalCount" resultClass="int">
+		select count(*) from 
+		TB_UAST_BOARD a 
+		left join TB_UAST_USER b  on a.FRST_RGST_USER_ID = b.USER_ID 
+		 where 1 = 1
+		<isNotEmpty property="serTxt">
+			<isEmpty property="serSch">
+		    and (a.BOARD_SUBJ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%')  
+		     or a.BOARD_CONT LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') 
+		     or b.NAME LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%'))
+		    </isEmpty>
+		    <isNotEmpty property="serSch">
+		    	<isEqual property="serSch" compareValue="ALL">
+		    	and (a.BOARD_SUBJ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') 
+		    	 or a.BOARD_CONT LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') ) 
+		    	</isEqual>
+		    	<isNotEqual property="serSch" compareValue="ALL">
+		    	and a.$serSch$ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%')
+		    	</isNotEqual>
+		    </isNotEmpty>
+		</isNotEmpty>
+	</select>
+	<select id="usrFree.list" resultMap="resultMapListFree">
+	    select a.* , b.name as FRST_RGST_NAME         ,(select Count(*) from tb_uast_file_infor where TAGET_ID=a.BOARD_ID ) as FILE_CNT,(select Count(*) from TB_UAST_BOARD_REPLY 
+		where BOARD_ID=a.BOARD_ID ) as REPLY_CNT       from 
+		TB_UAST_BOARD a 
+		left join TB_UAST_USER b  on a.FRST_RGST_USER_ID = b.USER_ID 
+		 where 1 = 1   
+		<isNotEmpty property="serTxt">
+			<isEmpty property="serSch">
+		    and (a.BOARD_SUBJ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%')  
+		     or a.BOARD_CONT LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') 
+		     or b.NAME LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%'))
+		    </isEmpty>
+		    <isNotEmpty property="serSch">
+		    	<isEqual property="serSch" compareValue="ALL">
+		    	and (a.BOARD_SUBJ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') 
+		    	 or a.BOARD_CONT LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') ) 
+		    	</isEqual>
+		    	<isNotEqual property="serSch" compareValue="ALL">
+		    	and a.$serSch$ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%')
+		    	</isNotEqual>
+		    </isNotEmpty>
+		</isNotEmpty>
+		order by a.FRST_RGST_DT desc
+	</select>
+
+	<select id="usrFree.read" resultMap="resultMapFree">
+		select b.NAME as FRST_RGST_NAME,a.*,(select Count(*) from TB_UAST_BOARD_REPLY where BOARD_ID=a.BOARD_ID ) as REPLY_CNT from TB_UAST_BOARD a
+		left join TB_UAST_USER b on a.FRST_RGST_USER_ID = b.USER_ID
+		where a.BOARD_ID=(#boardID#)
+	</select>
+	
+	<select id="usrFree.next" resultMap="resultPrevNext">
+		
+		select a.*,(select Count(*) from TB_UAST_BOARD_REPLY where BOARD_ID=a.BOARD_ID ) as REPLY_CNT from TB_UAST_BOARD a
+		  left join TB_UAST_USER b  on a.FRST_RGST_USER_ID = b.USER_ID
+		  left join (
+		      select FRST_RGST_DT,BOARD_ID from TB_UAST_BOARD
+		      where 1=1
+		      and BOARD_ID=#boardID#
+		  ) as c on a.FRST_RGST_DT <![CDATA[ > ]]> c.FRST_RGST_DT
+		  where 1=1 and c.BOARD_ID IS NOT NULL
+		  <isNotEmpty property="serTxt">
+			<isEmpty property="serSch">
+		    and (a.BOARD_SUBJ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%')  
+		     or a.BOARD_CONT LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') 
+		     or b.NAME LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%'))
+		    </isEmpty>
+		    <isNotEmpty property="serSch">
+		    	<isEqual property="serSch" compareValue="ALL">
+		    	and (a.BOARD_SUBJ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') 
+		    	 or a.BOARD_CONT LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') ) 
+		    	</isEqual>
+		    	<isNotEqual property="serSch" compareValue="ALL">
+		    	and a.$serSch$ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%')
+		    	</isNotEqual>
+		    </isNotEmpty>
+		</isNotEmpty>
+		  group by a.BOARD_ID                 
+		 order by a.FRST_RGST_DT asc
+		 limit 1
+		
+		
+			
+	</select>
+	
+	<select id="usrFree.prev" resultMap="resultPrevNext">
+		
+		select a.*,(select Count(*) from TB_UAST_BOARD_REPLY where BOARD_ID=a.BOARD_ID ) as REPLY_CNT  from TB_UAST_BOARD a
+		left join TB_UAST_USER b  on a.FRST_RGST_USER_ID = b.USER_ID
+		left join (
+			select FRST_RGST_DT,BOARD_ID from TB_UAST_BOARD
+		    where 1=1
+		    and BOARD_ID=#boardID#
+		) as c on a.FRST_RGST_DT <![CDATA[ < ]]> c.FRST_RGST_DT
+		where 1=1 and c.BOARD_ID IS NOT NULL
+		<isNotEmpty property="serTxt">
+			<isEmpty property="serSch">
+		    and (a.BOARD_SUBJ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%')  
+		     or a.BOARD_CONT LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') 
+		     or b.NAME LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%'))
+		    </isEmpty>
+		    <isNotEmpty property="serSch">
+		    	<isEqual property="serSch" compareValue="ALL">
+		    	and (a.BOARD_SUBJ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') 
+		    	 or a.BOARD_CONT LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') ) 
+		    	</isEqual>
+		    	<isNotEqual property="serSch" compareValue="ALL">
+		    	and a.$serSch$ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%')
+		    	</isNotEqual>
+		    </isNotEmpty>
+		</isNotEmpty>
+		group by a.BOARD_ID  
+		order by a.FRST_RGST_DT desc
+		limit 1
+			
+	</select>
+	
+	<select id="usrFree.selectKey" resultMap="resultMapKeyFree" remapResults="true">
+			select if(isnull(BOARD_ID),'00000000000000000000',BOARD_ID) as BOARD_ID from (
+			  select concat(c.addVal,c.a_max) as BOARD_ID from(
+			    select left('00000000000000000000', 20-b.a_length) as addVal,b.a_max from (
+			        select length(MAX(a.BOARD_ID)+1) as a_length,(MAX(a.BOARD_ID)+1) as a_max from tb_uast_board a
+			    ) b
+			  )c
+			) d           	   
+	</select>
+	
+	<insert id="usrFree.insert" parameterClass="userFree">
+
+		insert into TB_UAST_BOARD (
+			BOARD_ID
+			,BOARD_SUBJ
+			,BOARD_CONT
+			,VIEW_COUNT
+			,FRST_RGST_DT
+			,FRST_RGST_USER_ID
+			,LAST_CRCT_DT
+			,LAST_CRCT_USER_ID			
+			)
+		values(
+			#boardID#
+			,#boardSubj#
+			,#boardCont#
+			,'0'
+			,SYSDATE()
+			,#frstRgstUserID#
+			,SYSDATE()
+			,#latCrctUserID#			
+		)
+	</insert>
+	
+	<insert id="usrFree.insert.fileinfor" parameterClass="hMap">
+		insert into TB_UAST_FILE_INFOR (
+			PHYSICAL_FILE_NAME,
+			LOGICAL_FILE_NAME,
+			PHYSICAL_FILE_DIRECTORY,
+			FILE_SIZE,
+			FILE_TYPE,
+			FILE_CONTENTTYPE,
+			PHYSICAL_THUMBNAIL_DIRECTORY,
+			PHYSICAL_THUMBNAIL_FILE_NAME,
+			TAGET_ID,
+			FRST_RGST_DT,
+			FRST_RGST_USER_ID,
+			LAST_CRCT_DT,
+			LAST_CRCT_USER_ID			
+			)
+		values(
+			#attachFileName#,
+			#originalFileName#,
+			#physicalFileDirectory#,
+			#fileSize#,
+			#fileType#,
+			#fileContentType#,
+			'',
+			'',
+			#targetID#,
+			SYSDATE(),
+			'SYSTEM',
+			SYSDATE(),
+			'SYSTEM'			
+		)
+	</insert>
+	<select id="usrFree.select.fileinfor" resultClass="hMap">
+		select a.* from tb_uast_file_infor a 
+		where a.TAGET_ID=#targetID# 
+		<isNotEmpty property="fileType">
+		    and a.FILE_TYPE like CONCAT(#fileType#, '%')
+		</isNotEmpty>
+	</select>
+	
+	<delete id="usrFree.delete.fileinfor">
+		delete from tb_uast_file_infor 
+		<dynamic prepend="where UNIQUE_KEY IN">
+			<iterate property="key" open="(" conjunction="," close=")">#key[]#</iterate>
+		</dynamic>
+	</delete>
+	
+	<update id="usrFree.edit" parameterClass="userFree">
+		update TB_UAST_BOARD set
+			BOARD_ID = #boardID#
+			,BOARD_SUBJ = #boardSubj#
+			,BOARD_CONT = #boardCont#
+			,LAST_CRCT_DT= SYSDATE()
+			,LAST_CRCT_USER_ID = #latCrctUserID#			
+		where BOARD_ID=(#boardID#)
+	</update>
+	
+	<update id="usrFree.viewCnt" parameterClass="userFree">
+		update TB_UAST_BOARD set
+			VIEW_COUNT = VIEW_COUNT+1			
+		where BOARD_ID=(#boardID#)
+	</update>
+	
+	<delete id="usrFree.delete">
+		delete from TB_UAST_BOARD 
+		<dynamic prepend="where BOARD_ID IN">
+			<iterate property="del" open="(" conjunction="," close=")">#del[]#</iterate>
+		</dynamic>
+	</delete>
+	
+	<select id="usrFree.replylist.TotalCount" resultClass="int">
+			select count(*) from TB_UAST_BOARD_REPLY a
+			where 1=1
+			<isNotEmpty property="boardID">
+		    and a.BOARD_ID=(#boardID#)
+		    </isNotEmpty>
+		    <isNotEmpty property="replyID">
+		    and a.REPLY_ID=#replyID#
+		    </isNotEmpty>
+	</select>
+	<select id="usrFree.replylist" resultMap="resultMapReply">
+		    select a.* from TB_UAST_BOARD_REPLY a
+		    where 1=1
+		    <isNotEmpty property="boardID">
+		    and a.BOARD_ID=(#boardID#)
+		    </isNotEmpty>
+		    <isNotEmpty property="replyID">
+		    and a.REPLY_ID=#replyID#
+		    </isNotEmpty>
+	</select>
+
+	<insert id="usrFree.replyinsert">
+		insert into TB_UAST_BOARD_REPLY(
+			REPLY_ID
+			,REPLY_CONT
+			,BOARD_ID
+			,FRST_RGST_DT
+			,FRST_RGST_USER_ID
+			,LAST_CRCT_DT
+			,LAST_CRCT_USER_ID	
+			)
+			values(
+				#replyID#
+				,#replyCont#
+				,#boardID#
+				,SYSDATE()
+				,#frstRgstUserID#
+				,SYSDATE()
+				,#latCrctUserID#			
+			)
+	</insert>
+	<delete id="usrFree.replyupdate">
+		    update TB_UAST_BOARD_REPLY set
+		    REPLY_CONT = #comment# 
+		    ,LAST_CRCT_DT = SYSDATE() 
+		    where 1=1 
+		   <isNotEmpty property="replyID"> and BOARD_ID=(#boardID#)</isNotEmpty>
+		    <isNotEmpty property="replyID">
+		    and	REPLY_ID=#replyID#
+		    </isNotEmpty>
+	</delete>
+	<delete id="usrFree.replydelete">
+		    delete from TB_UAST_BOARD_REPLY
+		    where BOARD_ID=(#boardID#)
+		    <isNotEmpty property="replyID">
+		    and	REPLY_ID=#replyID#
+		    </isNotEmpty>
+	</delete>
+	<delete id="usrFree.replyAlldelete">
+		    delete from TB_UAST_BOARD_REPLY
+		    <dynamic prepend="where BOARD_ID IN">
+				<iterate property="del" open="(" conjunction="," close=")">#del[]#</iterate>
+			</dynamic>
+	</delete>
+	
+</sqlMap>

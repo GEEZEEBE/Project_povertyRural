@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+      	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+   		http://www.springframework.org/schema/security 
+   		http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<!-- user -->
+
+	<security:http pattern="/usr*/**" auto-config="true"
+		access-denied-page="/usr/login">
+		<security:intercept-url pattern="/usr/resources*/**"
+			access="IS_AUTHENTICATED_ANONYMOUSLY" />
+
+		<security:intercept-url pattern="/usr"
+			access="IS_AUTHENTICATED_ANONYMOUSLY" />
+
+		<security:intercept-url pattern="/usr/login**"
+			access="IS_AUTHENTICATED_ANONYMOUSLY" />
+
+		<security:intercept-url pattern="/usr*/**"
+			access="ROLE_USER,ROLE_ADMIN" />
+
+		<security:form-login login-page="/usr/loginUser"
+			default-target-url="/usr" authentication-failure-url="/usr/loginUserFailed"
+			login-processing-url="/usr/j_spring_security_check" />
+
+		<security:logout logout-url="/usr/logoutUser"
+			logout-success-url="/" invalidate-session="true" />
+
+		<security:session-management>
+			<security:concurrency-control max-sessions="1"
+				error-if-maximum-exceeded="false" expired-url="/" />
+		</security:session-management>
+
+	</security:http>
+
+	<!-- admin -->
+
+	<security:http pattern="/adm*/**" auto-config="true">
+		<!-- <security:intercept-url pattern="/welcome*" access="ROLE_ADMIN" /> -->
+		<security:intercept-url pattern="/adm/resources*/**"
+			access="IS_AUTHENTICATED_ANONYMOUSLY" />
+
+		<security:intercept-url pattern="/adm/login**"
+			access="IS_AUTHENTICATED_ANONYMOUSLY" />
+
+		<security:intercept-url pattern="/adm/**"
+			access="ROLE_ADMIN" />
+
+		<security:form-login login-page="/adm/login"
+			login-processing-url="/adm/j_spring_security_check"
+			default-target-url="/adm" authentication-failure-url="/adm/loginfailed" />
+
+
+		<security:logout logout-url="/adm/logout"
+			logout-success-url="/adm" invalidate-session="true" />
+
+		<!-- <security:access-denied-handler ref="accessDeniedHandler" /> -->
+
+		<security:access-denied-handler error-page="/adm/accessDenied"/>
+
+		<security:session-management>
+			<security:concurrency-control max-sessions="1"
+				error-if-maximum-exceeded="false" expired-url="/adm" />
+		</security:session-management>
+
+	</security:http>
+
+
+	<!-- normal -->
+
+	<security:http auto-config="true">
+		<security:intercept-url pattern="/resources*/**"
+			access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/**"
+			access="IS_AUTHENTICATED_ANONYMOUSLY" />
+
+		<security:http-basic />
+
+		<!-- <security:session-management invalid-session-url="/sessionTimeout.htm" 
+			/> -->
+	</security:http>
+
+	<!-- <security:session-management invalid-session-url="/" session-fixation-protection="none"> 
+		<security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" 
+		/> </security:session-management> -->
+	<bean id="customAuthenticationProvider" class="com.skt.mars.adm.lg.CustomUserDetailsService">
+	</bean>
+<!-- 
+	<bean id="accessDeniedHandler" class="com.skt.mars.adm.lg.CustomAccessDeniedHandler">
+		<property name="accessDeniedUrl" value="/adm/accessDenied" />
+	</bean>
+ -->
+	<security:authentication-manager>
+		<security:authentication-provider
+			user-service-ref="customAuthenticationProvider" />
+
+		<!-- <security:authentication-provider> <security:jdbc-user-service data-source-ref="dataSource" 
+			users-by-username-query=" select NAME as username, PW password, 'TRUE' as 
+			enabled from TB_UAST_USER where USER_ID=?" authorities-by-username-query=" 
+			select ? USER_ID, 'ROLE_ADMIN' authority " /> -->
+		<!-- <security:user-service> <security:user name="kut0000" password="kut0000" 
+			authorities="ROLE_ADMIN" /> <security:user name="kut0001" password="kut0001" 
+			authorities="ROLE_ADMIN" /> <security:user name="kut0002" password="kut0002" 
+			authorities="ROLE_ADMIN" /> <security:user name="kut0100" password="kut0100" 
+			authorities="ROLE_USER" /> </security:user-service> </security:authentication-provider> -->
+	</security:authentication-manager>
+
+</beans>

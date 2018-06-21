@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="payment">
+	<typeAlias alias="payment" type="com.skt.mars.adm.bm.Payment" />
+
+	<!-- table schema -->
+	<resultMap id="resultMapID" class="payment">
+		<result property="acptID" column="ACPT_ID" />
+		<result property="dpstKind" column="DPST_KIND" />
+		<result property="dpstMthd" column="DPST_MTHD" />
+		<result property="dpstAmt" column="DPST_AMT" />
+		<result property="returnAmt" column="RETURN_AMT" />
+		<result property="dsptDT" column="DSPT_DT" />
+		<result property="returnDT" column="RETURN_DT" />
+		<result property="rmark" column="RMRK" />
+		<result property="useHsNmbrID" column="USE_HS_NMBR_ID" />
+		<result property="frstRgstDT" column="FRST_RGST_DT" />
+		<result property="frstRgstUserID" column="FRST_RGST_USER_ID" />
+		<result property="latCrctDT" column="LAST_CRCT_DT" />
+		<result property="latCrctUserID" column="LAST_CRCT_USER_ID" />
+	</resultMap>
+
+	<select id="payment.list" resultClass="hMap">
+		select gods.GODS_NAME, kind.CODE_NAME KIND_NAME, mthd.CODE_NAME MTHD_NAME
+			, pay.*, useHs.USER_ID
+		from TB_UAST_PAYMENT pay
+			, TB_UAST_USE_HS useHs
+			, TB_UAST_GODS gods
+			, TB_UAST_CODE kind
+			, TB_UAST_CODE mthd
+		where 1 = 1
+		and pay.USE_HS_NMBR_ID = useHs.USE_HS_NMBR_ID 
+		and useHs.GODS_ID = gods.GODS_ID 
+		AND kind.COMMON_CODE_ID = pay.DPST_KIND
+		and mthd.COMMON_CODE_ID = pay.DPST_MTHD
+		AND pay.DSPT_DT IS NOT NULL
+		<isNotEmpty property="serTxt">
+	    and gods.GODS_NAME LIKE CONCAT('%', replace(replace(#serTxt#,'%','\%'),'_','\_'), '%')
+		</isNotEmpty>
+	</select>
+
+	<select id="payment.list.TotalCount" resultClass="Integer">
+		select COUNT(*) 
+		from TB_UAST_PAYMENT pay
+			, TB_UAST_USE_HS useHs
+			, TB_UAST_GODS gods
+			, TB_UAST_CODE kind
+			, TB_UAST_CODE mthd
+		where 1 = 1
+		and pay.USE_HS_NMBR_ID = useHs.USE_HS_NMBR_ID 
+		and useHs.GODS_ID = gods.GODS_ID 
+		AND kind.COMMON_CODE_ID = pay.DPST_KIND
+		and mthd.COMMON_CODE_ID = pay.DPST_MTHD
+		AND pay.DSPT_DT IS NOT NULL
+		<isNotEmpty property="serTxt">
+	    and gods.GODS_NAME LIKE CONCAT('%', replace(replace(#serTxt#,'%','\%'),'_','\_'), '%')
+		</isNotEmpty>
+	</select>
+
+	<select id="refund.list" resultClass="hMap">
+		select gods.GODS_NAME, kind.CODE_NAME KIND_NAME, mthd.CODE_NAME MTHD_NAME
+			, pay.*, useHs.USER_ID
+		from TB_UAST_PAYMENT pay
+			, TB_UAST_USE_HS useHs
+			, TB_UAST_GODS gods
+			, TB_UAST_CODE kind
+			, TB_UAST_CODE mthd
+		where 1 = 1
+		and pay.USE_HS_NMBR_ID = useHs.USE_HS_NMBR_ID 
+		and useHs.GODS_ID = gods.GODS_ID 
+		AND kind.COMMON_CODE_ID = pay.DPST_KIND
+		and mthd.COMMON_CODE_ID = pay.DPST_MTHD
+		AND pay.RETURN_DT IS NOT NULL
+		<isNotEmpty property="serTxt">
+	    and gods.GODS_NAME LIKE CONCAT('%', replace(replace(#serTxt#,'%','\%'),'_','\_'), '%')
+		</isNotEmpty>
+	</select>
+
+	<select id="refund.list.TotalCount" resultClass="Integer">
+		select COUNT(*) 
+		from TB_UAST_PAYMENT pay
+			, TB_UAST_USE_HS useHs
+			, TB_UAST_GODS gods
+			, TB_UAST_CODE kind
+			, TB_UAST_CODE mthd
+		where 1 = 1
+		and pay.USE_HS_NMBR_ID = useHs.USE_HS_NMBR_ID 
+		and useHs.GODS_ID = gods.GODS_ID 
+		AND kind.COMMON_CODE_ID = pay.DPST_KIND
+		and mthd.COMMON_CODE_ID = pay.DPST_MTHD
+		AND pay.RETURN_DT IS NOT NULL
+		<isNotEmpty property="serTxt">
+	    and gods.GODS_NAME LIKE CONCAT('%', replace(replace(#serTxt#,'%','\%'),'_','\_'), '%')
+		</isNotEmpty>
+	</select>
+
+	<select id="payment.read" resultMap="resultMapID">
+		select * from TB_UAST_PAYMENT
+		where ACPT_ID = #acptID#
+	</select>
+
+	<insert id="payment.insert" parameterClass="payment">
+		insert into TB_UAST_PAYMENT (
+			ACPT_ID
+			, DPST_KIND
+			, DPST_MTHD
+			, DPST_AMT
+			, RETURN_AMT
+			, DSPT_DT
+			, RETURN_DT
+			, PAY_KIND
+			, RMRK
+			, USE_HS_NMBR_ID 
+			, FRST_RGST_DT
+			, FRST_RGST_USER_ID
+			, LAST_CRCT_DT
+			, LAST_CRCT_USER_ID			
+			)
+		values(
+			#acptID#
+			, #dpstKind#
+			, #dpstMthd#
+			, #dpstAmt#
+			, #returnAmt#
+			, #dsptDT#
+			, #returnDT#
+			, #payKind#
+			, #rmark#
+			, #useHsNmbrID#
+			, SYSDATE()
+			, #frstRgstUserID#
+			, SYSDATE()
+			, #latCrctUserID#			
+		)
+	  <!-- >selectKey resultClass="int" keyProperty="folderId">
+	    SELECT LAST_INSERT_ID() AS folderId
+	  </selectKey -->
+	</insert>
+
+	<update id="refund.edit" parameterClass="payment">
+		update TB_UAST_PAYMENT set
+			RETURN_AMT = #returnAmt#,
+			RETURN_DT = #returnDT#,
+			LAST_CRCT_DT= SYSDATE(),
+			LAST_CRCT_USER_ID = #latCrctUserID#			
+		where ACPT_ID = #acptID#
+	</update>
+
+	<delete id="payment.delete">
+		delete from TB_UAST_PAYMENT
+		where ACPT_ID in (<iterate conjunction=",">#[]#</iterate>)
+	</delete>
+	
+	<update id="refund.delete">
+		update TB_UAST_PAYMENT set
+			RETURN_AMT = null,
+			RETURN_DT = null,
+			LAST_CRCT_DT= SYSDATE(),
+			LAST_CRCT_USER_ID = #latCrctUserID#
+			where 1 = 1		
+		<dynamic prepend="AND ACPT_ID IN">
+			<iterate property="del" open="(" conjunction="," close=")">#del[]#</iterate>
+		</dynamic>
+				
+	</update>
+
+</sqlMap>

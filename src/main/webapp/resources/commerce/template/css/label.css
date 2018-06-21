@@ -1,0 +1,84 @@
+@charset "utf-8";
+
+/************************************/
+/*	Name: Malaysia Rural ATC
+/*	PART: Brochure Templete
+/************************************/
+
+/* reset */
+.templete-common-reset div, .templete-common-reset dl, .templete-common-reset dt, .templete-common-reset dd, .templete-common-reset ul, .templete-common-reset ol, .templete-common-reset li, .templete-common-reset h1, .templete-common-reset h2, .templete-common-reset h3, .templete-common-reset h4, .templete-common-reset h5, .templete-common-reset h6, .templete-common-reset pre, .templete-common-reset p, .templete-common-reset blockquote, .templete-common-reset th, .templete-common-reset td, .templete-common-reset span, .templete-common-reset img {margin:0; padding:0;}
+.templete-common-reset table, .templete-common-reset  caption, .templete-common-reset  tbody, .templete-common-reset  tfoot, .templete-common-reset  thead, .templete-common-reset  tr, .templete-common-reset  th, .templete-common-reset  td {border-collapse:collapse; border-spacing:0; margin:0; padding:0; border:0;}
+.templete-common-reset ul, .templete-common-reset ol, .templete-common-reset li {list-style-type:none;}
+.templete-common-reset img {max-width:100%; height:auto; line-height:0; border:0;}
+
+/* float clear */
+.clfix:after{clear:both; content:"."; display:block; height:0; visibility:hidden; font-size:0;}
+
+/* empty cell */
+.empty-cell {background:#d6d6d6;}
+
+/*****************************
+ * type1
+ *****************************/
+#label-type1 {position:relative; background:#fff; width:1238px; height:1754px; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#label-type1 ul {width:1240px; height:1754px; margin:-1px 0 0; border-bottom:1px solid #8f8f8f;}
+#label-type1 li {float:left; background:url(image/bg_cutline_h.png) left top repeat-x; width:413px; height:292px; padding-top:1px; font-family:inherit;}
+#label-type1 li div {background:url(image/bg_cutline_v.png) right top repeat-y; width:412px; height:292px; padding-right:1px;}
+#label-type1 li div strong {display:block; background:#ea002c; height:58px; line-height:58px; font-weight:bold; font-size:26px; text-align:center; color:#fff;}
+#label-type1 li div dl {float:left; width:369px; padding:10px 21px 23px 20px; border:1px solid #8f8f8f; border-top:none; text-align:left;}
+#label-type1 li div dt {float:left; width:89px; height:39px; border-bottom:1px solid #d4d4d4; text-align:left; color:#999; line-height:39px; font-size:20px; font-weight:bold;}
+#label-type1 li div dd {float:left; width:280px; height:39px; border-bottom:1px solid #d4d4d4; color:#666; line-height:39px;; font-size:20px; font-weight:bold;}
+#label-type1 li div dd span {display:block; width:100%; height:29px; margin:5px 0; line-height:29px;}
+
+/*****************************
+ * type2
+ *****************************/
+#label-type2 {position:relative; background:#fff; width:1240px; height:1753px; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#label-type2 ul {width:1242px; height:1755px; margin:0;}
+#label-type2 li {float:left; background:url(image/bg_label_type2.png) left top repeat-x; width:621px; height:351px; font-family:inherit;}
+#label-type2 li div {padding:35px;}
+#label-type2 li div strong {display:block; height:54px; line-height:54px; font-weight:bold; font-size:38px; text-align:center; color:#225595; letter-spacing:-1px;}
+#label-type2 li div dl {float:left; width:545px; padding:0; margin-top:10px; border:1px solid #999; border-bottom:none; text-align:left;}
+#label-type2 li div dt {float:left; width:129px; height:42px; padding-left:20px; border-bottom:1px solid #999; border-right:1px solid #999;  text-align:left; color:#999; line-height:42px; font-size:22px; font-weight:bold; letter-spacing:-1px;;}
+#label-type2 li div dd {float:left; width:375px; height:42px; padding-left:20px; border-bottom:1px solid #999; color:#666; line-height:42px;; font-size:22px; font-weight:bold; letter-spacing:-1px;}
+#label-type2 li div dd span {display:block; width:95%; height:32px; margin:5px 0; line-height:32px;}
+
+/*****************************
+ * type3
+ *****************************/
+#label-type3 {position:relative; background:#fff; width:1239px; height:1755px; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#label-type3 ul {width:1242px; height:1755px; margin:0;}
+#label-type3 li {float:left; background:url(image/bg_label_type3.png) left top repeat-x; width:620px; height:439px; font-family:inherit;}
+#label-type3 li div {padding:90px 75px;}
+#label-type3 li div strong {display:block; height:75px; line-height:75px; font-weight:bold; font-size:40px; text-align:center; color:#fff; letter-spacing:-1px;}
+#label-type3 li div dl {float:left; width:545px; padding:0; margin-top:10px;}
+#label-type3 li div dt {float:left; background:url(image/bar_label_type3.png) right center no-repeat; width:89px; height:42px; padding-right:20px; color:#975f5f; line-height:42px; font-size:23px; font-weight:bold; letter-spacing:-1px; text-align:right;}
+#label-type3 li div dd {float:left; width:415px; height:42px; padding-left:20px; color:#4c4646; line-height:42px;; font-size:23px; font-weight:bold; letter-spacing:-1px; text-align:left;}
+#label-type3 li div dd span {display:block; width:80%; height:32px; margin:5px 0; line-height:32px;}
+
+/*****************************
+ * type4
+ *****************************/
+#label-type4 {position:relative; background:#fff; width:1239px; height:1757px; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#label-type4 ul {width:1242px; height:1758px; margin:0;}
+#label-type4 li {float:left; background:url(image/bg_label_type4.png) left top repeat-x; width:620px; height:586px; font-family:inherit;}
+#label-type4 li div {padding:140px 80px;}
+#label-type4 li div strong {display:block; width:96%; height:75px; margin:0 auto; border-bottom:2px solid #fff; line-height:75px; font-weight:bold; font-size:45px; text-align:center; color:#fff; letter-spacing:-2px;}
+#label-type4 li div dl {float:left; width:460px; padding:0; margin-top:18px; text-align:left;}
+#label-type4 li div dt {float:left; background:url(image/dot_label_type4.png) left center no-repeat; width:89px; height:40px; margin-left:10px; padding-left:20px; color:#fff; line-height:40px; font-size:24px; font-weight:bold; letter-spacing:0px; text-align:left;}
+#label-type4 li div dd {float:left; width:321px; height:40px; padding-left:20px; color:#fff; line-height:40px; font-size:24px; font-weight:bold; letter-spacing:0px;}
+#label-type4 li div dd span {display:block; width:95%; height:30px; margin:5px 0; line-height:30px;}
+
+/*****************************
+ * type5
+ *****************************/
+#label-type5 {position:relative; background:#fff; width:1239px; height:1757px; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#label-type5 ul {width:1242px; height:1758px; margin:0;}
+#label-type5 li {float:left; background:url(image/bg_label_type5.png) left top repeat-x; width:620px; height:879px; font-family:inherit;}
+#label-type5 li div {padding:118px 80px;}
+#label-type5 li div strong {display:block; height:175px; margin:0 auto; line-height:175px; font-weight:bold; font-size:52px; text-align:center; color:#fff; letter-spacing:-2px;}
+#label-type5 li div dl {width:460px; padding:0; margin-top:30px;}
+#label-type5 li div dt {width:100%; height:43px; color:#7a47c7; line-height:43px; font-size:24px; font-weight:bold; letter-spacing:0px; text-align:center;}
+#label-type5 li div dt span {border-bottom:2px solid #682ebf;}
+#label-type5 li div dd {width:100%; height:43px; color:#565252; line-height:43px; font-size:24px; font-weight:bold; letter-spacing:0px; text-align:center;}
+#label-type5 li div dd span {width:95%; height:30px; margin:5px 0; line-height:30px;}

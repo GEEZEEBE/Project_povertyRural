@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<!--
+2013.01.22 jsjeon
+Category.xml - 서비스카테고리
+ -->
+
+<sqlMap namespace="Category">
+	
+	<!-- 카테고리 목록 조회 -->
+	<select id="category.list" parameterClass="Map" resultClass="hMap">
+		SELECT NODE_CATEGORY,
+			   NODE_LFT,
+			   NODE_RGT,
+			   DEL_YN,
+			   PARENT_CATEGORY,
+			   PARENT_LFT,
+			   PARENT_RGT,
+			   SRVC_CTGR_NM,
+			   DEPTH
+		  FROM (
+				SELECT 
+					   NODE.SRVC_ID AS NODE_CATEGORY, 
+					   NODE.LEFT_SRVC_ID AS NODE_LFT,
+					   NODE.RIGHT_SRVC_ID AS NODE_RGT,
+					   NODE.DEL_YN AS DEL_YN,
+					   PARENT.SRVC_ID AS PARENT_CATEGORY, 
+					   PARENT.LEFT_SRVC_ID AS PARENT_LFT, 
+					   PARENT.RIGHT_SRVC_ID  AS PARENT_RGT,
+					   CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM, 
+					   (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+				  FROM TB_UAST_SRVC_CTGR AS NODE,
+	 				   TB_UAST_SRVC_CTGR AS PARENT
+				 WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+				 GROUP BY NODE.SRVC_ID
+				 ORDER BY NODE.LEFT_SRVC_ID
+			   ) AS A
+		 WHERE 1=1
+		 <isNotEmpty property="depth">
+		   AND DEPTH = #depth#
+		 </isNotEmpty>
+		 <isNotEmpty property="lft">
+		   AND NODE_LFT BETWEEN #lft# AND #rgt#
+		 </isNotEmpty>
+		   AND DEL_YN = 'N'
+	</select>
+	<select id="category.pageList" parameterClass="Map" resultClass="hMap">
+		   SELECT 
+		          NODE.SRVC_ID AS NODE_CATEGORY, 
+		          NODE.LEFT_SRVC_ID AS NODE_LFT,
+		          NODE.RIGHT_SRVC_ID AS NODE_RGT,
+		          NODE.DEL_YN AS DEL_YN,
+		          PARENT.SRVC_ID AS PARENT_CATEGORY, 
+		          PARENT.LEFT_SRVC_ID AS PARENT_LFT, 
+		          PARENT.RIGHT_SRVC_ID  AS PARENT_RGT,
+		          CONCAT( REPEAT('', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM, 
+		          (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+		     FROM TB_UAST_SRVC_CTGR AS NODE,
+		          TB_UAST_SRVC_CTGR AS PARENT
+		    WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID AND NODE.DEL_YN = 'N'
+		    GROUP BY NODE.SRVC_ID
+		    ORDER BY NODE.LEFT_SRVC_ID
+	</select>
+	
+	<!-- 카테고리 목록 조회 -->
+    <select id="category.selectList" parameterClass="Map" resultClass="hMap">
+         SELECT A.* 
+           FROM
+                (SELECT NODE.SRVC_ID AS NODE_CATEGORY, NODE.LEFT_SRVC_ID AS NODE_LFT, NODE.RIGHT_SRVC_ID AS NODE_RGT,
+                       CONCAT( REPEAT('', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM, (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+                  FROM TB_UAST_SRVC_CTGR AS NODE, TB_UAST_SRVC_CTGR AS PARENT
+                 WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID AND NODE.DEL_YN = 'N'
+                 GROUP BY NODE.SRVC_ID) AS A,
+                (SELECT NODE.SRVC_ID AS NODE_CATEGORY, NODE.LEFT_SRVC_ID AS NODE_LFT, NODE.RIGHT_SRVC_ID AS NODE_RGT,
+                       CONCAT( REPEAT('', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM, (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+                  FROM TB_UAST_SRVC_CTGR AS NODE, TB_UAST_SRVC_CTGR AS PARENT
+                 WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID AND NODE.DEL_YN = 'N' AND NODE.SRVC_ID = #srvcID#
+                 GROUP BY NODE.SRVC_ID) AS B
+         WHERE CONVERT(A.DEPTH, UNSIGNED) = CONVERT(B.DEPTH, UNSIGNED) + 1
+           AND A.NODE_LFT BETWEEN B.NODE_LFT AND B.NODE_RGT
+    </select>
+	
+	
+	<!-- 카테고리 조회 -->
+	<select id="category.read" parameterClass="Map" resultClass="hMap">
+	    SELECT NODE_CATEGORY,
+               NODE_LFT,
+               NODE_RGT,
+               PARENT_CATEGORY,
+               PARENT_LFT,
+               PARENT_RGT,
+               SRVC_CTGR_NM,
+               DEPTH
+          FROM (
+                SELECT 
+                       NODE.SRVC_ID AS NODE_CATEGORY, 
+                       NODE.LEFT_SRVC_ID AS NODE_LFT,
+                       NODE.RIGHT_SRVC_ID AS NODE_RGT,
+                       PARENT.SRVC_ID AS PARENT_CATEGORY, 
+                       PARENT.LEFT_SRVC_ID AS PARENT_LFT, 
+                       PARENT.RIGHT_SRVC_ID  AS PARENT_RGT,
+                       CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM, 
+                       (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+                  FROM TB_UAST_SRVC_CTGR AS NODE,
+                       TB_UAST_SRVC_CTGR AS PARENT
+                 WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+                 GROUP BY NODE.SRVC_ID
+                 ORDER BY NODE.LEFT_SRVC_ID
+               ) AS A
+         WHERE NODE_CATEGORY = #srvcID#
+    </select>
+    
+	<!-- 카테고리 노드 조회 -->
+    <select id="category.node" parameterClass="Map" resultClass="hMap">
+        SELECT NODE_CATEGORY,
+               NODE_LFT,
+               NODE_RGT,
+               PARENT_CATEGORY,
+               PARENT_LFT,
+               PARENT_RGT,
+               SRVC_CTGR_NM,
+               DEPTH
+          FROM (
+                SELECT 
+                       NODE.SRVC_ID AS NODE_CATEGORY, 
+                       NODE.LEFT_SRVC_ID AS NODE_LFT,
+                       NODE.RIGHT_SRVC_ID AS NODE_RGT,
+                       PARENT.SRVC_ID AS PARENT_CATEGORY, 
+                       PARENT.LEFT_SRVC_ID AS PARENT_LFT, 
+                       PARENT.RIGHT_SRVC_ID  AS PARENT_RGT,
+                       CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM, 
+                       (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+                  FROM TB_UAST_SRVC_CTGR AS NODE,
+                       TB_UAST_SRVC_CTGR AS PARENT
+                 WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+                 GROUP BY NODE.SRVC_ID
+                 ORDER BY NODE.LEFT_SRVC_ID
+               ) AS A
+         <![CDATA[ 
+         WHERE DEPTH <= #DEPTH#
+           AND NODE_LFT <= #NODE_LFT#
+           AND NODE_RGT >= #NODE_RGT#
+         ]]>
+    </select>
+
+
+</sqlMap>

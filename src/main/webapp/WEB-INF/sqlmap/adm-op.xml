@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="op">
+	<typeAlias alias="notice" type="com.skt.mars.adm.op.Notice" />
+
+	<resultMap id="resultUsrMapID" class="notice">	    
+		<result property="noticeId" column="NOTI_ID" />
+		<result property="noticeSubj" column="NOTI_SUBJ" />
+		<result property="noticeCont" column="NOTI_CONT" />
+		<result property="noticeDvsn" column="NOTI_DVSN" />
+		<result property="viewCount" column="VIEW_COUNT" />
+		<result property="frstRgstDT" column="FRST_RGST_DT" />
+		<result property="frstRgstUserID" column="FRST_RGST_USER_ID" />
+		<result property="latCrctDT" column="LAST_CRCT_DT" />
+		<result property="latCrctUserID" column="LAST_CRCT_USER_ID" />
+	</resultMap>
+	
+	<resultMap id="resultPrevNext" class="notice">
+		<result property="noticeId" column="NOTI_ID" />
+		<result property="noticeSubj" column="NOTI_SUBJ" />			
+	</resultMap>
+	
+	<select id="notice.usrList" resultMap="resultUsrMapID">
+		select a.* from TB_UAST_NOTICE a
+		where 1 = 1
+		<isNotEmpty property="serTxt">
+			<isEmpty property="serSch">
+			and (a.NOTI_SUBJ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') or a.NOTI_CONT LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%'))
+		    </isEmpty>
+			<isNotEmpty property="serSch">
+				<isEqual property="serSch" compareValue="ALL">
+		    	and (a.NOTI_SUBJ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') or a.NOTI_CONT LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%'))
+		    	</isEqual>
+		    	<isNotEqual property="serSch" compareValue="ALL">
+		    	and a.$serSch$ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%')
+		    	</isNotEqual>
+			</isNotEmpty>	
+		</isNotEmpty>
+		order by FRST_RGST_DT desc
+	</select>
+	
+	<select id="notice.usrList.TotalCount" resultClass="Integer">
+		select count(*) from TB_UAST_NOTICE a
+		where 1 = 1
+		<isNotEmpty property="serTxt">
+			<isEmpty property="serSch">
+			and (a.NOTI_SUBJ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') or a.NOTI_CONT LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%'))
+		    </isEmpty>
+			<isNotEmpty property="serSch">
+				<isEqual property="serSch" compareValue="ALL">
+		    	and (a.NOTI_SUBJ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') or a.NOTI_CONT LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%'))
+		    	</isEqual>
+		    	<isNotEqual property="serSch" compareValue="ALL">
+		    	and a.$serSch$ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%')
+		    	</isNotEqual>
+			</isNotEmpty>	
+		</isNotEmpty>
+	</select>
+	
+	<select id="notice.usrRead" resultMap="resultUsrMapID">
+
+		select a.* from TB_UAST_NOTICE a
+		where 1 = 1
+		<isNotEmpty property="noticeId">
+		    and a.NOTI_ID=#noticeId#
+		</isNotEmpty>
+		limit 1
+		
+	</select>
+	
+	<update id="notice.count" parameterClass="notice">
+		update TB_UAST_NOTICE a set a.VIEW_COUNT=a.VIEW_COUNT+1
+		where 1 = 1
+		<isNotEmpty property="noticeId">
+		    and a.NOTI_ID=#noticeId#
+		</isNotEmpty>
+	</update>
+	
+	
+	<select id="notice.ntList" resultMap="resultUsrMapID">
+		select a.* from TB_UAST_NOTICE a
+		where 1 = 1
+		<isNotEmpty property="serTxt">
+			<isEmpty property="serSch">
+			and (a.NOTI_SUBJ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') or a.NOTI_CONT LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%'))
+		    </isEmpty>
+			<isNotEmpty property="serSch">
+				<isEqual property="serSch" compareValue="ALL">
+		    	and (a.NOTI_SUBJ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') or a.NOTI_CONT LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%'))
+		    	</isEqual>
+		    	<isNotEqual property="serSch" compareValue="ALL">
+		    	and a.$serSch$ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%')
+		    	</isNotEqual>
+			</isNotEmpty>	
+		</isNotEmpty>
+		order by a.FRST_RGST_DT desc
+	</select>
+	
+	<select id="notice.ntList.TotalCount" resultClass="Integer">
+		select count(*) from TB_UAST_NOTICE a
+		where 1 = 1
+		<isNotEmpty property="serTxt">
+			<isEmpty property="serSch">
+			and (a.NOTI_SUBJ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') or a.NOTI_CONT LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%'))
+		    </isEmpty>
+			<isNotEmpty property="serSch">
+				<isEqual property="serSch" compareValue="ALL">
+		    	and (a.NOTI_SUBJ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') or a.NOTI_CONT LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%'))
+		    	</isEqual>
+		    	<isNotEqual property="serSch" compareValue="ALL">
+		    	and a.$serSch$ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%')
+		    	</isNotEqual>
+			</isNotEmpty>	
+		</isNotEmpty>
+	</select>
+	
+	<select id="notice.ntRead" resultMap="resultUsrMapID">
+
+		select a.* from TB_UAST_NOTICE a
+		where 1 = 1
+		<isNotEmpty property="noticeId">
+		    and a.NOTI_ID=#noticeId#
+		</isNotEmpty>
+		limit 1
+		
+	</select>
+	
+	
+
+	<insert id="notice.ntInsert"  parameterClass="notice">
+		insert into tb_uast_notice( NOTI_ID,NOTI_SUBJ,NOTI_CONT,NOTI_DVSN,VIEW_COUNT,FRST_RGST_DT,FRST_RGST_USER_ID,LAST_CRCT_DT,LAST_CRCT_USER_ID )
+		values( #noticeId#, #noticeSubj#, #noticeCont#, #noticeDvsn#, '0', SYSDATE(), #frstRgstUserID#, SYSDATE(), #latCrctUserID# )
+	</insert>
+	
+	<update id="notice.ntEdit" parameterClass="notice">
+		update tb_uast_notice set
+		 NOTI_SUBJ = #noticeSubj#, 
+		 NOTI_CONT = #noticeCont#, 
+		 NOTI_DVSN = #noticeDvsn#, 
+		 LAST_CRCT_DT = SYSDATE(), 
+		 LAST_CRCT_USER_ID = #latCrctUserID# 
+		where 1=1
+		<isNotEmpty property="noticeId">
+		    and NOTI_ID=#noticeId#
+		</isNotEmpty>
+	</update>
+	
+	<delete id="notice.ntDel">
+		delete from tb_uast_notice	
+		<dynamic prepend="where NOTI_ID IN">
+			<iterate property="del" open="(" conjunction="," close=")">#del[]#</iterate>
+		</dynamic>
+	</delete>
+	
+	
+	<select id="notice.next" resultMap="resultPrevNext">
+			
+			select a.* from TB_UAST_NOTICE a
+			left join (
+				select FRST_RGST_DT,NOTI_ID from TB_UAST_NOTICE
+			    where 1=1
+			    and NOTI_ID=#noticeId#
+			) as c on a.FRST_RGST_DT <![CDATA[>]]> c.FRST_RGST_DT
+			where 1=1 and c.NOTI_ID IS NOT NULL
+			<isNotEmpty property="serTxt">
+				<isEmpty property="serSch">
+				and (a.NOTI_SUBJ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') or a.NOTI_CONT LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%'))
+			    </isEmpty>
+				<isNotEmpty property="serSch">
+					<isEqual property="serSch" compareValue="ALL">
+			    	and (a.NOTI_SUBJ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') or a.NOTI_CONT LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%'))
+			    	</isEqual>
+			    	<isNotEqual property="serSch" compareValue="ALL">
+			    	and a.$serSch$ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%')
+			    	</isNotEqual>
+				</isNotEmpty>	
+			</isNotEmpty>
+			group by a.NOTI_ID  
+			order by a.FRST_RGST_DT asc
+			limit 1
+			
+			
+	</select>
+	
+	<select id="notice.prev" resultMap="resultPrevNext">
+		
+		select a.* from TB_UAST_NOTICE a
+			left join (
+				select FRST_RGST_DT,NOTI_ID from TB_UAST_NOTICE
+			    where 1=1
+			    and NOTI_ID=#noticeId#
+			) as c on a.FRST_RGST_DT <![CDATA[<]]> c.FRST_RGST_DT
+			where 1=1 and c.NOTI_ID IS NOT NULL
+			<isNotEmpty property="serTxt">
+				<isEmpty property="serSch">
+				and (a.NOTI_SUBJ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') or a.NOTI_CONT LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%'))
+			    </isEmpty>
+				<isNotEmpty property="serSch">
+					<isEqual property="serSch" compareValue="ALL">
+			    	and (a.NOTI_SUBJ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%') or a.NOTI_CONT LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%'))
+			    	</isEqual>
+			    	<isNotEqual property="serSch" compareValue="ALL">
+			    	and a.$serSch$ LIKE CONCAT('%', replace(replace(trim(#serTxt#),'%','\%'),'_','\_'), '%')
+			    	</isNotEqual>
+				</isNotEmpty>	
+			</isNotEmpty>
+			group by a.NOTI_ID  
+			order by a.FRST_RGST_DT desc
+			limit 1
+			
+	</select>
+	
+	<select id="notice.select.limit" resultClass="hMap">
+		SELECT * 
+		FROM TB_UAST_NOTICE
+		WHERE 1 = 1 
+		ORDER BY FRST_RGST_DT DESC limit 5
+	</select>
+	
+</sqlMap>

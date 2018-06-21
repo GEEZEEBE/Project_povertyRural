@@ -1,0 +1,42 @@
+@charset "utf-8";
+
+/*login*/
+.loginSec { background:url(../images_my/img_login.jpg) no-repeat right 40px;}
+.loginSec p.infoTxt { width:460px; height:60px; margin-top:20px; padding:10px 10px 0 43px; font-size:11px; font-family:Tahoma; line-height:18px; color:#646464; border-radius:10px; border:1px solid #eee; box-sizing:border-box; background:#f9fafb url(../images_my/bul_info.png) 18px 20px no-repeat;}
+.loginSec fieldset span input { background:url(../images_my/btn_login2.gif) no-repeat left top; }
+/*top login*/
+.loginBox span.loginBtn input { background:url(../images_my/btn_login02.gif) no-repeat;}
+/*learn*/
+.secLearn h2 { padding:39px 0 0 30px;}
+/*sub*/
+.subContentsArea .subContentsBox .subTitleBox .subSearchArea input.subSearchBtn { background:url(../images_my/btn_search.gif) no-repeat;}
+.subContentsArea .subContentsBox .subTitleBox { background:url(../images_my/img_sub03_free.jpg) no-repeat;}
+.subContentsArea .subContentsBox .typeNotice { background:url(../images_my/img_sub04_notice.jpg) no-repeat;}
+.subContentsArea .subContentsBox .typeCommerce { background:url(../images_my/img_sub_commerce.jpg) no-repeat;}
+.subContentsArea .subContentsBox .typeMypage { background:url(../images_my/img_sub_mypage.jpg) no-repeat;}
+.subContentsArea .subContentsBox .typeHealth { background:url(../images_my/img_sub_healthService.jpg) no-repeat;}
+.subContentsArea .subContentsBox .typeLearning { background:url(../images_my/img_sub_learningIntro.jpg) no-repeat;}
+.subContentsArea .subContentsBox .typeCbcintro { background:url(../images_my/img_sub_cbcIntro.jpg) no-repeat;}
+.subContentsArea .subContentsBox .typeSktintro { background:url(../images_my/img_sub_sktintroduction.jpg) no-repeat;}
+.subContentsArea .subContentsBox .typeSitemap { background:url(../images_my/img_sub_sitemap.jpg) no-repeat;}
+/*comments*/
+.commentBox .commentWrite .commentTbox { width:745px; height:65px;}
+/*input file fake*/
+.boardWrite01 tr td .buttonImg { background:url(../images_my/btn_indexing.gif) no-repeat;}
+
+
+/*0401 추가*/
+.topMenu .rightBtn a.sitemapBtn { text-indent:14px;}
+/*0403 추가*/
+.topNavArea nav ul li a.mMenu01 { background:url(../images_my/mmenu01.gif) no-repeat;}
+.topNavArea nav ul li a.mMenu02 { background:url(../images_my/mmenu02.gif) no-repeat;}
+.topNavArea nav ul li a.mMenu03 { background:url(../images_my/mmenu03.gif) no-repeat;}
+.topNavArea nav ul li a.mMenu04 { background:url(../images_my/mmenu04.gif) no-repeat;}
+.topNavArea nav ul li a:hover.mMenu01,
+.topNavArea nav ul li a.mMenu01On { background:url(../images_my/mmenu01_on.gif) no-repeat;}
+.topNavArea nav ul li a:hover.mMenu02,
+.topNavArea nav ul li a.mMenu02On { background:url(../images_my/mmenu02_on.gif) no-repeat;}
+.topNavArea nav ul li a:hover.mMenu03,
+.topNavArea nav ul li a.mMenu03On { background:url(../images_my/mmenu03_on.gif) no-repeat;}
+.topNavArea nav ul li a:hover.mMenu04,
+.topNavArea nav ul li a.mMenu04On { background:url(../images_my/mmenu04_on.gif) no-repeat;}

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- Appenders For Console -->
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- Appenders For File -->
+	<appender name="file" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="C:\eGovFrameDev\workspace\app_admin\log\log.log" />
+		<param name="Encoding" value="UTF-8" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<param name="ImmediateFlush" value="true" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %5p [%c] %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="LOG_INFORMATION" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="C:\eGovFrameDev\workspace\app_admin\log\log.log" />
+		<param name="Append" value="true"/>
+		<param name="Threshold" value="DEBUG" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%n %d{yyyy/MM/dd HH:mm:ss} %-5p %x %M(%F:%L) - %m"/>
+		</layout>
+	</appender>
+	
+	<!-- sql Loggers -->
+	<logger name="java.sql">
+		<level value="DEBUG" />
+		<appender-ref ref="LOG_INFORMATION"/>
+	</logger>
+
+	<!-- Application Loggers -->
+	<logger name="com.skt.mars">
+		<level value="WARN" />
+	</logger>
+	
+	<!-- 3rdparty Loggers -->
+	<logger name="org.springframework.core">
+		<level value="WARN" />
+	</logger>
+	
+	<logger name="org.springframework.beans">
+		<level value="info" />
+	</logger>
+	
+	<logger name="org.springframework.context">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.springframework.web">
+		<level value="WARN" />
+	</logger>
+
+	<!-- Security Loggers -->
+	<logger name="org.springframework.security">
+		<level value="WARN" />
+	</logger>
+
+	<!-- Mail Loggers -->
+	<logger name="org.springframework.mail">
+		<level value="WARN" />
+	</logger>
+
+	<!-- MultiLanguage -->
+	<logger name="org.springframework.web.servlet.i18n">
+		<level value="WARN" />
+	</logger>
+
+	<!-- Root Logger -->
+	<root>
+		<priority value="WARN" />
+		<appender-ref ref="console" />
+		<!-- appender-ref ref="file" / -->
+	</root>
+	
+</log4j:configuration>

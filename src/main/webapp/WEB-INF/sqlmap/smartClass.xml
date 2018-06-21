@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="smartClass">
+    <typeAlias alias="smartClass" type="com.skt.mars.usr.sc.SmartClass" />
+
+	<select id="smartClass.list" parameterClass="hMap" resultClass="hMap">
+	    <![CDATA[ 
+		SELECT AA.*, BB.SRVC_ID, CC.SRVC_CTGR_NM
+		  FROM ( SELECT A.*, B.CMPL_YN, INFOR.PHYSICAL_FILE_NAME, INFOR.LOGICAL_FILE_NAME
+		           FROM ( SELECT ITEM.ITEM_ID, ITEM.CNTS_NAME, ITEM.DEL_YN AS ITEM_DEL_YN, ITEM.GODS_ID, ASSETS.ASSET_ID, ASSETS.ASSET_TYPE_CD, ASSETS.ITEM_01, ASSETS.ITEM_02, ASSETS.ITEM_03, ASSETS.ITEM_04, ASSETS.ITEM_05,
+		                         ASSETS.ITEM_06, ASSETS.ITEM_07, ASSETS.ITEM_08, ASSETS.ASSET_YN, ASSETS.DEL_YN AS ASSETS_DEL_YN, ASSETS.COSTPRIC_ID
+		                    FROM TB_UAST_ITEM AS ITEM, TB_UAST_ASSETS AS ASSETS
+		                   WHERE ITEM.ASSET_ID = ASSETS.ASSET_ID
+		                     AND GODS_ID IN (SELECT GODS_ID 
+		                                       FROM TB_UAST_GODS
+		                                      WHERE SRVC_ID IN( SELECT CTGR.NODE_CATEGORY
+		                                                          FROM ( SELECT NODE.SRVC_ID AS NODE_CATEGORY, NODE.LEFT_SRVC_ID AS NODE_LFT, NODE.RIGHT_SRVC_ID AS NODE_RGT, PARENT.SRVC_ID AS PARENT_CATEGORY, PARENT.LEFT_SRVC_ID AS PARENT_LFT, 
+		                                                                        PARENT.RIGHT_SRVC_ID  AS PARENT_RGT, CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM, (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+		                                                                   FROM TB_UAST_SRVC_CTGR AS NODE, TB_UAST_SRVC_CTGR AS PARENT
+		                                                                  WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+		                                                                  GROUP BY NODE.SRVC_ID
+		                                                                  ORDER BY NODE.LEFT_SRVC_ID) AS CTGR,
+		                                                               ( SELECT NODE_LFT, NODE_RGT, DEPTH
+		                                                                   FROM ( SELECT NODE.SRVC_ID AS NODE_CATEGORY, NODE.LEFT_SRVC_ID AS NODE_LFT, NODE.RIGHT_SRVC_ID AS NODE_RGT, PARENT.SRVC_ID AS PARENT_CATEGORY, PARENT.LEFT_SRVC_ID AS PARENT_LFT, 
+		                                                                                 PARENT.RIGHT_SRVC_ID  AS PARENT_RGT, CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM, (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+		                                                                            FROM TB_UAST_SRVC_CTGR AS NODE, TB_UAST_SRVC_CTGR AS PARENT
+		                                                                           WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+		                                                                           GROUP BY NODE.SRVC_ID
+		                                                                           ORDER BY NODE.LEFT_SRVC_ID ) AS A
+		                                                                   WHERE NODE_CATEGORY = #srvcID# ) AS AA
+		                                                          WHERE CTGR.DEPTH >= AA.DEPTH AND CTGR.NODE_LFT >= AA.NODE_LFT AND CTGR.NODE_RGT <= AA.NODE_RGT)
+		                                     )
+		               ) A
+		            LEFT OUTER JOIN
+		        ( SELECT CMPL_YN, USER_ID, ITEM_ID
+		            FROM TB_UAST_USE_HS
+		           WHERE ITEM_ID IN ( SELECT ITEM.ITEM_ID
+		                                FROM TB_UAST_ITEM AS ITEM, TB_UAST_ASSETS AS ASSETS
+		                               WHERE ITEM.ASSET_ID = ASSETS.ASSET_ID
+		                                 AND GODS_ID IN (SELECT GODS_ID
+		                                                   FROM TB_UAST_GODS
+		                                                  WHERE SRVC_ID IN( SELECT CTGR.NODE_CATEGORY
+		                                                                      FROM ( SELECT NODE.SRVC_ID AS NODE_CATEGORY, NODE.LEFT_SRVC_ID AS NODE_LFT, NODE.RIGHT_SRVC_ID AS NODE_RGT, PARENT.SRVC_ID AS PARENT_CATEGORY, PARENT.LEFT_SRVC_ID AS PARENT_LFT, 
+		                                                                                    PARENT.RIGHT_SRVC_ID  AS PARENT_RGT, CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM, (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+		                                                                               FROM TB_UAST_SRVC_CTGR AS NODE, TB_UAST_SRVC_CTGR AS PARENT
+		                                                                              WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+		                                                                              GROUP BY NODE.SRVC_ID
+		                                                                              ORDER BY NODE.LEFT_SRVC_ID ) AS CTGR,
+		                                                                            ( SELECT NODE_LFT, NODE_RGT, DEPTH
+		                                                                                FROM ( SELECT NODE.SRVC_ID AS NODE_CATEGORY, NODE.LEFT_SRVC_ID AS NODE_LFT, NODE.RIGHT_SRVC_ID AS NODE_RGT, PARENT.SRVC_ID AS PARENT_CATEGORY, PARENT.LEFT_SRVC_ID AS PARENT_LFT, 
+		                                                                                              PARENT.RIGHT_SRVC_ID  AS PARENT_RGT, CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM, (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+		                                                                                         FROM TB_UAST_SRVC_CTGR AS NODE, TB_UAST_SRVC_CTGR AS PARENT
+		                                                                                        WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+		                                                                                        GROUP BY NODE.SRVC_ID
+		                                                                                        ORDER BY NODE.LEFT_SRVC_ID ) AS A
+		                                                                               WHERE NODE_CATEGORY = #srvcID# ) AS AA
+		                                                                     WHERE CTGR.DEPTH >= AA.DEPTH AND CTGR.NODE_LFT >= AA.NODE_LFT AND CTGR.NODE_RGT <= AA.NODE_RGT )
+		                                                 )
+		                             )
+		              AND USER_ID = #userID#
+		             ) AS B
+		          ON A.ITEM_ID = B.ITEM_ID
+		          LEFT OUTER JOIN
+		       (SELECT * FROM TB_UAST_FILE_INFOR WHERE FILE_TYPE = 'small') AS INFOR
+		          ON A.ASSET_ID = INFOR.TAGET_ID
+		        ) AS AA, TB_UAST_GODS AS BB, TB_UAST_SRVC_CTGR AS CC
+		 WHERE AA.GODS_ID = BB.GODS_ID AND BB.SRVC_ID = CC.SRVC_ID AND AA.ITEM_DEL_YN = 'N'
+		 ]]>
+		 ORDER BY AA.ITEM_ID DESC
+		 <isNotEmpty property="startRow">
+         LIMIT #startRow#, #listSize#
+         </isNotEmpty>
+         
+	</select>
+	
+	<select id="smartClass.list.TotalCount" parameterClass="hMap" resultClass="Integer">
+        <![CDATA[ 
+        SELECT COUNT(*)
+          FROM ( SELECT A.*, B.CMPL_YN, INFOR.PHYSICAL_FILE_NAME, INFOR.LOGICAL_FILE_NAME
+                   FROM ( SELECT ITEM.ITEM_ID, ITEM.CNTS_NAME, ITEM.DEL_YN AS ITEM_DEL_YN, ITEM.GODS_ID, ASSETS.ASSET_ID, ASSETS.ASSET_TYPE_CD, ASSETS.ITEM_01, ASSETS.ITEM_02, ASSETS.ITEM_03, ASSETS.ITEM_04, ASSETS.ITEM_05,
+                                 ASSETS.ITEM_06, ASSETS.ITEM_07, ASSETS.ITEM_08, ASSETS.ASSET_YN, ASSETS.DEL_YN AS ASSETS_DEL_YN, ASSETS.COSTPRIC_ID
+                            FROM TB_UAST_ITEM AS ITEM, TB_UAST_ASSETS AS ASSETS
+                           WHERE ITEM.ASSET_ID = ASSETS.ASSET_ID
+                             AND GODS_ID IN (SELECT GODS_ID 
+                                               FROM TB_UAST_GODS
+                                              WHERE SRVC_ID IN( SELECT CTGR.NODE_CATEGORY
+                                                                  FROM ( SELECT NODE.SRVC_ID AS NODE_CATEGORY, NODE.LEFT_SRVC_ID AS NODE_LFT, NODE.RIGHT_SRVC_ID AS NODE_RGT, PARENT.SRVC_ID AS PARENT_CATEGORY, PARENT.LEFT_SRVC_ID AS PARENT_LFT, 
+                                                                                PARENT.RIGHT_SRVC_ID  AS PARENT_RGT, CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM, (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+                                                                           FROM TB_UAST_SRVC_CTGR AS NODE, TB_UAST_SRVC_CTGR AS PARENT
+                                                                          WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+                                                                          GROUP BY NODE.SRVC_ID
+                                                                          ORDER BY NODE.LEFT_SRVC_ID) AS CTGR,
+                                                                       ( SELECT NODE_LFT, NODE_RGT, DEPTH
+                                                                           FROM ( SELECT NODE.SRVC_ID AS NODE_CATEGORY, NODE.LEFT_SRVC_ID AS NODE_LFT, NODE.RIGHT_SRVC_ID AS NODE_RGT, PARENT.SRVC_ID AS PARENT_CATEGORY, PARENT.LEFT_SRVC_ID AS PARENT_LFT, 
+                                                                                         PARENT.RIGHT_SRVC_ID  AS PARENT_RGT, CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM, (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+                                                                                    FROM TB_UAST_SRVC_CTGR AS NODE, TB_UAST_SRVC_CTGR AS PARENT
+                                                                                   WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+                                                                                   GROUP BY NODE.SRVC_ID
+                                                                                   ORDER BY NODE.LEFT_SRVC_ID ) AS A
+                                                                           WHERE NODE_CATEGORY = #srvcID# ) AS AA
+                                                                  WHERE CTGR.DEPTH >= AA.DEPTH AND CTGR.NODE_LFT >= AA.NODE_LFT AND CTGR.NODE_RGT <= AA.NODE_RGT)
+                                             )
+                       ) A
+                    LEFT OUTER JOIN
+                ( SELECT CMPL_YN, USER_ID, ITEM_ID
+                    FROM TB_UAST_USE_HS
+                   WHERE ITEM_ID IN ( SELECT ITEM.ITEM_ID
+                                        FROM TB_UAST_ITEM AS ITEM, TB_UAST_ASSETS AS ASSETS
+                                       WHERE ITEM.ASSET_ID = ASSETS.ASSET_ID
+                                         AND GODS_ID IN (SELECT GODS_ID
+                                                           FROM TB_UAST_GODS
+                                                          WHERE SRVC_ID IN( SELECT CTGR.NODE_CATEGORY
+                                                                              FROM ( SELECT NODE.SRVC_ID AS NODE_CATEGORY, NODE.LEFT_SRVC_ID AS NODE_LFT, NODE.RIGHT_SRVC_ID AS NODE_RGT, PARENT.SRVC_ID AS PARENT_CATEGORY, PARENT.LEFT_SRVC_ID AS PARENT_LFT, 
+                                                                                            PARENT.RIGHT_SRVC_ID  AS PARENT_RGT, CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM, (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+                                                                                       FROM TB_UAST_SRVC_CTGR AS NODE, TB_UAST_SRVC_CTGR AS PARENT
+                                                                                      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+                                                                                      GROUP BY NODE.SRVC_ID
+                                                                                      ORDER BY NODE.LEFT_SRVC_ID ) AS CTGR,
+                                                                                    ( SELECT NODE_LFT, NODE_RGT, DEPTH
+                                                                                        FROM ( SELECT NODE.SRVC_ID AS NODE_CATEGORY, NODE.LEFT_SRVC_ID AS NODE_LFT, NODE.RIGHT_SRVC_ID AS NODE_RGT, PARENT.SRVC_ID AS PARENT_CATEGORY, PARENT.LEFT_SRVC_ID AS PARENT_LFT, 
+                                                                                                      PARENT.RIGHT_SRVC_ID  AS PARENT_RGT, CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM, (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+                                                                                                 FROM TB_UAST_SRVC_CTGR AS NODE, TB_UAST_SRVC_CTGR AS PARENT
+                                                                                                WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+                                                                                                GROUP BY NODE.SRVC_ID
+                                                                                                ORDER BY NODE.LEFT_SRVC_ID ) AS A
+                                                                                       WHERE NODE_CATEGORY = #srvcID# ) AS AA
+                                                                             WHERE CTGR.DEPTH >= AA.DEPTH AND CTGR.NODE_LFT >= AA.NODE_LFT AND CTGR.NODE_RGT <= AA.NODE_RGT )
+                                                         )
+                                     )
+                      AND USER_ID = #userID#
+                     ) AS B
+                  ON A.ITEM_ID = B.ITEM_ID
+                  LEFT OUTER JOIN
+               (SELECT * FROM TB_UAST_FILE_INFOR WHERE FILE_TYPE = 'small') AS INFOR
+                  ON A.ASSET_ID = INFOR.TAGET_ID
+                ) AS AA, TB_UAST_GODS AS BB, TB_UAST_SRVC_CTGR AS CC 
+         WHERE AA.GODS_ID = BB.GODS_ID AND BB.SRVC_ID = CC.SRVC_ID AND AA.ITEM_DEL_YN = 'N'
+         ]]>
+	</select>
+	
+	<select id="smartClass.asset" parameterClass="hMap" resultClass="hMap">
+	    select ITEM.ITEM_ID,
+		       ITEM.CNTS_NAME,
+		       ITEM.DEL_YN,
+		       ITEM.GODS_ID,
+		       GODS.SRVC_ID,
+		       CTGR.SRVC_CTGR_NM,
+		       ASSETS.ASSET_ID,
+		       ASSETS.ASSET_ID,
+               ASSETS.ASSET_TYPE_CD,
+               ASSETS.ITEM_NM,
+               ASSETS.ITEM_01,
+               ASSETS.ITEM_02,
+               ASSETS.ITEM_03,
+               ASSETS.ITEM_04,
+               ASSETS.ITEM_05,
+               ASSETS.ITEM_06,
+               ASSETS.ITEM_07,
+               ASSETS.ITEM_08,
+               ASSETS.ITEM_09,
+               ASSETS.ASSET_YN,
+               ASSETS.DEL_YN,
+               ASSETS.COSTPRIC_ID,
+               DATE_FORMAT(ASSETS.FRST_RGST_DT, '%y/%m/%d') AS FRST_RGST_DT,
+               ASSETS.FRST_RGST_USER_ID,
+               DATE_FORMAT(ASSETS.LAST_CRCT_DT, '%y/%m/%d') AS LAST_CRCT_DT,   
+               ASSETS.LAST_CRCT_USER_ID  
+		  FROM TB_UAST_ITEM AS ITEM,
+		       TB_UAST_ASSETS AS ASSETS,
+		       TB_UAST_GODS AS GODS,
+		       TB_UAST_SRVC_CTGR AS CTGR
+		 WHERE ITEM.ASSET_ID = ASSETS.ASSET_ID
+		   AND ITEM.ITEM_ID = #itemID#
+		   AND ITEM.GODS_ID = GODS.GODS_ID
+		   AND GODS.SRVC_ID = CTGR.SRVC_ID
+	    
+	</select>
+	<select id="smartClass.assetChild" parameterClass="hMap" resultClass="hMap">
+        SELECT ITEM.ITEM_ID,
+		       ITEM.ASSET_ID,
+		       CHILD.*
+		  FROM TB_UAST_ITEM AS ITEM,
+		       TB_UAST_ASSETS_CHILD AS CHILD
+		 WHERE ITEM.ASSET_ID = CHILD.ASSET_ID
+		   AND ITEM.ITEM_ID = #itemID#
+		 <isNotEmpty property="langType">
+           AND CHILD.LANGUAGE_TYPE = #langType#
+         </isNotEmpty>
+    </select>
+    
+	<select id="smartClass.calendar" parameterClass="hMap" resultClass="hMap">
+        SELECT DATE_FORMAT(HS.END_TM, '%Y%m%d') as END_TM,
+		       SUBSTR(HS.END_TM, 7, 2) AS DAY,
+		       COUNT(HS.END_TM) AS COUNT
+		  FROM TB_UAST_USE_HS AS HS,
+		       TB_UAST_ITEM AS ITEM 
+		 WHERE HS.ITEM_ID = ITEM.ITEM_ID
+		   AND HS.GODS_ID IN(SELECT GODS_ID 
+		                    FROM TB_UAST_GODS WHERE SRVC_ID IN (select a.srvc_id
+																  FROM TB_UAST_SRVC_CTGR AS A,
+																       (SELECT LEFT_SRVC_ID , RIGHT_SRVC_ID FROM TB_UAST_SRVC_CTGR WHERE SRVC_ID = #srvcID#) AS B
+																 WHERE A.LEFT_SRVC_ID > B.LEFT_SRVC_ID
+																   AND A.RIGHT_SRVC_ID<![CDATA[ < ]]>B.RIGHT_SRVC_ID)   
+		                 )
+		   AND HS.USER_ID = #userID#
+		   AND HS.CMPL_YN = 'E'
+		   AND ITEM.DEL_YN ='N'
+		   AND SUBSTR(HS.END_TM, 1, 6) = CONCAT(#year#,#month#)
+		 GROUP BY DATE_FORMAT(HS.END_TM, '%Y%m%d')
+    </select>
+    
+	<select id="smartClass.fileRead" parameterClass="hMap" resultClass="hMap">
+        SELECT UNIQUE_KEY,
+               PHYSICAL_FILE_NAME,
+               LOGICAL_FILE_NAME,
+               PHYSICAL_FILE_DIRECTORY,
+               FILE_SIZE,
+               FILE_TYPE,
+               FILE_CONTENTTYPE,
+               PHYSICAL_THUMBNAIL_DIRECTORY,
+               PHYSICAL_THUMBNAIL_FILE_NAME,
+               TAGET_ID 
+          FROM TB_UAST_FILE_INFOR AS INFOR
+         WHERE TAGET_ID = (SELECT ASSET_ID FROM TB_UAST_ITEM WHERE ITEM_ID = #itemID#)
+         <isNotEmpty property="imageType">
+           AND FILE_TYPE = #imageType#
+         </isNotEmpty>
+    </select>
+    
+	<select id="smartClass.lessonsList" parameterClass="hMap" resultClass="hMap">
+	    SELECT ITEM.ITEM_ID,
+	           ITEM.CNTS_NAME,
+               ITEM.DEL_YN,
+               ITEM.ASSET_ID,
+               ITEM.GODS_ID,
+               ASSET.ITEM_02,
+               ASSET.ITEM_03,
+               DATE_FORMAT(HS.STRT_TM, '%y/%m/%d') AS FRST_RGST_DT,
+               DATE_FORMAT(HS.END_TM, '%y/%m/%d') AS LAST_CRCT_DT,
+		       HS.STRT_TM,
+		       HS.END_TM,
+		       HS.CMPL_YN,
+		       HS.USE_HS_NMBR_ID,
+		       GODS.SRVC_ID,
+		       CATEGORY.NAME,
+		       CATEGORY.PARENT_NAME,
+		       CATEGORY.PARENT_PARENT_NAME,
+		       ASSET.ASSET_TYPE_CD
+		  FROM TB_UAST_ITEM AS ITEM,
+		       TB_UAST_ASSETS AS ASSET,
+		       TB_UAST_GODS AS GODS,
+		       (SELECT * FROM TB_UAST_USE_HS WHERE ITEM_ID IN(
+		        SELECT ITEM_ID FROM TB_UAST_ITEM WHERE GODS_ID IN(
+		        SELECT GODS_ID FROM TB_UAST_GODS WHERE SRVC_ID IN(
+		        SELECT A.SRVC_ID
+		          FROM TB_UAST_SRVC_CTGR AS A,
+		               (SELECT SRVC_ID,LEFT_SRVC_ID,RIGHT_SRVC_ID FROM TB_UAST_SRVC_CTGR WHERE SRVC_ID = #srvcID#) AS B
+		         WHERE A.LEFT_SRVC_ID >= B.LEFT_SRVC_ID AND A.RIGHT_SRVC_ID <![CDATA[ <= ]]> B.RIGHT_SRVC_ID AND A.SRVC_ID NOT IN('25','43'))
+		        )
+		        )
+		           AND USER_ID = #userID#
+		           AND GODS_ID NOT IN('601','602')
+		        ) AS HS,
+		        (
+		        SELECT A.*, B.NAME AS PARENT_NAME, C.NAME AS PARENT_PARENT_NAME
+		          FROM (SELECT  NODE.SRVC_ID AS NODE_CATEGORY, 
+		                        NODE.LEFT_SRVC_ID AS NODE_LFT, 
+		                        NODE.RIGHT_SRVC_ID AS NODE_RGT,
+		                        CONCAT( REPEAT('', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS NAME, 
+		                        (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+		                    FROM TB_UAST_SRVC_CTGR AS NODE,
+		                         TB_UAST_SRVC_CTGR AS PARENT
+		                    WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+		                    GROUP BY NODE.SRVC_ID
+		                ) AS A,
+		                (SELECT NODE.SRVC_ID AS NODE_CATEGORY, 
+		                        NODE.LEFT_SRVC_ID AS NODE_LFT, 
+		                        NODE.RIGHT_SRVC_ID AS NODE_RGT,
+		                        CONCAT( REPEAT('', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS NAME, 
+		                        (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+		                    FROM TB_UAST_SRVC_CTGR AS NODE,
+		                         TB_UAST_SRVC_CTGR AS PARENT
+		                    WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+		                    GROUP BY NODE.SRVC_ID
+		                ) AS B,
+		                (SELECT NODE.SRVC_ID AS NODE_CATEGORY, 
+		                        NODE.LEFT_SRVC_ID AS NODE_LFT, 
+		                        NODE.RIGHT_SRVC_ID AS NODE_RGT,
+		                        CONCAT( REPEAT('', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS NAME, 
+		                        (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+		                    FROM TB_UAST_SRVC_CTGR AS NODE,
+		                         TB_UAST_SRVC_CTGR AS PARENT
+		                    WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+		                    GROUP BY NODE.SRVC_ID
+		                ) AS C
+		             WHERE 1=1
+		               AND A.NODE_LFT >= B.NODE_LFT
+		               AND A.NODE_RGT <![CDATA[ <= ]]> B.NODE_RGT
+		               AND IF(CONVERT(A.DEPTH, UNSIGNED) = 0, 0, CONVERT(A.DEPTH, UNSIGNED) - 1) = CONVERT(B.DEPTH, UNSIGNED)
+		               AND B.NODE_LFT >= C.NODE_LFT
+		               AND B.NODE_RGT <![CDATA[ <= ]]> C.NODE_RGT
+		               AND IF(CONVERT(B.DEPTH, UNSIGNED) = 0, 0, CONVERT(B.DEPTH, UNSIGNED) - 1) = CONVERT(C.DEPTH, UNSIGNED)
+		             ORDER BY A.NODE_CATEGORY
+		        ) AS CATEGORY
+		 WHERE ITEM.ITEM_ID = HS.ITEM_ID
+		   AND ITEM.ASSET_ID = ASSET.ASSET_ID
+		   AND HS.GODS_ID = GODS.GODS_ID
+		   AND GODS.SRVC_ID = CATEGORY.NODE_CATEGORY
+		   AND ASSET.ASSET_TYPE_CD IN ('00603','00604')
+		   AND ITEM.DEL_YN = 'N'
+		 <isNotEmpty property="cmplYn">
+           AND HS.CMPL_YN = #cmplYn#
+         </isNotEmpty>
+         ORDER BY HS.END_TM DESC
+         <isNotEmpty property="startRow">
+         LIMIT #startRow#, #listSize#
+         </isNotEmpty>
+	    
+	</select>
+	<select id="smartClass.lessonsList.TotalCount" parameterClass="hMap" resultClass="Integer">
+        SELECT COUNT(*)
+          FROM TB_UAST_ITEM AS ITEM,
+               TB_UAST_ASSETS AS ASSET,
+               TB_UAST_GODS AS GODS,
+               (SELECT * FROM TB_UAST_USE_HS WHERE ITEM_ID IN(
+                SELECT ITEM_ID FROM TB_UAST_ITEM WHERE GODS_ID IN(
+                SELECT GODS_ID FROM TB_UAST_GODS WHERE SRVC_ID IN(
+                SELECT A.SRVC_ID
+                  FROM TB_UAST_SRVC_CTGR AS A,
+                       (SELECT SRVC_ID,LEFT_SRVC_ID,RIGHT_SRVC_ID FROM TB_UAST_SRVC_CTGR WHERE SRVC_ID = #srvcID#) AS B
+                 WHERE A.LEFT_SRVC_ID >= B.LEFT_SRVC_ID AND A.RIGHT_SRVC_ID <![CDATA[ <= ]]> B.RIGHT_SRVC_ID AND A.SRVC_ID NOT IN('25','43'))
+                )
+                )
+                   AND USER_ID = #userID#
+                   AND GODS_ID NOT IN('601','602')
+                ) AS HS,
+                (
+                SELECT A.*, B.NAME AS PARENT_NAME, C.NAME AS PARENT_PARENT_NAME
+                  FROM (SELECT  NODE.SRVC_ID AS NODE_CATEGORY, 
+                                NODE.LEFT_SRVC_ID AS NODE_LFT, 
+                                NODE.RIGHT_SRVC_ID AS NODE_RGT,
+                                CONCAT( REPEAT('', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS NAME, 
+                                (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+                            FROM TB_UAST_SRVC_CTGR AS NODE,
+                                 TB_UAST_SRVC_CTGR AS PARENT
+                            WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+                            GROUP BY NODE.SRVC_ID
+                        ) AS A,
+                        (SELECT NODE.SRVC_ID AS NODE_CATEGORY, 
+                                NODE.LEFT_SRVC_ID AS NODE_LFT, 
+                                NODE.RIGHT_SRVC_ID AS NODE_RGT,
+                                CONCAT( REPEAT('', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS NAME, 
+                                (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+                            FROM TB_UAST_SRVC_CTGR AS NODE,
+                                 TB_UAST_SRVC_CTGR AS PARENT
+                            WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+                            GROUP BY NODE.SRVC_ID
+                        ) AS B,
+                        (SELECT NODE.SRVC_ID AS NODE_CATEGORY, 
+                                NODE.LEFT_SRVC_ID AS NODE_LFT, 
+                                NODE.RIGHT_SRVC_ID AS NODE_RGT,
+                                CONCAT( REPEAT('', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS NAME, 
+                                (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH
+                            FROM TB_UAST_SRVC_CTGR AS NODE,
+                                 TB_UAST_SRVC_CTGR AS PARENT
+                            WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+                            GROUP BY NODE.SRVC_ID
+                        ) AS C
+                     WHERE 1=1
+                       AND A.NODE_LFT >= B.NODE_LFT
+                       AND A.NODE_RGT <![CDATA[ <= ]]> B.NODE_RGT
+                       AND IF(CONVERT(A.DEPTH, UNSIGNED) = 0, 0, CONVERT(A.DEPTH, UNSIGNED) - 1) = CONVERT(B.DEPTH, UNSIGNED)
+                       AND B.NODE_LFT >= C.NODE_LFT
+                       AND B.NODE_RGT <![CDATA[ <= ]]> C.NODE_RGT
+                       AND IF(CONVERT(B.DEPTH, UNSIGNED) = 0, 0, CONVERT(B.DEPTH, UNSIGNED) - 1) = CONVERT(C.DEPTH, UNSIGNED)
+                     ORDER BY A.NODE_CATEGORY
+                ) AS CATEGORY
+         WHERE ITEM.ITEM_ID = HS.ITEM_ID
+           AND ITEM.ASSET_ID = ASSET.ASSET_ID
+           AND HS.GODS_ID = GODS.GODS_ID
+           AND GODS.SRVC_ID = CATEGORY.NODE_CATEGORY
+           AND ASSET.ASSET_TYPE_CD IN ('00603','00604')	 
+           AND ITEM.DEL_YN = 'N'
+         <isNotEmpty property="cmplYn">
+           AND HS.CMPL_YN = #cmplYn#
+         </isNotEmpty>   
+	</select>
+	
+	<select id="smartClass.checkUseHS" parameterClass="hMap" resultClass="hMap">
+	    SELECT USE_HS_NMBR_ID,
+	           CMPL_YN
+		  FROM TB_UAST_USE_HS
+		 WHERE 1=1
+		   AND USER_ID = #userID#
+		   AND GODS_ID = #godsID#
+		   AND ITEM_ID = #itemID#	    
+	</select>
+	
+	<update id="smartClass.updateUseHS"  parameterClass="hMap">
+        UPDATE TB_UAST_USE_HS SET
+            <isNotEmpty property="endTm">
+            END_TM = #endTm#,
+            </isNotEmpty>
+            CMPL_YN = #cmplYN#,
+            LAST_CRCT_DT= SYSDATE(),
+            LAST_CRCT_USER_ID = #latCrctUserID#         
+        WHERE 1=1
+           <isNotEmpty property="userID">
+           AND USER_ID = #userID#
+           </isNotEmpty>
+           <isNotEmpty property="godsID">
+           AND GODS_ID = #godsID#
+           </isNotEmpty>
+           <isNotEmpty property="itemID">
+           AND ITEM_ID = #itemID#
+           </isNotEmpty>
+           <isNotEmpty property="useHsID">
+           AND USE_HS_NMBR_ID = #useHsID#
+           </isNotEmpty>
+    </update>
+	
+	
+	<insert id="smartClass.inserUseHS" parameterClass="hMap">
+            insert into tb_uast_use_hs( 
+            USE_HS_NMBR_ID,
+            STRT_TM,
+            END_TM,
+            CMPL_YN,
+            PAY_KIND,
+            PRIC_TYPE,
+            PRIC_UNIT,
+            FLAT_RATE,
+            DEPOSIT_RATE,
+            RENT_DAY,
+            USER_ID,
+            GODS_ID,
+            ITEM_ID,
+            FRST_RGST_DT,
+            FRST_RGST_USER_ID,
+            LAST_CRCT_DT,
+            LAST_CRCT_USER_ID 
+            ) values ( 
+            #useHsNmbrID#, 
+            #startTm#, 
+            #startTm#, 
+            #cmplYN#, 
+            #payKind#, 
+            #pricType#, 
+            #pricUnit#, 
+            #flatRate#, 
+            #depositRate#, 
+            #rentDay#, 
+            #userID#, 
+            #godsID#,
+            <isNotEmpty property="itemID">
+            #itemID#,
+            </isNotEmpty>
+            <isEmpty property="itemID">
+            null,
+            </isEmpty>
+            SYSDATE(),
+            #frstRgstUserID#,
+            SYSDATE(),
+            #latCrctUserID# 
+            )
+            
+    </insert>
+    
+</sqlMap>

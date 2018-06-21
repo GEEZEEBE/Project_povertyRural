@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="myUsePage">
+    <typeAlias alias="myUsePage" type="com.skt.mars.usr.mh.MyUsePage" />
+
+	<select id="myUsePage.list" parameterClass="hMap" resultClass="hMap">
+
+        select gods.gods_name,
+		       gods.gods_dvsn,
+		       gods.gods_id,
+		       sum(hs.deposit_rate) as deposit_sum,
+		       sum(hs.flat_rate) as flat_sum,
+		       sum(hs.use_time) as use_time,
+		       count(hs.gods_id) as gods_count
+		  from tb_uast_gods as gods
+		       left outer join
+		       (select *,
+		               (cast(HOUR(TIMEDIFF(DATE_FORMAT(end_tm, '%Y-%m-%d %H'), DATE_FORMAT(strt_tm, '%Y-%m-%d %H')))*60 as unsigned)+
+		                cast(MINUTE(TIMEDIFF(DATE_FORMAT(end_tm, '%Y-%m-%d %H:%i'), DATE_FORMAT(strt_tm, '%Y-%m-%d %H:%i'))) as unsigned)) AS use_time
+		          from tb_uast_use_hs
+		         where user_id = #userID#
+		           and YEAR(FRST_RGST_DT) = #year# 
+		           AND MONTH(FRST_RGST_DT) = #month#) as hs
+		       on gods.gods_id = hs.gods_id
+		 where 1=1 
+		   and gods.gods_id in(<iterate property="godsID" conjunction=",">#godsID[]#</iterate>)
+		 group by gods.gods_id 
+	</select>
+	
+	<select id="myUsePage.srvcid.list" parameterClass="hMap" resultClass="hMap">
+
+        select gods.gods_name,
+               gods.gods_dvsn,
+               gods.gods_id,
+               sum(hs.deposit_rate) as deposit_sum,
+               sum(hs.flat_rate) as flat_sum,
+               sum(hs.use_time) as use_time,
+               count(hs.gods_id) as gods_count
+          from tb_uast_gods as gods
+               left outer join
+               (select *,
+                       (cast(HOUR(TIMEDIFF(DATE_FORMAT(end_tm, '%Y-%m-%d %H'), DATE_FORMAT(strt_tm, '%Y-%m-%d %H')))*60 as unsigned)+
+                        cast(MINUTE(TIMEDIFF(DATE_FORMAT(end_tm, '%Y-%m-%d %H:%i'), DATE_FORMAT(strt_tm, '%Y-%m-%d %H:%i'))) as unsigned)) AS use_time
+                  from tb_uast_use_hs
+                 where user_id = #userID#
+                   and YEAR(FRST_RGST_DT) = #year# 
+                   AND MONTH(FRST_RGST_DT) = #month#) as hs
+               on gods.gods_id = hs.gods_id
+         where 1=1 
+           and gods.gods_id in(select gods_id from tb_uast_gods where srvc_id in (<iterate property="godsID" conjunction=",">#godsID[]#</iterate>))
+         group by gods.gods_id 
+    </select>
+    
+	
+	<select id="myUsePage.smartDetail" parameterClass="hMap" resultClass="hMap">
+	    SELECT COUNT(*) AS COUNT 
+		  FROM TB_UAST_USE_HS 
+		 WHERE 1=1
+		   AND YEAR(FRST_RGST_DT) = #year# 
+		   AND MONTH(FRST_RGST_DT) = #month#
+		   AND USER_ID =#userID#
+		   AND GODS_ID IN(<iterate property="godsID" conjunction=",">#godsID[]#</iterate>)
+	</select>
+	<select id="myUsePage.srvcid.smartDetail" parameterClass="hMap" resultClass="hMap">
+        SELECT COUNT(*) AS COUNT 
+          FROM TB_UAST_USE_HS 
+         WHERE 1=1
+           AND YEAR(FRST_RGST_DT) = #year# 
+           AND MONTH(FRST_RGST_DT) = #month#
+           AND USER_ID =#userID#
+           AND GODS_ID IN(select gods_id from tb_uast_gods where srvc_id in (<iterate property="godsID" conjunction=",">#godsID[]#</iterate>))
+    </select>
+	
+	<select id="myUsePage.usedDetail" parameterClass="hMap" resultClass="hMap">
+        select gods.gods_name,
+		       gods.gods_dvsn,
+		       gods.gods_id,
+		       DATE_FORMAT(strt_tm, '%Y.%m.%d') as useDate,
+		       DATE_FORMAT(strt_tm, '%p %l:%i') as startTm,
+		       DATE_FORMAT(end_tm, '%p %l:%i') as endTm,
+		       hs.*
+		  from tb_uast_gods as gods,
+		       (select *,
+		               (cast(HOUR(TIMEDIFF(DATE_FORMAT(end_tm, '%Y-%m-%d %H'), DATE_FORMAT(strt_tm, '%Y-%m-%d %H')))*60 as unsigned)+
+		                cast(MINUTE(TIMEDIFF(DATE_FORMAT(end_tm, '%Y-%m-%d %H:%i'), DATE_FORMAT(strt_tm, '%Y-%m-%d %H:%i'))) as unsigned)) AS use_time
+		          from tb_uast_use_hs
+		         where user_id = #userID#
+		           and YEAR(FRST_RGST_DT) = #year# 
+		           AND MONTH(FRST_RGST_DT) = #month#) as hs
+		 where 1=1
+		   and gods.gods_id = hs.gods_id 
+		   and gods.gods_id in(<iterate property="godsID" conjunction=",">#godsID[]#</iterate>)
+		 order by useDate desc
+    </select>
+    
+	<select id="myUsePage.rentTabletList" parameterClass="hMap" resultClass="hMap">
+	    select 
+		       date_format(hs.strt_tm, '%y.%m.%d') as strt_tm,
+		       date_format(hs.end_tm, '%y.%m.%d') as end_tm,
+		       item.cnts_name
+		  from tb_uast_use_hs as hs,
+		       tb_uast_item as item
+		 where 1=1
+		   and hs.item_id = item.item_id
+		   and hs.gods_id in(<iterate property="godsID" conjunction=",">#godsID[]#</iterate>)
+		   and hs.user_id = #userID#
+		   and year(hs.frst_rgst_dt) = #year# 
+		   and month(hs.frst_rgst_dt) = #month#
+	</select>
+	
+	<select id="myUsePage.cmList" parameterClass="hMap" resultClass="hMap">
+	     SELECT
+			    SUMMERY.SERVICE_NAME
+			    ,_ORDERBY
+			    , CASE
+			        WHEN SUMMERY.SRVC_ID = 33 THEN SUMMERY.SNS
+			        WHEN SUMMERY.SRVC_ID = 38 THEN SUMMERY.LABEL_COLOR
+			        WHEN SUMMERY.SRVC_ID = 39 THEN SUMMERY.LABEL_BW
+			        WHEN SUMMERY.SRVC_ID = 40 THEN SUMMERY.BROCHURE_COLOR
+			        WHEN SUMMERY.SRVC_ID = 41 THEN SUMMERY.BROCHURE_BW
+			    END as CNT
+			    , CASE
+			        WHEN SUMMERY.SRVC_ID = 33 THEN SUMMERY.SNS_MONEY
+			        WHEN SUMMERY.SRVC_ID = 38 THEN SUMMERY.LABEL_COLOR_MONEY
+			        WHEN SUMMERY.SRVC_ID = 39 THEN SUMMERY.LABEL_BW_MONEY
+			        WHEN SUMMERY.SRVC_ID = 40 THEN SUMMERY.BROCHURE_COLOR_MONEY
+			        WHEN SUMMERY.SRVC_ID = 41 THEN SUMMERY.BROCHURE_BW_MONEY
+			    END as MONEY
+			FROM (
+			    SELECT GODS.SRVC_ID
+			            , CASE
+			                when GODS.SRVC_ID = 33 then 'SNS Promotion'
+			                when GODS.SRVC_ID = 38 then 'Print Label(Color)'
+			                when GODS.SRVC_ID = 39 then <![CDATA['Print Label(B&W)']]>
+			                when GODS.SRVC_ID = 40 then 'Print Brochure(Color)'
+			                when GODS.SRVC_ID = 41 then <![CDATA['Print Brochure(B&W)']]>
+			            END as SERVICE_NAME
+			            , CASE
+			                    when GODS.SRVC_ID = 33 then 1
+			                    when GODS.SRVC_ID = 38 then 2
+			                    when GODS.SRVC_ID = 39 then 3
+			                    when GODS.SRVC_ID = 40 then 4
+			                    when GODS.SRVC_ID = 41 then 5
+			            END as _ORDERBY
+			            , sum( if( GODS.SRVC_ID = 33, USE_HS.rent_day, 0 ) ) AS SNS
+			            , sum( if( GODS.SRVC_ID = 38, USE_HS.rent_day, 0 ) ) AS LABEL_COLOR
+			            , sum( if( GODS.SRVC_ID = 39, USE_HS.rent_day, 0 ) ) AS LABEL_BW
+			            , sum( if( GODS.SRVC_ID = 40, USE_HS.rent_day, 0 ) ) AS BROCHURE_COLOR
+			            , sum( if( GODS.SRVC_ID = 41, USE_HS.rent_day, 0 ) ) AS BROCHURE_BW
+			            , sum( if( GODS.SRVC_ID = 33, USE_HS.rent_day * USE_HS.FLAT_RATE, 0 ) ) AS SNS_MONEY
+			            , sum( if( GODS.SRVC_ID = 38, USE_HS.rent_day * USE_HS.FLAT_RATE, 0 ) ) AS LABEL_COLOR_MONEY
+			            , sum( if( GODS.SRVC_ID = 39, USE_HS.rent_day * USE_HS.FLAT_RATE, 0 ) ) AS LABEL_BW_MONEY
+			            , sum( if( GODS.SRVC_ID = 40, USE_HS.rent_day * USE_HS.FLAT_RATE, 0 ) ) AS BROCHURE_COLOR_MONEY
+			            , sum( if( GODS.SRVC_ID = 41, USE_HS.rent_day * USE_HS.FLAT_RATE, 0 ) ) AS BROCHURE_BW_MONEY
+			    FROM
+			        (SELECT * FROM TB_UAST_USE_HS WHERE YEAR(FRST_RGST_DT) = #year# AND MONTH(FRST_RGST_DT) = #moth# AND USER_ID = #userID# ) USE_HS
+			            RIGHT JOIN
+			            (
+			                SELECT PRO.*
+			                FROM TB_UAST_GODS PRO
+			                WHERE PRO.SRVC_ID IN (33,38,39,40,41)
+			            ) GODS
+			            ON USE_HS.GODS_ID = GODS.GODS_ID
+			            WHERE 1 = 1
+			            GROUP BY CASE
+			                        when GODS.SRVC_ID = 33 then 'Promotion'
+			                        when GODS.SRVC_ID = 38 then 'Label color Print'
+			                        when GODS.SRVC_ID = 39 then 'Label bw Print'
+			                        when GODS.SRVC_ID = 40 then 'Brochure color Print'
+			                        when GODS.SRVC_ID = 41 then 'Brochure bw Print'
+			                    END
+			            ) SUMMERY
+			            ORDER BY SUMMERY._ORDERBY
+	</select>
+	<select id="myUsePage.cmDetail" parameterClass="hMap" resultClass="hMap">
+	     select
+			    a1.MONTHLY
+			    ,a1.FACEBOOK
+			    ,a1.BLOGSPOT
+			    ,a1.TWITTER
+			    ,a1.LABEL_COLOR_HS+a1.LABEL_BW_HS as LABEL
+			    ,a1.BROCHURE_COLOR_HS+a1.BROCHURE_BW_HS as BROCHURE
+			    ,a1.LABEL_COLOR_JANG as LABEL_COLOR
+			    ,a1.LABEL_BW_JANG as LABEL_BW
+			    ,a1.BROCHURE_COLOR_JANG as BROCHURE_COLOR
+			    ,a1.BROCHURE_BW_JANG as BROCHURE_BW
+			from
+			(
+			SELECT
+			    month(USE_HS.FRST_RGST_DT) as MONTHLY
+			    , sum( if( GODS.SRVC_ID = 33 and gods.gods_name='facebook', 1, 0 ) ) AS facebook
+			    , sum( if( GODS.SRVC_ID = 33 and gods.gods_name='blogspot', 1, 0 ) ) AS blogspot
+			    , sum( if( GODS.SRVC_ID = 33 and gods.gods_name='twitter', 1, 0 ) ) AS twitter
+			    , sum( if( GODS.SRVC_ID = 38, 1, 0 ) ) AS LABEL_COLOR_HS
+			    , sum( if( GODS.SRVC_ID = 39, 1, 0 ) ) AS LABEL_BW_HS
+			    , sum( if( GODS.SRVC_ID = 40, 1, 0 ) ) AS BROCHURE_COLOR_HS
+			    , sum( if( GODS.SRVC_ID = 41, 1, 0 ) ) AS BROCHURE_BW_HS
+			    , sum( if( GODS.SRVC_ID = 38, use_hs.rent_day, 0 ) ) AS LABEL_COLOR_JANG
+			    , sum( if( GODS.SRVC_ID = 39, use_hs.rent_day, 0 ) ) AS LABEL_BW_JANG
+			    , sum( if( GODS.SRVC_ID = 40, use_hs.rent_day, 0 ) ) AS BROCHURE_COLOR_JANG
+			    , sum( if( GODS.SRVC_ID = 41, use_hs.rent_day, 0 ) ) AS BROCHURE_BW_JANG
+			FROM TB_UAST_USE_HS USE_HS
+			    , TB_UAST_GODS GODS
+			WHERE 1 = 1
+			AND year(USE_HS.FRST_RGST_DT) = #year#  
+			AND month(USE_HS.FRST_RGST_DT) = #month# 
+			AND GODS.GODS_ID = USE_HS.GODS_ID
+			AND GODS.SRVC_ID in (33, 38, 39, 40, 41)
+			AND GODS.DEL_YN='N'
+			AND USE_HS.USER_ID = #userID#
+			group by month(USE_HS.FRST_RGST_DT)
+			) a1
+	</select>
+    
+    
+</sqlMap>

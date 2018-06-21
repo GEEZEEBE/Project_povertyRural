@@ -1,0 +1,1616 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="states">
+	<select id="states.operatorUserList_back" resultClass="hMap">
+		select b.USER_ID,b.NAME 
+		from (
+				select USE_HS.USER_ID
+				from TB_UAST_GODS GODS
+						, TB_UAST_USE_HS USE_HS
+				where 1 = 1
+				and gods.srvc_id in (29,30)
+				and gods.gods_id = USE_HS.gods_id
+				and gods.del_yn = 'N'
+				AND USE_HS.STRT_TM LIKE CONCAT(#strYear#,#strMonth#,'%')	<!-- terms -->
+				GROUP BY USE_HS.USER_ID
+		) a
+		,TB_UAST_USER b 
+		where 1 = 1
+		and a.USER_ID=b.USER_ID 
+		and b.del_yn = 'N'
+		order by a.USER_ID
+		  
+	</select>
+	<select id="states.operatorUserList" resultClass="hMap">
+		SELECT USER_LIST.*
+		FROM (
+		        select USER.USER_ID as USER_ID, USER.NAME as NAME, 0 cnt
+		        from TB_UAST_USER USER 
+		        where 1=1
+		        and USER.AUTHORITY IN ('S')
+		        UNION ALL
+				select a.USER_ID,a.NAME,b.cnt from
+		        TB_UAST_USER a
+		        right join (
+		        		select USE_HS.USER_ID, count(USE_HS.USER_ID) as cnt
+						from TB_UAST_GODS GODS
+								, TB_UAST_USE_HS USE_HS
+						where 1 = 1
+						and gods.srvc_id in (29,30)
+						and gods.gods_id = USE_HS.gods_id
+						and gods.del_yn IN ('N','D','H')
+					<isEmpty property="strMonth">
+						AND USE_HS.STRT_TM LIKE CONCAT(#strYear#,'%')	<!-- terms -->
+					</isEmpty>
+					<isNotEmpty property="strMonth">
+						AND USE_HS.STRT_TM LIKE CONCAT(#strYear#,#strMonth#,'%')	<!-- terms -->
+					</isNotEmpty>
+						GROUP BY USE_HS.USER_ID       
+		        ) as b on a.USER_ID=b.USER_ID
+		        where 1=1
+		        and a.DEL_YN='N'
+		        and a.AUTHORITY IN ('M')
+		       ) USER_LIST 
+		        order by USER_LIST.USER_ID asc
+        
+	</select>
+	
+	<select id="states.sumComul" resultClass="hMap">				
+			SELECT SUMMERY.*
+				                        FROM (
+                                                SELECT GODS.SRVC_ID
+                                                        ,        CASE
+                                                                        when GODS.SRVC_ID = 28 then 'CBC Membership'
+                                                                        when GODS.SRVC_ID = 31 then 'CBC Usage'
+                                                                        when GODS.SRVC_ID = 29 OR GODS.SRVC_ID = 30 then 'User Portal'
+                                                                        when GODS.SRVC_ID = 23 or GODS.SRVC_ID = 24 or GODS.SRVC_ID = 25 or GODS.SRVC_ID = 43 then 'Learning'
+                                                                        when GODS.SRVC_ID = 33 or GODS.SRVC_ID = 38 or GODS.SRVC_ID = 39
+                                                                                or GODS.SRVC_ID = 40 or GODS.SRVC_ID = 41
+                                                                                then 'Commerce'
+                                                                        when GODS.SRVC_ID = 36 then 'Health'
+                                                                END as SERVICE_TITLE
+                                                        ,        CASE
+                                                                        when GODS.SRVC_ID = 28 then 'No. of Registered Members'
+                                                                        when GODS.SRVC_ID = 31 AND GODS.vituralKey = 31 then 'Hours of PC Use'
+                                                                        when GODS.SRVC_ID = 31 AND GODS.vituralKey <![CDATA[<> ]]> 31 then 'Number of PC users'
+                                                                        when GODS.SRVC_ID = 29 OR GODS.SRVC_ID = 30  then 'Visitor Count'
+                                                                        when GODS.SRVC_ID = 23 then 'VOD Views'
+                                                                        when GODS.SRVC_ID = 25 then 'VOD Downloads'
+                                                                        when GODS.SRVC_ID = 24 then 'No. of e-Book Searches'
+                                                                        when GODS.SRVC_ID = 43 then 'e-Book Downloads'
+                                                                        when GODS.SRVC_ID = 33 then 'Register of promotions'
+                                                                        when GODS.SRVC_ID = 38 OR GODS.SRVC_ID = 39 then 'No. of Labels Printed'
+                                                                        when GODS.SRVC_ID = 40 OR GODS.SRVC_ID = 41 then 'No. of Brochures Printed'
+                                                                        when GODS.SRVC_ID = 36 then 'Print measurement result'
+                                                                END as SERVICE_NAME
+                                                        ,        CASE
+                                                                        when GODS.SRVC_ID = 31 AND GODS.vituralKey <![CDATA[= ]]> 31 then round( sum(   (UNIX_TIMESTAMP(STR_TO_DATE(USE_HS.END_TM,'%Y%m%d%H%i%s'))-UNIX_TIMESTAMP(STR_TO_DATE(USE_HS.STRT_TM,'%Y%m%d%H%i%s'))) / (60*60)  ), 1)
+                                                                        <!-- when GODS.SRVC_ID = 28 then (select Count(*) from tb_uast_user where AUTHORITY='U' AND DEL_YN='N') -->
+                                                                        else COUNT(USE_HS.GODS_ID)
+                                                                END as CNT
+                                                        ,        CASE
+                                                                        when GODS.SRVC_ID = 28 then 1
+                                                                        when GODS.SRVC_ID = 31 AND GODS.vituralKey = 31 then 2
+                                                                        when GODS.SRVC_ID = 31 AND GODS.vituralKey <![CDATA[<> ]]> 31 then 3
+                                                                        when GODS.SRVC_ID = 29 OR GODS.SRVC_ID = 30  then 4
+                                                                        when GODS.SRVC_ID = 23 then 5
+                                                                        when GODS.SRVC_ID = 25 then 6
+                                                                        when GODS.SRVC_ID = 24 then 7
+                                                                        when GODS.SRVC_ID = 43 then 8
+                                                                        when GODS.SRVC_ID = 33 then 9
+                                                                        when GODS.SRVC_ID = 38 OR GODS.SRVC_ID = 39 then 10
+                                                                        when GODS.SRVC_ID = 40 OR GODS.SRVC_ID = 41 then 11
+                                                                        when GODS.SRVC_ID = 36 then 12
+                                                                END as _ORDERBY
+                                                FROM TB_UAST_USE_HS USE_HS
+                                        RIGHT JOIN (SELECT PRO.*, 0 vituralKey
+                                                                FROM TB_UAST_GODS PRO
+                                                                WHERE PRO.SRVC_ID IN (23,24,25,28,30,31,33,36,38,39,40,41,43)        <!--  Need to change 1 couse of download eBook -->
+                                                                UNION ALL
+                                                                <!-- Vitural srvc_id for Duration of PC usage (cross date 31 of Number of PC users) -->
+                                                                SELECT PRO.*, 31 vituralKey
+                                                                FROM TB_UAST_GODS PRO
+                                                                WHERE PRO.SRVC_ID IN (31)
+                                                                ) GODS
+                                        ON USE_HS.GODS_ID = GODS.GODS_ID
+                                WHERE 1 = 1
+                                GROUP BY
+                                                                CASE
+                                                                        when GODS.SRVC_ID = 28 then 'No. of Registered Members'
+                                                                        when GODS.SRVC_ID = 31 AND GODS.vituralKey = 31 then 'Hours of PC Use'
+                                                                        when GODS.SRVC_ID = 31 AND GODS.vituralKey <![CDATA[<> ]]> 31 then 'Number of PC users'
+                                                                        when GODS.SRVC_ID = 29 OR GODS.SRVC_ID = 30  then 'Visitor Count'
+                                                                        when GODS.SRVC_ID = 23 then 'VOD Views'
+                                                                        when GODS.SRVC_ID = 25 then 'VOD Downloads'
+                                                                        when GODS.SRVC_ID = 24 then 'No. of e-Book Searches'
+                                                                        when GODS.SRVC_ID = 43 then 'e-Book Downloads'
+                                                                        when GODS.SRVC_ID = 33 then 'Register of promotions'
+                                                                        when GODS.SRVC_ID = 38 OR GODS.SRVC_ID = 39 then 'No. of Labels Printed'
+                                                                        when GODS.SRVC_ID = 40 OR GODS.SRVC_ID = 41 then 'No. of Brochures Printed'
+                                                                        when GODS.SRVC_ID = 36 then 'Print measurement result'
+                                                                END
+                        ) SUMMERY
+                        ORDER BY SUMMERY._ORDERBY
+
+								
+	</select>
+	
+	<select id="states.operatorMonth" resultClass="hMap" remapResults="true">				
+			SELECT CASE cal.MONTHLY
+						when '01' then 'Jan'
+						when '02' then 'Feb'
+						when '03' then 'Mar'
+						when '04' then 'Apr'
+						when '05' then 'May'
+						when '06' then 'Jun'
+						when '07' then 'Jul'
+						when '08' then 'Aug'
+						when '09' then 'Sep'
+						when '10' then 'Oct'
+						when '11' then 'Nov'
+						when '12' then 'Dec'
+					END AS MONTH_NAME
+				$strHeadUserIdList$		
+			FROM (
+						SELECT USE_HS.MONTHLY
+								$strMax$							
+						from (
+							select SUBSTR(USE_HiS.STRT_TM,5,2) MONTHLY
+								$strIfuserID$
+									from TB_UAST_GODS GODS
+											, TB_UAST_USE_HS USE_HiS
+									where 1 = 1
+									and gods.srvc_id in (29,30)
+									and gods.gods_id = USE_HiS.gods_id
+									and gods.del_yn IN ('N','D','H')
+									AND USE_HiS.STRT_TM LIKE CONCAT(#strYear#,'%')	<!-- terms -->
+									GROUP BY SUBSTR(USE_HiS.STRT_TM,5,2), USE_HiS.USER_ID
+						) USE_HS
+						GROUP BY USE_HS.MONTHLY
+				) USE_H
+				right join (
+					<!-- GET ALL MONTH -->
+					SELECT LPAD( rnum.rownum, 2, '0' ) AS MONTHLY
+					FROM (
+						SELECT @rownum:=@rownum+1 rownum
+						FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 12
+					) rnum	
+				) cal
+				on USE_H.MONTHLY = cal.MONTHLY
+
+	</select>	
+	
+	 <!-- remove cache for left query -->
+	<select id="states.operatorDay" resultClass="hMap" remapResults="true">				
+			SELECT cal.*
+						$strHeadUserIdList$		
+			FROM (
+						SELECT USE_HS.END_DAILY
+									$strMax$
+						from (
+							select SUBSTR(USE_HiS.STRT_TM,1,8) END_DAILY
+								$strIfuserID$
+									from TB_UAST_GODS GODS
+											, TB_UAST_USE_HS USE_HiS
+									where 1 = 1
+									and gods.srvc_id in (29,30)
+									and gods.gods_id = USE_HiS.gods_id
+									and gods.del_yn IN ('N','D','H')
+									AND USE_HiS.STRT_TM LIKE CONCAT(#strYear#,#strMonth#,'%')	<!-- terms -->
+									GROUP BY SUBSTR(USE_HiS.STRT_TM,1,8), USE_HiS.USER_ID
+						) USE_HS
+						GROUP BY USE_HS.END_DAILY
+				) USE_HIS
+				right join (
+					<!-- GET ALL DAY OF MONTH -->
+					SELECT DAILY, REPLACE(DAILY,'-','') END_DAILY, WEEKDAY(DAILY) DAY, DAYNAME(DAILY) DAYNAME
+					FROM (
+						SELECT DATE_ADD(CONCAT(#strYear#,#strMonth#,'01'), INTERVAL rownum-1 DAY) AS DAILY	<!-- terms '201303'-->
+						FROM (
+							SELECT @rownum:=@rownum+1 rownum
+							FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 31
+						) rnum
+						WHERE rownum <![CDATA[<= ]]> (SELECT DAYOFMONTH(LAST_DAY(CONCAT(#strYear#,#strMonth#,'01'))))	<!-- terms '201303'-->
+					) CAL_DAILY
+				) cal
+				on USE_HIS.END_DAILY = cal.END_DAILY
+
+	</select>	
+	<select id="states.trMonth" resultClass="hMap">				
+		SELECT CASE cal.MONTHLY
+					when '01' then 'Jan'
+					when '02' then 'Feb'
+					when '03' then 'Mar'
+					when '04' then 'Apr'
+					when '05' then 'May'
+					when '06' then 'Jun'
+					when '07' then 'Jul'
+					when '08' then 'Aug'
+					when '09' then 'Sep'
+					when '10' then 'Oct'
+					when '11' then 'Nov'
+					when '12' then 'Dec'
+				END AS MONTH_NAME
+			, TRAFFIC.*		
+		FROM (
+				SELECT SUBSTR(TRA.Y_MONTH,5,2) MONTHLY
+				          ,(sum(TOT_UP) - sum(WIFI_UP)) LAN_UP
+                          , (sum(TOT_DOWN) - sum(WIFI_DOWN)) LAN_DOWN
+                          ,sum(TOT_UP) as TOT_UP
+                          ,sum(TOT_DOWN) as TOT_DOWN
+                          ,sum(WIFI_UP) as WIFI_UP
+                          ,sum(WIFI_DOWN) as WIFI_DOWN 
+				FROM (
+					SELECT SUBSTR(END_TM,1,6) AS Y_MONTH
+						, SUM(TX_OCTET) TOT_UP, SUM(RX_OCTET) TOT_DOWN
+						, 0 WIFI_UP, 0 WIFI_DOWN
+					FROM AC_STAT_TRAFFIC
+					WHERE END_TM LIKE CONCAT(#strYear#,'%')		
+					GROUP BY SUBSTR(END_TM,1,6)
+					UNION ALL
+					SELECT SUBSTR(END_TM,1,6) AS Y_MONTH
+						, 0 TOT_UP, 0 TOT_DOWN
+						, SUM(TX_BYTE) WIFI_UP, SUM(RX_BYTE) WIFI_DOWN
+					FROM AC_STAT_AP_TRAFFIC
+					WHERE END_TM LIKE CONCAT(#strYear#,'%')	
+					GROUP BY SUBSTR(END_TM,1,6)
+				) TRA
+				GROUP BY Y_MONTH
+			) TRAFFIC
+			right join (
+				
+				SELECT LPAD( rnum.rownum, 2, '0' ) AS MONTHLY
+				FROM (
+					SELECT @rownum:=@rownum+1 rownum
+					FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 12
+				) rnum	
+			) cal
+			on TRAFFIC.MONTHLY = cal.MONTHLY
+		WHERE 1 = 1
+	</select>	
+	<select id="states.trDay" resultClass="hMap">				
+			 SELECT	cal.*, TRAFFIC.*		
+				FROM (
+					SELECT 
+					      (sum(TOT_UP) - sum(WIFI_UP)) LAN_UP
+                          , (sum(TOT_DOWN) - sum(WIFI_DOWN)) LAN_DOWN
+                          ,sum(TOT_UP) as TOT_UP
+                          ,sum(TOT_DOWN) as TOT_DOWN
+                          ,sum(WIFI_UP) as WIFI_UP
+                          ,sum(WIFI_DOWN) as WIFI_DOWN
+                          ,Y_M_DAY as END_DAILY
+					FROM (
+						SELECT SUBSTR(END_TM,1,8) AS Y_M_DAY
+							, SUM(TX_OCTET) TOT_UP, SUM(RX_OCTET) TOT_DOWN
+							, 0 WIFI_UP, 0 WIFI_DOWN
+						FROM AC_STAT_TRAFFIC
+						WHERE END_TM LIKE CONCAT(#strYear#,#strMonth#,'%')	
+						GROUP BY SUBSTR(END_TM,1,8)	
+						UNION ALL
+						SELECT SUBSTR(END_TM,1,8) AS Y_M_DAY
+							, 0 TOT_UP, 0 TOT_DOWN
+							, SUM(TX_BYTE) WIFI_UP, SUM(RX_BYTE) WIFI_DOWN
+						FROM AC_STAT_AP_TRAFFIC
+                        WHERE END_TM LIKE CONCAT(#strYear#,#strMonth#,'%')
+						GROUP BY SUBSTR(END_TM,1,8)	
+					) TRA
+					GROUP BY Y_M_DAY
+				) TRAFFIC
+				right join (
+					
+					SELECT DAILY, REPLACE(DAILY,'-','') END_DAILY, WEEKDAY(DAILY) DAY, DAYNAME(DAILY) DAYNAME
+					FROM (
+						SELECT DATE_ADD(CONCAT(#strYear#,#strMonth#,'01'), INTERVAL rownum-1 DAY) AS DAILY	
+						FROM (
+							SELECT @rownum:=@rownum+1 rownum
+							FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 31
+						) rnum
+						WHERE rownum <![CDATA[<= ]]>  (SELECT DAYOFMONTH(LAST_DAY(CONCAT(#strYear#,#strMonth#,'01'))))	
+					) CAL_DAILY
+				) cal
+				on TRAFFIC.END_DAILY = cal.END_DAILY
+	</select>	
+	<select id="states.trTime" resultClass="hMap">				
+				
+				SELECT	cal.*, TRAFFIC.* FROM (
+                   	SELECT (sum(TOT_UP) - sum(WIFI_UP)) LAN_UP
+                          , (sum(TOT_DOWN) - sum(WIFI_DOWN)) LAN_DOWN
+                          ,sum(TOT_UP) as TOT_UP
+                          ,sum(TOT_DOWN) as TOT_DOWN
+                          ,sum(WIFI_UP) as WIFI_UP
+                          ,sum(WIFI_DOWN) as WIFI_DOWN
+                          ,END_HOUR
+                      FROM (
+                          SELECT SUBSTR(END_TM,9,2) AS END_HOUR
+                              , SUM(TX_OCTET) TOT_UP, SUM(RX_OCTET) TOT_DOWN
+                              , 0 WIFI_UP, 0 WIFI_DOWN
+                          FROM AC_STAT_TRAFFIC
+                          WHERE END_TM BETWEEN CONCAT(#strSdate#,'000000') AND CONCAT(#strEdate#,'245959')	
+                          GROUP BY SUBSTR(END_TM,9,2)	
+                          UNION ALL
+                          SELECT SUBSTR(END_TM,9,2) AS END_HOUR
+                              , 0 TOT_UP, 0 TOT_DOWN
+                              , SUM(TX_BYTE) WIFI_UP, SUM(RX_BYTE) WIFI_DOWN
+                          FROM AC_STAT_AP_TRAFFIC
+                          WHERE END_TM BETWEEN CONCAT(#strSdate#,'000000') AND CONCAT(#strEdate#,'245959')	
+                          GROUP BY SUBSTR(END_TM,9,2)	
+                      ) TRA
+                      GROUP BY END_HOUR
+                ) TRAFFIC    
+                right join (
+					SELECT LPAD( rnum.rownum, 2, '0' ) AS END_HOUR
+					FROM (
+						SELECT @rownum:=@rownum+1 rownum
+						FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 24
+					) rnum	
+				) cal
+				on TRAFFIC.END_HOUR = cal.END_HOUR
+		
+	</select>
+	<select id="states.spMonth" resultClass="hMap">				
+		SELECT CASE cal.MONTHLY
+					when '01' then 'Jan'
+					when '02' then 'Feb'
+					when '03' then 'Mar'
+					when '04' then 'Apr'
+					when '05' then 'May'
+					when '06' then 'Jun'
+					when '07' then 'Jul'
+					when '08' then 'Aug'
+					when '09' then 'Sep'
+					when '10' then 'Oct'
+					when '11' then 'Nov'
+					when '12' then 'Dec'
+				END AS MONTH_NAME
+			, TRAFFIC.*		
+		FROM (
+				SELECT SUBSTR(TRA.Y_MONTH,5,2) MONTHLY
+					,max(TOT_UP) as TOT_UP_MAX
+					,min(TOT_UP) as TOT_UP_MIN
+					,max(TOT_DOWN) as TOT_DOWN_MAX
+					,min(TOT_DOWN) as TOT_DOWN_MIN
+					,max(WIFI_UP) as WIFI_UP_MAX
+					,min(WIFI_UP) as WIFI_UP_MIN
+					,max(WIFI_DOWN) as WIFI_DOWN_MAX
+					,min(WIFI_DOWN) as WIFI_DOWN_MIN
+					,max((TOT_UP - WIFI_UP)) as LAN_UP_MAX
+					,min((TOT_UP - WIFI_UP)) as LAN_UP_MIN
+					,max((TOT_DOWN - WIFI_DOWN)) as LAN_DOWN_MAX
+					,min((TOT_DOWN - WIFI_DOWN)) as LAN_DOWN_MIN
+					,TRA.* 
+				FROM (
+					SELECT SUBSTR(END_TM,1,6) AS Y_MONTH
+						, TX_OCTET TOT_UP, RX_OCTET TOT_DOWN
+						, 0 WIFI_UP, 0 WIFI_DOWN
+					FROM AC_STAT_TRAFFIC
+					WHERE END_TM LIKE CONCAT(#strYear#,'%')	<!-- terms -->
+					UNION ALL
+					SELECT SUBSTR(END_TM,1,6) AS Y_MONTH
+						, 0 TOT_UP, 0 TOT_DOWN
+						, TX_BYTE WIFI_UP, RX_BYTE WIFI_DOWN
+					FROM AC_STAT_AP_TRAFFIC
+					WHERE END_TM LIKE CONCAT(#strYear#,'%')	<!-- terms -->
+				) TRA
+				GROUP BY Y_MONTH
+			) TRAFFIC
+			right join (
+				<!-- GET ALL MONTH -->
+				SELECT LPAD( rnum.rownum, 2, '0' ) AS MONTHLY
+				FROM (
+					SELECT @rownum:=@rownum+1 rownum
+					FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 12
+				) rnum	
+			) cal
+			on TRAFFIC.MONTHLY = cal.MONTHLY
+		WHERE 1 = 1
+	</select>	
+	<select id="states.spDay" resultClass="hMap">				
+			SELECT	cal.*
+				, TRAFFIC.*		
+			FROM (
+					SELECT Y_M_DAY as  END_DAILY
+					,max(TOT_UP) as TOT_UP_MAX
+					,min(TOT_UP) as TOT_UP_MIN
+					,max(TOT_DOWN) as TOT_DOWN_MAX
+					,min(TOT_DOWN) as TOT_DOWN_MIN
+					,max(WIFI_UP) as WIFI_UP_MAX
+					,min(WIFI_UP) as WIFI_UP_MIN
+					,max(WIFI_DOWN) as WIFI_DOWN_MAX
+					,min(WIFI_DOWN) as WIFI_DOWN_MIN
+					,max((TOT_UP - WIFI_UP)) as LAN_UP_MAX
+					,min((TOT_UP - WIFI_UP)) as LAN_UP_MIN
+					,max((TOT_DOWN - WIFI_DOWN)) as LAN_DOWN_MAX
+					,min((TOT_DOWN - WIFI_DOWN)) as LAN_DOWN_MIN
+					,TRA.* 
+					FROM (
+						SELECT SUBSTR(END_TM,1,8) AS Y_M_DAY
+							, TX_OCTET TOT_UP, RX_OCTET TOT_DOWN
+							, 0 WIFI_UP, 0 WIFI_DOWN
+						FROM AC_STAT_TRAFFIC
+						WHERE END_TM LIKE CONCAT(#strYear#,#strMonth#,'%')	<!-- terms '200801' -->
+						UNION ALL
+						SELECT SUBSTR(END_TM,1,8) AS Y_M_DAY
+							, 0 TOT_UP, 0 TOT_DOWN
+							, TX_BYTE WIFI_UP, RX_BYTE WIFI_DOWN
+						FROM AC_STAT_AP_TRAFFIC
+						WHERE END_TM LIKE CONCAT(#strYear#,#strMonth#,'%')	<!-- terms '200801' -->
+					) TRA
+					GROUP BY Y_M_DAY
+				) TRAFFIC
+				right join (
+					<!-- GET ALL DAY OF MONTH -->
+					SELECT DAILY, REPLACE(DAILY,'-','') END_DAILY, WEEKDAY(DAILY) DAY, DAYNAME(DAILY) DAYNAME
+					FROM (
+						SELECT DATE_ADD(CONCAT(#strYear#,#strMonth#,'01'), INTERVAL rownum-1 DAY) AS DAILY	<!-- terms '200801'-->
+						FROM (
+							SELECT @rownum:=@rownum+1 rownum
+							FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 31
+						) rnum
+						WHERE rownum <![CDATA[<= ]]> (SELECT DAYOFMONTH(LAST_DAY(CONCAT(#strYear#,#strMonth#,'01'))))	<!-- terms '200801' -->
+					) CAL_DAILY
+				) cal
+				on TRAFFIC.END_DAILY = cal.END_DAILY
+	</select>	
+	<select id="states.spTime" resultClass="hMap">				
+				SELECT	cal.*
+				, TRAFFIC.*		
+			FROM (
+					SELECT
+							max(TOT_UP) as TOT_UP_MAX
+							,min(TOT_UP) as TOT_UP_MIN
+							,max(TOT_DOWN) as TOT_DOWN_MAX
+							,min(TOT_DOWN) as TOT_DOWN_MIN
+							,max(WIFI_UP) as WIFI_UP_MAX
+							,min(WIFI_UP) as WIFI_UP_MIN
+							,max(WIFI_DOWN) as WIFI_DOWN_MAX
+							,min(WIFI_DOWN) as WIFI_DOWN_MIN
+							,max((TOT_UP - WIFI_UP)) as LAN_UP_MAX
+							,min((TOT_UP - WIFI_UP)) as LAN_UP_MIN
+							,max((TOT_DOWN - WIFI_DOWN)) as LAN_DOWN_MAX
+							,min((TOT_DOWN - WIFI_DOWN)) as LAN_DOWN_MIN
+							,TRA.* 
+					FROM (
+						SELECT SUBSTR(END_TM,9,2) AS END_HOUR
+							, TX_OCTET TOT_UP, RX_OCTET TOT_DOWN
+							, 0 WIFI_UP, 0 WIFI_DOWN
+						FROM AC_STAT_TRAFFIC
+						WHERE END_TM BETWEEN CONCAT(#strSdate#,'000000') AND CONCAT(#strEdate#,'245959')	<!-- terms '20080101' '20080103'-->
+						UNION ALL
+						SELECT SUBSTR(END_TM,9,2) AS _HOUR
+							, 0 TOT_UP, 0 TOT_DOWN
+							, TX_BYTE WIFI_UP, RX_BYTE WIFI_DOWN
+						FROM AC_STAT_AP_TRAFFIC
+						WHERE END_TM BETWEEN CONCAT(#strSdate#,'000000') AND CONCAT(#strEdate#,'245959')	<!-- terms '20080101' '20080103'-->
+					) TRA
+					<!-- GROUP BY END_HOUR -->
+					GROUP BY END_HOUR
+				) TRAFFIC
+				right join (
+					<!-- GET ALL HOURS -->
+					SELECT LPAD( rnum.rownum, 2, '0' ) AS END_HOUR
+					FROM (
+						SELECT @rownum:=@rownum+1 rownum
+						FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 24
+					) rnum	
+				) cal
+				on TRAFFIC.END_HOUR = cal.END_HOUR
+	</select>	
+	
+	<select id="states.acMonth" resultClass="hMap">				
+		SELECT CASE cal.MONTHLY
+					when '01' then 'Jan'
+					when '02' then 'Feb'
+					when '03' then 'Mar'
+					when '04' then 'Apr'
+					when '05' then 'May'
+					when '06' then 'Jun'
+					when '07' then 'Jul'
+					when '08' then 'Aug'
+					when '09' then 'Sep'
+					when '10' then 'Oct'
+					when '11' then 'Nov'
+					when '12' then 'Dec'
+				END AS MONTH_NAME
+			, ALARM.*		
+		FROM (
+				SELECT SUBSTR(END_TM, 5, 2) MONTH		
+					, SUM(CPU_CRITICAL) as CPU_CRITICAL
+					, SUM(CPU_MAJOR) as CPU_MAJOR
+		            , SUM(CPU_MAJOR) as CPU_MINOR
+					, SUM(MEMORY_CRITICAL) as MEMORY_CRITICAL
+					, SUM(MEMORY_MAJOR) as MEMORY_MAJOR
+					, SUM(MEMORY_MINOR) as MEMORY_MINOR
+					, SUM(DISK_CRITICAL) as DISK_CRITICAL
+					, SUM(DISK_MAJOR) as DISK_MAJOR
+					, SUM(DISK_MINOR) as DISK_MINOR
+				FROM AC_STAT_ALARM
+				WHERE END_TM LIKE CONCAT(#strYear#,'%')	<!-- terms -->
+				GROUP BY SUBSTR(END_TM, 5,2)
+			) ALARM
+			right join (
+				<!-- GET ALL MONTH -->
+				SELECT LPAD( rnum.rownum, 2, '0' ) AS MONTHLY
+				FROM (
+					SELECT @rownum:=@rownum+1 rownum
+					FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 12
+				) rnum	
+			) cal
+			on ALARM.MONTH = cal.MONTHLY
+		WHERE 1 = 1
+	</select>	
+	<select id="states.acDay" resultClass="hMap">				
+			SELECT	CAL_DAILY.*, ALARM.*		
+			FROM (
+					SELECT SUBSTR(END_TM, 1, 8) END_DAILY		
+						, SUM(CPU_CRITICAL) as CPU_CRITICAL
+						, SUM(CPU_MAJOR) as CPU_MAJOR
+			            , SUM(CPU_MAJOR) as CPU_MINOR
+						, SUM(MEMORY_CRITICAL) as MEMORY_CRITICAL
+						, SUM(MEMORY_MAJOR) as MEMORY_MAJOR
+						, SUM(MEMORY_MINOR) as MEMORY_MINOR
+						, SUM(DISK_CRITICAL) as DISK_CRITICAL
+						, SUM(DISK_MAJOR) as DISK_MAJOR
+						, SUM(DISK_MINOR) as DISK_MINOR
+					FROM AC_STAT_ALARM
+					WHERE END_TM LIKE CONCAT(#strYear#,#strMonth#,'%')	<!-- terms -->
+					GROUP BY SUBSTR(END_TM, 1, 8)	<!-- yyyyMMdd -->
+				) ALARM
+				right join (
+					<!-- GET ALL DAY OF MONTH -->
+					SELECT DAILY, REPLACE(DAILY,'-','') END_DAILY, WEEKDAY(DAILY) DAY, DAYNAME(DAILY) DAYNAME
+					FROM (
+						SELECT DATE_ADD(CONCAT(#strYear#,#strMonth#,'01'), INTERVAL rownum-1 DAY) AS DAILY	<!-- terms -->
+						FROM (
+							SELECT @rownum:=@rownum+1 rownum
+							FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 31
+						) rnum
+						WHERE rownum <![CDATA[<= ]]> (SELECT DAYOFMONTH(LAST_DAY(CONCAT(#strYear#,#strMonth#,'01'))))	<!-- terms --> 
+					) cal
+				) CAL_DAILY
+				on ALARM.END_DAILY = CAL_DAILY.END_DAILY
+			WHERE 1 = 1
+	</select>	
+	<select id="states.acTime" resultClass="hMap">				
+			SELECT	CAL.*, ALARM.*		
+			FROM (
+					SELECT SUBSTR(END_TM, 8, 2) END_HOUR		
+						, SUM(CPU_CRITICAL) as CPU_CRITICAL
+						, SUM(CPU_MAJOR) as CPU_MAJOR
+			            , SUM(CPU_MAJOR) as CPU_MINOR
+						, SUM(MEMORY_CRITICAL) as MEMORY_CRITICAL
+						, SUM(MEMORY_MAJOR) as MEMORY_MAJOR
+						, SUM(MEMORY_MINOR) as MEMORY_MINOR
+						, SUM(DISK_CRITICAL) as DISK_CRITICAL
+						, SUM(DISK_MAJOR) as DISK_MAJOR
+						, SUM(DISK_MINOR) as DISK_MINOR
+					FROM AC_STAT_ALARM
+					WHERE END_TM BETWEEN CONCAT(#strSdate#,'000000') AND CONCAT(#strEdate#,'245959')	<!-- terms -->
+					GROUP BY SUBSTR(END_TM, 8, 2)	<!-- hh -->
+				) ALARM
+				right join (
+					<!-- GET ALL HOURS -->
+					SELECT LPAD( rnum.rownum, 2, '0' ) AS END_HOUR
+					FROM (
+						SELECT @rownum:=@rownum+1 rownum
+						FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 24
+					) rnum	
+				) cal
+				on ALARM.END_HOUR = cal.END_HOUR
+			WHERE 1 = 1
+	</select>	
+	
+
+	<select id="states.basicUseMonth" resultClass="hMap">				
+		SELECT CASE cal.MONTHLY
+					when '01' then 'Jan'
+					when '02' then 'Feb'
+					when '03' then 'Mar'
+					when '04' then 'Apr'
+					when '05' then 'May'
+					when '06' then 'Jun'
+					when '07' then 'Jul'
+					when '08' then 'Aug'
+					when '09' then 'Sep'
+					when '10' then 'Oct'
+					when '11' then 'Nov'
+					when '12' then 'Dec'
+				END AS MONTH_NAME
+			, USE_HIS.*		
+		FROM (	
+				SELECT 
+					SUBSTR(USE_HS.END_TM, 5, 2) MONTH
+					, sum( if( GODS.SRVC_ID = 28, 1, 0 ) ) AS NEW_CBC
+					, sum( if( GODS.SRVC_ID = 31, 
+										(cast(HOUR(TIMEDIFF(DATE_FORMAT(end_tm, '%Y-%m-%d %H'), DATE_FORMAT(strt_tm, '%Y-%m-%d %H')))*60 as unsigned)+
+				                        cast(MINUTE(TIMEDIFF(DATE_FORMAT(end_tm, '%Y-%m-%d %H:%i'), DATE_FORMAT(strt_tm, '%Y-%m-%d %H:%i'))) as unsigned))
+				                        , 0 ) ) AS USED_PC
+					, sum( if( GODS.SRVC_ID = 31, 1, 0 ) ) AS USED_CNT_PC
+					, sum( if( GODS.SRVC_ID = 30, 1, 0 ) ) AS USED_USER
+				FROM TB_UAST_USE_HS USE_HS
+					, TB_UAST_GODS GODS
+				WHERE 1 = 1
+				AND USE_HS.END_TM LIKE CONCAT(#strYear#,'%')	
+				AND GODS.GODS_ID = USE_HS.GODS_ID
+				AND GODS.SRVC_ID in (28, 30, 31)
+				AND USE_HS.USER_ID IN (
+										SELECT USER_ID 
+										FROM TB_UAST_USER 
+										WHERE 1 = 1 
+										AND 1 = 1 
+										<isNotEmpty property="strSex">AND SEX = #strSex#</isNotEmpty> 
+										<isNotEmpty property="strAge1"> 
+										AND BIRTHDAY BETWEEN DATE_ADD(CURDATE(), INTERVAL -(#strAge2#) YEAR) AND DATE_ADD(CURDATE(), INTERVAL -(#strAge1#) YEAR)
+										</isNotEmpty>
+									)	
+				GROUP BY SUBSTR(USE_HS.END_TM, 5, 2)
+			) USE_HIS
+			right join (
+				
+				SELECT LPAD( rnum.rownum, 2, '0' ) AS MONTHLY
+				FROM (
+					SELECT @rownum:=@rownum+1 rownum
+					FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 12
+				) rnum	
+			) cal
+			on USE_HIS.MONTH = cal.MONTHLY
+	</select>
+	<select id="states.basicUseDay" resultClass="hMap">				
+			SELECT CAL_DAILY.*, USE_HIS.*
+			FROM (
+					
+					SELECT 
+						SUBSTR(USE_HS.END_TM, 1, 8) END_DAILY
+						, sum( if( GODS.SRVC_ID = 28, 1, 0 ) ) AS NEW_CBC
+						, sum( if( GODS.SRVC_ID = 31, 
+											(cast(HOUR(TIMEDIFF(DATE_FORMAT(end_tm, '%Y-%m-%d %H'), DATE_FORMAT(strt_tm, '%Y-%m-%d %H')))*60 as unsigned)+
+					                        cast(MINUTE(TIMEDIFF(DATE_FORMAT(end_tm, '%Y-%m-%d %H:%i'), DATE_FORMAT(strt_tm, '%Y-%m-%d %H:%i'))) as unsigned))
+					                        , 0 ) ) AS USED_PC
+						, sum( if( GODS.SRVC_ID = 31, 1, 0 ) ) AS USED_CNT_PC
+						, sum( if( GODS.SRVC_ID = 30, 1, 0 ) ) AS USED_USER
+					FROM TB_UAST_USE_HS USE_HS
+						, TB_UAST_GODS GODS
+					WHERE 1 = 1
+					AND USE_HS.END_TM LIKE CONCAT(#strYear#,#strMonth#,'%')	
+					AND GODS.GODS_ID = USE_HS.GODS_ID
+					AND GODS.SRVC_ID in (28, 30, 31)
+					AND USE_HS.USER_ID IN (SELECT USER_ID 
+										FROM TB_UAST_USER 
+										WHERE 1 = 1 
+										AND 1 = 1 
+										<isNotEmpty property="strSex">AND SEX = #strSex#</isNotEmpty>
+										<isNotEmpty property="strAge1"> 
+										AND BIRTHDAY BETWEEN DATE_ADD(CURDATE(), INTERVAL -(#strAge2#) YEAR) AND DATE_ADD(CURDATE(), INTERVAL -(#strAge1#) YEAR)
+										</isNotEmpty>
+										)	
+					GROUP BY SUBSTR(USE_HS.END_TM, 1, 8)
+				) USE_HIS		
+				right join (
+					
+					SELECT DAILY, REPLACE(DAILY,'-','') END_DAILY, WEEKDAY(DAILY) DAY, DAYNAME(DAILY) DAYNAME
+					FROM (
+						SELECT DATE_ADD(CONCAT(#strYear#,#strMonth#,'01'), INTERVAL rownum-1 DAY) AS DAILY
+						FROM (
+							SELECT @rownum:=@rownum+1 rownum
+							FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 31
+						) rnum
+						WHERE rownum <![CDATA[<= ]]>(SELECT DAYOFMONTH(LAST_DAY(CONCAT(#strYear#,#strMonth#,'01'))))	
+					) cal
+				) CAL_DAILY
+				on USE_HIS.END_DAILY = CAL_DAILY.END_DAILY
+	</select>
+	<select id="states.basicPayMonth" resultClass="hMap">				
+		SELECT CASE cal.MONTHLY
+					when '01' then 'Jan'
+					when '02' then 'Feb'
+					when '03' then 'Mar'
+					when '04' then 'Apr'
+					when '05' then 'May'
+					when '06' then 'Jun'
+					when '07' then 'Jul'
+					when '08' then 'Aug'
+					when '09' then 'Sep'
+					when '10' then 'Oct'
+					when '11' then 'Nov'
+					when '12' then 'Dec'
+				END AS MONTH_NAME
+			, PAY.*		
+		FROM (		
+				SELECT SUBSTR(PAYMENT.MONTHLY, 5, 2) MONTH		
+					, SUM(PAYMENT.DPST_AMT)	PAY_AMT
+					, SUM(PAYMENT.RETURN_AMT) REFUND_AMT
+				FROM (
+					
+					SELECT DSPT_DT MONTHLY, DPST_AMT, 0 RETURN_AMT
+					FROM TB_UAST_PAYMENT
+					WHERE 1 = 1
+					AND DSPT_DT LIKE CONCAT(#strYear#,'%')
+					UNION ALL
+					
+					SELECT RETURN_DT MONTHLY, 0, RETURN_AMT
+					FROM TB_UAST_PAYMENT
+					WHERE 1 = 1
+					AND RETURN_DT LIKE CONCAT(#strYear#,'%')
+				) PAYMENT
+				GROUP BY SUBSTR(PAYMENT.MONTHLY, 5, 2)
+			) PAY
+			right join (
+				
+				SELECT LPAD( rnum.rownum, 2, '0' ) AS MONTHLY
+				FROM (
+					SELECT @rownum:=@rownum+1 rownum
+					FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 12
+				) rnum	
+			) cal
+			on PAY.MONTH = cal.MONTHLY
+	
+	</select>
+	<select id="states.basicAsset" resultClass="hMap">				
+			Select @rownum:=@rownum+1 AS rownum 
+					,assets.*
+			from TB_UAST_ASSETS assets
+				,(SELECT @rownum:=0) r
+			WHERE 1 = 1
+			AND DEL_YN = 'N'
+			<isNotEmpty property="strAssetTypeCD">AND ASSET_TYPE_CD = #strAssetTypeCD#</isNotEmpty>	
+	</select>
+		
+	<select id="states.learnMonth" resultClass="hMap">				
+		SELECT CASE cal.MONTHLY
+            when '01' then 'Jan'
+            when '02' then 'Feb'
+            when '03' then 'Mar'
+            when '04' then 'Apr'
+            when '05' then 'May'
+            when '06' then 'Jun'
+            when '07' then 'Jul'
+            when '08' then 'Aug'
+            when '09' then 'Sep'
+            when '10' then 'Oct'
+            when '11' then 'Nov'
+            when '12' then 'Dec'
+        END AS MONTH_NAME
+    	, USE_HIS.*
+		FROM (
+				SELECT 
+				SUBSTR(USE_HS.END_TM, 5, 2) MONTH
+					, sum( if( GODS.SRVC_ID = 28, 1, 0 ) ) AS basic
+					, sum( if( GODS.SRVC_ID = 23, 1, 0 ) ) AS VOD
+					, sum( if( GODS.SRVC_ID = 24, 1, 0 ) ) AS EBOOK
+				FROM TB_UAST_USE_HS USE_HS
+					, TB_UAST_GODS GODS
+				WHERE 1 = 1
+				AND USE_HS.END_TM LIKE CONCAT(#strYear#,'%')
+				AND USE_HS.GODS_ID = GODS.GODS_ID 
+				AND GODS.SRVC_ID IN(28,23,24)
+				AND USE_HS.USER_ID IN (SELECT USER_ID 
+									FROM TB_UAST_USER 
+									WHERE 1 = 1 
+									AND 1 = 1 <isNotEmpty property="strSex">AND SEX = #strSex#</isNotEmpty> 
+									<isNotEmpty property="strAge1"> 
+										AND BIRTHDAY BETWEEN DATE_ADD(CURDATE(), INTERVAL -(#strAge2#) YEAR) AND DATE_ADD(CURDATE(), INTERVAL -(#strAge1#) YEAR)
+									</isNotEmpty>									
+									)	
+				GROUP BY SUBSTR(USE_HS.END_TM, 5, 2)
+			) USE_HIS
+    		right join (
+        		SELECT LPAD( rnum.rownum, 2, '0' ) AS MONTHLY
+        		FROM (
+            		SELECT @rownum:=@rownum+1 rownum
+            		FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 12
+        		) rnum  
+    		) cal
+    		on USE_HIS.MONTH = cal.MONTHLY
+	</select>
+	<select id="states.smartMonth" resultClass="hMap">
+		SELECT CASE cal.MONTHLY
+		            when '01' then 'Jan'
+		            when '02' then 'Feb'
+		            when '03' then 'Mar'
+		            when '04' then 'Apr'
+		            when '05' then 'May'
+		            when '06' then 'Jun'
+		            when '07' then 'Jul'
+		            when '08' then 'Aug'
+		            when '09' then 'Sep'
+		            when '10' then 'Oct'
+		            when '11' then 'Nov'
+		            when '12' then 'Dec'
+		        END AS MONTH_NAME
+		    , USE_HIS.*     
+		FROM (  
+		        SELECT 
+		            SUBSTR(USE_HS.END_TM, 5, 2) MONTH
+		            <![CDATA[
+		            , sum( if( GODS.SRVC_ID >= 4 and GODS.SRVC_ID<= 8, 1, 0 ) ) AS 'YEAR4'
+		            , sum( if( GODS.SRVC_ID >= 9 and GODS.SRVC_ID<= 13, 1, 0 ) ) AS 'YEAR5'
+		            , sum( if( GODS.SRVC_ID >= 14 and GODS.SRVC_ID<= 18, 1, 0 ) ) AS 'YEAR6'
+		            , sum( if( GODS.SRVC_ID >= 19 and GODS.SRVC_ID<= 21, 1, 0 ) ) AS 'AdvancedEnglish'
+		            , sum( if( GODS.SRVC_ID = 42, 1, 0 ) ) AS 'InteractiveWhiteBoard'
+		            ]]>
+		        FROM TB_UAST_USE_HS USE_HS
+		            , TB_UAST_GODS GODS
+		        WHERE 1 = 1
+		        AND USE_HS.END_TM LIKE CONCAT(#strYear#,'%')    
+		        AND GODS.GODS_ID = USE_HS.GODS_ID
+		        AND GODS.SRVC_ID between 3 and 43
+		        AND USE_HS.USER_ID IN (SELECT USER_ID 
+		                            FROM TB_UAST_USER 
+		                            WHERE 1 = 1 
+		                            AND 1 = 1 
+		                            <isNotEmpty property="strSex">AND SEX = #strSex#</isNotEmpty> 
+                                    <isNotEmpty property="strAge1"> 
+                                        AND BIRTHDAY BETWEEN DATE_ADD(CURDATE(), INTERVAL -(#strAge2#) YEAR) AND DATE_ADD(CURDATE(), INTERVAL -(#strAge1#) YEAR)
+                                    </isNotEmpty>
+		                            ) 
+		        GROUP BY SUBSTR(USE_HS.END_TM, 5, 2)
+		    ) USE_HIS
+		    right join (
+		        SELECT LPAD( rnum.rownum, 2, '0' ) AS MONTHLY
+		        FROM (
+		            SELECT @rownum:=@rownum+1 rownum
+		            FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 12
+		        ) rnum  
+		    ) cal
+		    on USE_HIS.MONTH = cal.MONTHLY
+	    
+	    
+	    <!-- 
+		SELECT CASE 
+				<![CDATA[
+					when CTGR.SRVC_ID >= 3 and CTGR.SRVC_ID <= 8 then 'YEAR4'
+					when CTGR.SRVC_ID >= 9 and CTGR.SRVC_ID <= 13 then 'YEAR5'
+					when CTGR.SRVC_ID >= 14 and CTGR.SRVC_ID <= 18 then 'YEAR6'
+					when CTGR.SRVC_ID >= 19 and CTGR.SRVC_ID <= 21 then 'Advanced English'
+					when CTGR.SRVC_ID >= 22 and CTGR.SRVC_ID <= 22 then 'Interactive White Board'	
+				]]>
+				END AS SRVC_NAME
+			, USE_HIS.*
+		FROM (
+				
+				SELECT GODS.SRVC_ID
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '01', 1, 0 ) ) AS jan
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '02', 1, 0 ) ) AS feb
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '03', 1, 0 ) ) AS mar
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '04', 1, 0 ) ) AS apr
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '05', 1, 0 ) ) AS may
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '06', 1, 0 ) ) AS jun
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '07', 1, 0 ) ) AS jul
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '08', 1, 0 ) ) AS aug
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '09', 1, 0 ) ) AS sep
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '10', 1, 0 ) ) AS oct
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '11', 1, 0 ) ) AS nov
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '12', 1, 0 ) ) AS dece
+				FROM TB_UAST_USE_HS USE_HS
+					, TB_UAST_GODS GODS
+				WHERE 1 = 1
+				AND USE_HS.END_TM LIKE CONCAT('%',#strYear#,'%')	
+				AND USE_HS.CMPL_YN = 'E'
+				AND USE_HS.GODS_ID = GODS.GODS_ID 
+				AND GODS.SRVC_ID between 3 and 21
+				AND USE_HS.USER_ID IN (SELECT USER_ID 
+									FROM TB_UAST_USER 
+									WHERE 1 = 1 
+									AND 1 = 1 <isNotEmpty property="strSex">OR SEX = #strSex#</isNotEmpty> 
+									<isNotEmpty property="strAge1"> 
+										OR BIRTHDAY BETWEEN DATE_ADD(CURDATE(), INTERVAL -(#strAge1#) YEAR) AND DATE_ADD(CURDATE(), INTERVAL -(#strAge2#) YEAR)
+									</isNotEmpty>
+									)	
+				GROUP BY GODS.SRVC_ID
+			) USE_HIS
+			right join (
+				SELECT *
+				FROM TB_UAST_SRVC_CTGR 
+				WHERE SRVC_ID between 3 and 22
+			) CTGR
+			on USE_HIS.SRVC_ID = CTGR.SRVC_ID
+		WHERE 1 = 1	
+		GROUP BY CASE 
+				<![CDATA[
+					when CTGR.SRVC_ID >= 3 and CTGR.SRVC_ID <= 8 then 'YEAR4'
+					when CTGR.SRVC_ID >= 9 and CTGR.SRVC_ID <= 13 then 'YEAR5'
+					when CTGR.SRVC_ID >= 14 and CTGR.SRVC_ID <= 18 then 'YEAR6'
+					when CTGR.SRVC_ID >= 19 and CTGR.SRVC_ID <= 21 then 'Advanced English'
+					when CTGR.SRVC_ID >= 21 and CTGR.SRVC_ID <= 21 then 'Interactive White Board'	
+				]]>
+				END 
+		ORDER BY CTGR.SRVC_ID	
+		 -->
+	</select>
+
+	<select id="states.smartMonth.years" resultClass="hMap">
+		SELECT CASE cal.MONTHLY
+		            when '01' then 'Jan'
+		            when '02' then 'Feb'
+		            when '03' then 'Mar'
+		            when '04' then 'Apr'
+		            when '05' then 'May'
+		            when '06' then 'Jun'
+		            when '07' then 'Jul'
+		            when '08' then 'Aug'
+		            when '09' then 'Sep'
+		            when '10' then 'Oct'
+		            when '11' then 'Nov'
+		            when '12' then 'Dec'
+		        END AS MONTH_NAME
+		    , USE_HIS.*     
+		FROM (  
+		        SELECT 
+		            SUBSTR(USE_HS.END_TM, 5, 2) MONTH
+		            <![CDATA[
+		            , sum( if( GODS.SRVC_ID =  #strNum#+1, 1, 0 ) ) AS 'YearsEnglish'
+		            , sum( if( GODS.SRVC_ID = #strNum#+2, 1, 0 ) ) AS 'YearsMathematics'
+		            , sum( if( GODS.SRVC_ID = #strNum#+3, 1, 0 ) ) AS 'YearsScience'
+		            , sum( if( GODS.SRVC_ID = #strNum#+4, 1, 0 ) ) AS 'YearsMalay'
+		            ]]>
+		        FROM TB_UAST_USE_HS USE_HS
+		            , TB_UAST_GODS GODS
+		        WHERE 1 = 1
+		        AND USE_HS.END_TM LIKE CONCAT(#strYear#,'%')    
+		        AND GODS.GODS_ID = USE_HS.GODS_ID
+				AND GODS.SRVC_ID between #strNum#+1 and #strNum#+4
+		        AND USE_HS.USER_ID IN (SELECT USER_ID 
+		                            FROM TB_UAST_USER 
+		                            WHERE 1 = 1 
+		                            AND 1 = 1 
+		                            <isNotEmpty property="strSex">AND SEX = #strSex#</isNotEmpty> 
+                                    <isNotEmpty property="strAge1"> 
+                                        AND BIRTHDAY BETWEEN DATE_ADD(CURDATE(), INTERVAL -(#strAge2#) YEAR) AND DATE_ADD(CURDATE(), INTERVAL -(#strAge1#) YEAR)
+                                    </isNotEmpty>
+		                            ) 
+		        GROUP BY SUBSTR(USE_HS.END_TM, 5, 2)
+		    ) USE_HIS
+		    right join (
+		        SELECT LPAD( rnum.rownum, 2, '0' ) AS MONTHLY
+		        FROM (
+		            SELECT @rownum:=@rownum+1 rownum
+		            FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 12
+		        ) rnum  
+		    ) cal
+		    on USE_HIS.MONTH = cal.MONTHLY
+	</select>
+
+	<select id="states.smartMonth.year4" resultClass="hMap">
+		SELECT CASE cal.MONTHLY
+		            when '01' then 'Jan'
+		            when '02' then 'Feb'
+		            when '03' then 'Mar'
+		            when '04' then 'Apr'
+		            when '05' then 'May'
+		            when '06' then 'Jun'
+		            when '07' then 'Jul'
+		            when '08' then 'Aug'
+		            when '09' then 'Sep'
+		            when '10' then 'Oct'
+		            when '11' then 'Nov'
+		            when '12' then 'Dec'
+		        END AS MONTH_NAME
+		    , USE_HIS.*     
+		FROM (  
+		        SELECT 
+		            SUBSTR(USE_HS.END_TM, 5, 2) MONTH
+		            <![CDATA[
+		            , sum( if( GODS.SRVC_ID = 5, 1, 0 ) ) AS 'Year4 English'
+		            , sum( if( GODS.SRVC_ID = 6, 1, 0 ) ) AS 'Year4 Mathematics'
+		            , sum( if( GODS.SRVC_ID = 7, 1, 0 ) ) AS 'Year4 Science'
+		            , sum( if( GODS.SRVC_ID = 8, 1, 0 ) ) AS 'Year4 Malay'
+		            ]]>
+		        FROM TB_UAST_USE_HS USE_HS
+		            , TB_UAST_GODS GODS
+		        WHERE 1 = 1
+		        AND USE_HS.END_TM LIKE CONCAT(#strYear#,'%')    
+		        AND GODS.GODS_ID = USE_HS.GODS_ID
+		        AND GODS.SRVC_ID between 5 and 8
+		        AND USE_HS.USER_ID IN (SELECT USER_ID 
+		                            FROM TB_UAST_USER 
+		                            WHERE 1 = 1 
+		                            AND 1 = 1 
+		                            <isNotEmpty property="strSex">AND SEX = #strSex#</isNotEmpty> 
+                                    <isNotEmpty property="strAge1"> 
+                                        AND BIRTHDAY BETWEEN DATE_ADD(CURDATE(), INTERVAL -(#strAge2#) YEAR) AND DATE_ADD(CURDATE(), INTERVAL -(#strAge1#) YEAR)
+                                    </isNotEmpty>
+		                            ) 
+		        GROUP BY SUBSTR(USE_HS.END_TM, 5, 2)
+		    ) USE_HIS
+		    right join (
+		        SELECT LPAD( rnum.rownum, 2, '0' ) AS MONTHLY
+		        FROM (
+		            SELECT @rownum:=@rownum+1 rownum
+		            FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 12
+		        ) rnum  
+		    ) cal
+		    on USE_HIS.MONTH = cal.MONTHLY
+	</select>
+
+	<select id="states.smartMonth.year5" resultClass="hMap">
+		SELECT CASE cal.MONTHLY
+		            when '01' then 'Jan'
+		            when '02' then 'Feb'
+		            when '03' then 'Mar'
+		            when '04' then 'Apr'
+		            when '05' then 'May'
+		            when '06' then 'Jun'
+		            when '07' then 'Jul'
+		            when '08' then 'Aug'
+		            when '09' then 'Sep'
+		            when '10' then 'Oct'
+		            when '11' then 'Nov'
+		            when '12' then 'Dec'
+		        END AS MONTH_NAME
+		    , USE_HIS.*     
+		FROM (  
+		        SELECT 
+		            SUBSTR(USE_HS.END_TM, 5, 2) MONTH
+		            <![CDATA[
+		            , sum( if( GODS.SRVC_ID = 10, 1, 0 ) ) AS 'Year5 English'
+		            , sum( if( GODS.SRVC_ID = 11, 1, 0 ) ) AS 'Year5 Mathematics'
+		            , sum( if( GODS.SRVC_ID = 12, 1, 0 ) ) AS 'Year5 Science'
+		            , sum( if( GODS.SRVC_ID = 13, 1, 0 ) ) AS 'Year5 Malay'
+		            ]]>
+		        FROM TB_UAST_USE_HS USE_HS
+		            , TB_UAST_GODS GODS
+		        WHERE 1 = 1
+		        AND USE_HS.END_TM LIKE CONCAT(#strYear#,'%')    
+		        AND GODS.GODS_ID = USE_HS.GODS_ID
+		        AND GODS.SRVC_ID between 5 and 8
+		        AND USE_HS.USER_ID IN (SELECT USER_ID 
+		                            FROM TB_UAST_USER 
+		                            WHERE 1 = 1 
+		                            AND 1 = 1 
+		                            <isNotEmpty property="strSex">AND SEX = #strSex#</isNotEmpty> 
+                                    <isNotEmpty property="strAge1"> 
+                                        AND BIRTHDAY BETWEEN DATE_ADD(CURDATE(), INTERVAL -(#strAge2#) YEAR) AND DATE_ADD(CURDATE(), INTERVAL -(#strAge1#) YEAR)
+                                    </isNotEmpty>
+		                            ) 
+		        GROUP BY SUBSTR(USE_HS.END_TM, 5, 2)
+		    ) USE_HIS
+		    right join (
+		        SELECT LPAD( rnum.rownum, 2, '0' ) AS MONTHLY
+		        FROM (
+		            SELECT @rownum:=@rownum+1 rownum
+		            FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 12
+		        ) rnum  
+		    ) cal
+		    on USE_HIS.MONTH = cal.MONTHLY
+	</select>
+
+	<select id="states.smartMonth.year6" resultClass="hMap">
+		SELECT CASE cal.MONTHLY
+		            when '01' then 'Jan'
+		            when '02' then 'Feb'
+		            when '03' then 'Mar'
+		            when '04' then 'Apr'
+		            when '05' then 'May'
+		            when '06' then 'Jun'
+		            when '07' then 'Jul'
+		            when '08' then 'Aug'
+		            when '09' then 'Sep'
+		            when '10' then 'Oct'
+		            when '11' then 'Nov'
+		            when '12' then 'Dec'
+		        END AS MONTH_NAME
+		    , USE_HIS.*     
+		FROM (  
+		        SELECT 
+		            SUBSTR(USE_HS.END_TM, 5, 2) MONTH
+		            <![CDATA[
+		            , sum( if( GODS.SRVC_ID = 15, 1, 0 ) ) AS 'Year6 English'
+		            , sum( if( GODS.SRVC_ID = 16, 1, 0 ) ) AS 'Year6 Mathematics'
+		            , sum( if( GODS.SRVC_ID = 17, 1, 0 ) ) AS 'Year6 Science'
+		            , sum( if( GODS.SRVC_ID = 18, 1, 0 ) ) AS 'Year6 Malay'
+		            ]]>
+		        FROM TB_UAST_USE_HS USE_HS
+		            , TB_UAST_GODS GODS
+		        WHERE 1 = 1
+		        AND USE_HS.END_TM LIKE CONCAT(#strYear#,'%')    
+		        AND GODS.GODS_ID = USE_HS.GODS_ID
+		        AND GODS.SRVC_ID between 5 and 8
+		        AND USE_HS.USER_ID IN (SELECT USER_ID 
+		                            FROM TB_UAST_USER 
+		                            WHERE 1 = 1 
+		                            AND 1 = 1 
+		                            <isNotEmpty property="strSex">AND SEX = #strSex#</isNotEmpty> 
+                                    <isNotEmpty property="strAge1"> 
+                                        AND BIRTHDAY BETWEEN DATE_ADD(CURDATE(), INTERVAL -(#strAge2#) YEAR) AND DATE_ADD(CURDATE(), INTERVAL -(#strAge1#) YEAR)
+                                    </isNotEmpty>
+		                            ) 
+		        GROUP BY SUBSTR(USE_HS.END_TM, 5, 2)
+		    ) USE_HIS
+		    right join (
+		        SELECT LPAD( rnum.rownum, 2, '0' ) AS MONTHLY
+		        FROM (
+		            SELECT @rownum:=@rownum+1 rownum
+		            FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 12
+		        ) rnum  
+		    ) cal
+		    on USE_HIS.MONTH = cal.MONTHLY
+	</select>
+
+	<select id="states.smartMonth.advancedEnglish" resultClass="hMap">
+		SELECT CASE cal.MONTHLY
+		            when '01' then 'Jan'
+		            when '02' then 'Feb'
+		            when '03' then 'Mar'
+		            when '04' then 'Apr'
+		            when '05' then 'May'
+		            when '06' then 'Jun'
+		            when '07' then 'Jul'
+		            when '08' then 'Aug'
+		            when '09' then 'Sep'
+		            when '10' then 'Oct'
+		            when '11' then 'Nov'
+		            when '12' then 'Dec'
+		        END AS MONTH_NAME
+		    , USE_HIS.*     
+		FROM (  
+		        SELECT 
+		            SUBSTR(USE_HS.END_TM, 5, 2) MONTH
+		            <![CDATA[
+		            , sum( if( GODS.SRVC_ID = 20, 1, 0 ) ) AS 'Bulats'
+		            , sum( if( GODS.SRVC_ID = 21, 1, 0 ) ) AS 'BulatsInAction'
+		            ]]>
+		        FROM TB_UAST_USE_HS USE_HS
+		            , TB_UAST_GODS GODS
+		        WHERE 1 = 1
+		        AND USE_HS.END_TM LIKE CONCAT(#strYear#,'%')    
+		        AND GODS.GODS_ID = USE_HS.GODS_ID
+		        AND GODS.SRVC_ID between 20 and 21
+		        AND USE_HS.USER_ID IN (SELECT USER_ID 
+		                            FROM TB_UAST_USER 
+		                            WHERE 1 = 1 
+		                            AND 1 = 1 
+		                            <isNotEmpty property="strSex">AND SEX = #strSex#</isNotEmpty> 
+                                    <isNotEmpty property="strAge1"> 
+                                        AND BIRTHDAY BETWEEN DATE_ADD(CURDATE(), INTERVAL -(#strAge2#) YEAR) AND DATE_ADD(CURDATE(), INTERVAL -(#strAge1#) YEAR)
+                                    </isNotEmpty>
+		                            ) 
+		        GROUP BY SUBSTR(USE_HS.END_TM, 5, 2)
+		    ) USE_HIS
+		    right join (
+		        SELECT LPAD( rnum.rownum, 2, '0' ) AS MONTHLY
+		        FROM (
+		            SELECT @rownum:=@rownum+1 rownum
+		            FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 12
+		        ) rnum  
+		    ) cal
+		    on USE_HIS.MONTH = cal.MONTHLY
+	</select>
+
+	<select id="states.engVillageMonth" resultClass="hMap">
+	       SELECT CASE cal.MONTHLY
+                    when '01' then 'Jan'
+                    when '02' then 'Feb'
+                    when '03' then 'Mar'
+                    when '04' then 'Apr'
+                    when '05' then 'May'
+                    when '06' then 'Jun'
+                    when '07' then 'Jul'
+                    when '08' then 'Aug'
+                    when '09' then 'Sep'
+                    when '10' then 'Oct'
+                    when '11' then 'Nov'
+                    when '12' then 'Dec'
+                END AS MONTH_NAME
+            , USE_HIS.*     
+        FROM (  
+                SELECT 
+                    SUBSTR(USE_HS.END_TM, 5, 2) MONTH
+                    <![CDATA[
+                    , sum( if( GODS.SRVC_ID = 23, 1, 0 ) ) AS 'ViewVOD'
+                    , sum( if( GODS.SRVC_ID = 24, 1, 0 ) ) AS 'VieweBook'
+                    , sum( if( GODS.SRVC_ID = 50, 1, 0 ) ) AS 'rentDVD'
+                    , sum( if( GODS.SRVC_ID = 49, 1, 0 ) ) AS 'rentBook'
+                    , sum( if( GODS.SRVC_ID = 47, 1, 0 ) ) AS 'rentTablet'
+                    ]]>
+                FROM TB_UAST_USE_HS USE_HS
+                    , TB_UAST_GODS GODS
+                WHERE 1 = 1
+                AND USE_HS.END_TM LIKE CONCAT(#strYear#,'%')    
+                AND GODS.GODS_ID = USE_HS.GODS_ID
+                AND GODS.SRVC_ID between 22 and 51
+                AND USE_HS.USER_ID IN (SELECT USER_ID 
+                                    FROM TB_UAST_USER 
+                                    WHERE 1 = 1 
+                                    AND 1 = 1 
+                                    AND 1 = 1
+                                    <isNotEmpty property="strSex">AND SEX = #strSex#</isNotEmpty> 
+		                            <isNotEmpty property="strAge1"> 
+		                                AND BIRTHDAY BETWEEN DATE_ADD(CURDATE(), INTERVAL -(#strAge2#) YEAR) AND DATE_ADD(CURDATE(), INTERVAL -(#strAge1#) YEAR)
+		                            </isNotEmpty>
+                                    ) 
+                GROUP BY SUBSTR(USE_HS.END_TM, 5, 2)
+            ) USE_HIS
+            right join (
+                SELECT LPAD( rnum.rownum, 2, '0' ) AS MONTHLY
+                FROM (
+                    SELECT @rownum:=@rownum+1 rownum
+                    FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 12
+                ) rnum  
+            ) cal
+            on USE_HIS.MONTH = cal.MONTHLY
+	    
+	    <!-- 
+		SELECT CASE 
+				<![CDATA[
+					when CTGR.SRVC_ID >= 23 and CTGR.SRVC_ID <= 23 then 'View VOD'
+					when CTGR.SRVC_ID >= 24 and CTGR.SRVC_ID <= 24 then 'View eBook'
+					when CTGR.SRVC_ID >= 25 and CTGR.SRVC_ID <= 25 then 'rent DVD'
+					when CTGR.SRVC_ID >= 26 and CTGR.SRVC_ID <= 26 then 'rent Book'	
+					when CTGR.SRVC_ID >= 27 and CTGR.SRVC_ID <= 27 then 'rent Tablet'
+				]]>	
+				END AS SRVC_NAME
+			, USE_HIS.*
+		FROM (
+				
+				SELECT GODS.SRVC_ID
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '01', 1, 0 ) ) AS jan
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '02', 1, 0 ) ) AS feb
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '03', 1, 0 ) ) AS mar
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '04', 1, 0 ) ) AS apr
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '05', 1, 0 ) ) AS may
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '06', 1, 0 ) ) AS jun
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '07', 1, 0 ) ) AS jul
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '08', 1, 0 ) ) AS aug
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '09', 1, 0 ) ) AS sep
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '10', 1, 0 ) ) AS oct
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '11', 1, 0 ) ) AS nov
+					, sum( if( SUBSTR(USE_HS.END_TM, 5, 2) = '12', 1, 0 ) ) AS dece
+				FROM TB_UAST_USE_HS USE_HS
+					, TB_UAST_GODS GODS
+				WHERE 1 = 1
+				AND USE_HS.END_TM LIKE CONCAT('%',#strYear#,'%')
+				AND USE_HS.CMPL_YN = 'E'
+				AND USE_HS.GODS_ID = GODS.GODS_ID 
+				AND GODS.SRVC_ID between 22 and 25
+				AND USE_HS.USER_ID IN (SELECT USER_ID 
+									FROM TB_UAST_USER 
+									WHERE 1 = 1 
+									AND 1 = 1 <isNotEmpty property="strSex">OR SEX = #strSex#</isNotEmpty> 
+									<isNotEmpty property="strAge1"> 
+										OR BIRTHDAY BETWEEN DATE_ADD(CURDATE(), INTERVAL -(#strAge1#) YEAR) AND DATE_ADD(CURDATE(), INTERVAL -(#strAge2#) YEAR)
+									</isNotEmpty>
+									)	
+				GROUP BY GODS.SRVC_ID
+			) USE_HIS
+			right join (
+				SELECT *
+				FROM TB_UAST_SRVC_CTGR 
+				WHERE SRVC_ID between 23 and 27
+			) CTGR
+			on USE_HIS.SRVC_ID = CTGR.SRVC_ID
+		WHERE 1 = 1	
+		GROUP BY CASE 
+			<![CDATA[
+					when CTGR.SRVC_ID >= 23 and CTGR.SRVC_ID <= 23 then 'View VOD'
+					when CTGR.SRVC_ID >= 24 and CTGR.SRVC_ID <= 24 then 'View eBook'
+					when CTGR.SRVC_ID >= 25 and CTGR.SRVC_ID <= 25 then 'rent DVD'
+					when CTGR.SRVC_ID >= 26 and CTGR.SRVC_ID <= 26 then 'rent Book'
+					when CTGR.SRVC_ID >= 27 and CTGR.SRVC_ID <= 27 then 'rent Tablet'
+			]]>
+				END
+		ORDER BY CTGR.SRVC_ID	
+		 -->
+	</select>	
+	<select id="states.learnDay" resultClass="hMap">				
+
+	SELECT CAL_DAILY.*, USE_HIS.*
+	FROM (
+<!-- GET USING HISTORY -->
+		SELECT SUBSTR(USE_HS.END_TM, 1, 8) END_TM
+			, sum( if( GODS.SRVC_ID = 28, 1, 0 ) ) AS basic
+			, sum( if( GODS.SRVC_ID = 23, 1, 0 ) ) AS VOD
+			, sum( if( GODS.SRVC_ID = 24, 1, 0 ) ) AS eBook
+		FROM TB_UAST_USE_HS USE_HS
+			, TB_UAST_GODS GODS
+		WHERE 1 = 1		
+		AND USE_HS.END_TM LIKE CONCAT(#strYear#,#strMonth#,'%')	<!-- terms -->		
+		AND USE_HS.GODS_ID = GODS.GODS_ID 
+		AND GODS.SRVC_ID IN(28,23,24)
+		AND USE_HS.USER_ID IN (SELECT USER_ID FROM TB_UAST_USER WHERE 1 = 1 AND 1 = 1 
+								<isNotEmpty property="strSex">AND SEX = #strSex#</isNotEmpty> 
+							<isNotEmpty property="strAge1"> 
+								AND BIRTHDAY BETWEEN DATE_ADD(CURDATE(), INTERVAL -(#strAge2#) YEAR) AND DATE_ADD(CURDATE(), INTERVAL -(#strAge1#) YEAR)
+							</isNotEmpty>
+		)	<!-- terms -->
+		GROUP BY SUBSTR(USE_HS.END_TM, 1, 8)
+	) USE_HIS
+	right join (
+		<!-- GET ALL DAY OF MONTH -->
+		SELECT DAILY, REPLACE(DAILY,'-','') END_DAILY, WEEKDAY(DAILY) DAY, DAYNAME(DAILY) DAYNAME
+		FROM (
+			SELECT DATE_ADD(CONCAT(#strYear#,#strMonth#,'01'), INTERVAL rownum-1 DAY) AS DAILY
+			FROM (
+				SELECT @rownum:=@rownum+1 rownum
+				FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 31
+			) rnum
+			WHERE rownum<![CDATA[ <= ]]>(SELECT DAYOFMONTH(LAST_DAY(CONCAT(#strYear#,#strMonth#,'01'))))	<!-- terms --> 
+		) cal
+	) CAL_DAILY
+	on USE_HIS.END_TM = CAL_DAILY.END_DAILY	
+ 			    
+	</select>
+	
+	<select id="states.smartDay" resultClass="hMap">				
+	
+	SELECT CAL_DAILY.*, USE_HIS.*
+	FROM (
+		
+		SELECT SUBSTR(USE_HS.END_TM, 1, 8) END_TM
+		<![CDATA[
+			, sum( case when GODS.SRVC_ID >= 4 and GODS.SRVC_ID <= 8 then 1 else 0 end ) AS YEAR4
+			, sum( case when GODS.SRVC_ID >= 9 and GODS.SRVC_ID <= 13 then 1 else 0 end ) AS YEAR5
+			, sum( case when GODS.SRVC_ID >= 14 and GODS.SRVC_ID <= 18 then 1 else 0 end ) AS YEAR6
+			, sum( case when GODS.SRVC_ID >= 19 and GODS.SRVC_ID <= 21 then 1 else 0 end ) AS AdvancedEnglish
+			, sum( case when GODS.SRVC_ID = 42 then 1 else 0 end ) AS InteractiveWhiteBoard	
+		]]>	
+		FROM TB_UAST_USE_HS USE_HS
+			, TB_UAST_GODS GODS
+		WHERE 1 = 1
+		AND USE_HS.END_TM LIKE CONCAT(#strYear#,#strMonth#,'%')	
+		AND USE_HS.GODS_ID = GODS.GODS_ID 
+		AND GODS.SRVC_ID between 3 and 21
+		AND USE_HS.USER_ID IN (SELECT USER_ID 
+							FROM TB_UAST_USER 
+							WHERE 1 = 1 
+							AND 1 = 1 
+							<isNotEmpty property="strSex">AND SEX = #strSex#</isNotEmpty> 
+							<isNotEmpty property="strAge1"> 
+								AND BIRTHDAY BETWEEN DATE_ADD(CURDATE(), INTERVAL -(#strAge2#) YEAR) AND DATE_ADD(CURDATE(), INTERVAL -(#strAge1#) YEAR)
+							</isNotEmpty>
+							)	
+		GROUP BY SUBSTR(USE_HS.END_TM, 1, 8)
+	) USE_HIS
+	right join (
+		
+		SELECT DAILY, REPLACE(DAILY,'-','') END_DAILY, WEEKDAY(DAILY) DAY, DAYNAME(DAILY) DAYNAME
+		FROM (
+			SELECT DATE_ADD(CONCAT(#strYear#,#strMonth#,'01'), INTERVAL rownum-1 DAY) AS DAILY
+			FROM (
+				SELECT @rownum:=@rownum+1 rownum
+				FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 31
+			) rnum
+			WHERE rownum<![CDATA[ <= ]]>(SELECT DAYOFMONTH(LAST_DAY(CONCAT(#strYear#,#strMonth#,'01'))))	
+		) cal
+	) CAL_DAILY
+	on USE_HIS.END_TM = CAL_DAILY.END_DAILY
+	
+	</select>
+
+	<select id="states.smartDay.days" resultClass="hMap">				
+	
+	SELECT CAL_DAILY.*, USE_HIS.*
+	FROM (
+		
+		SELECT SUBSTR(USE_HS.END_TM, 1, 8) END_TM
+			<![CDATA[
+	            , sum( if( GODS.SRVC_ID =  #strNum#+1, 1, 0 ) ) AS 'YearsEnglish'
+	            , sum( if( GODS.SRVC_ID = #strNum#+2, 1, 0 ) ) AS 'YearsMathematics'
+	            , sum( if( GODS.SRVC_ID = #strNum#+3, 1, 0 ) ) AS 'YearsScience'
+	            , sum( if( GODS.SRVC_ID = #strNum#+4, 1, 0 ) ) AS 'YearsMalay'
+			]]>	
+		FROM TB_UAST_USE_HS USE_HS
+			, TB_UAST_GODS GODS
+		WHERE 1 = 1
+		AND USE_HS.END_TM LIKE CONCAT(#strYear#,#strMonth#,'%')	
+		AND USE_HS.GODS_ID = GODS.GODS_ID 
+		AND GODS.SRVC_ID between #strNum#+1 and #strNum#+4
+		AND USE_HS.USER_ID IN (SELECT USER_ID 
+							FROM TB_UAST_USER 
+							WHERE 1 = 1 
+							AND 1 = 1 
+							<isNotEmpty property="strSex">AND SEX = #strSex#</isNotEmpty> 
+							<isNotEmpty property="strAge1"> 
+								AND BIRTHDAY BETWEEN DATE_ADD(CURDATE(), INTERVAL -(#strAge2#) YEAR) AND DATE_ADD(CURDATE(), INTERVAL -(#strAge1#) YEAR)
+							</isNotEmpty>
+							)	
+		GROUP BY SUBSTR(USE_HS.END_TM, 1, 8)
+	) USE_HIS
+	right join (
+		
+		SELECT DAILY, REPLACE(DAILY,'-','') END_DAILY, WEEKDAY(DAILY) DAY, DAYNAME(DAILY) DAYNAME
+		FROM (
+			SELECT DATE_ADD(CONCAT(#strYear#,#strMonth#,'01'), INTERVAL rownum-1 DAY) AS DAILY
+			FROM (
+				SELECT @rownum:=@rownum+1 rownum
+				FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 31
+			) rnum
+			WHERE rownum<![CDATA[ <= ]]>(SELECT DAYOFMONTH(LAST_DAY(CONCAT(#strYear#,#strMonth#,'01'))))	
+		) cal
+	) CAL_DAILY
+	on USE_HIS.END_TM = CAL_DAILY.END_DAILY
+	
+	</select>
+
+	<select id="states.smartDay.advancedEnglish" resultClass="hMap">				
+	
+	SELECT CAL_DAILY.*, USE_HIS.*
+	FROM (
+		
+		SELECT SUBSTR(USE_HS.END_TM, 1, 8) END_TM
+			<![CDATA[
+		            , sum( if( GODS.SRVC_ID = 20, 1, 0 ) ) AS 'Bulats'
+		            , sum( if( GODS.SRVC_ID = 21, 1, 0 ) ) AS 'BulatsInAction'
+			]]>	
+		FROM TB_UAST_USE_HS USE_HS
+			, TB_UAST_GODS GODS
+		WHERE 1 = 1
+		AND USE_HS.END_TM LIKE CONCAT(#strYear#,#strMonth#,'%')	
+		AND USE_HS.GODS_ID = GODS.GODS_ID 
+        AND GODS.SRVC_ID between 20 and 21
+		AND USE_HS.USER_ID IN (SELECT USER_ID 
+							FROM TB_UAST_USER 
+							WHERE 1 = 1 
+							AND 1 = 1 
+							<isNotEmpty property="strSex">AND SEX = #strSex#</isNotEmpty> 
+							<isNotEmpty property="strAge1"> 
+								AND BIRTHDAY BETWEEN DATE_ADD(CURDATE(), INTERVAL -(#strAge2#) YEAR) AND DATE_ADD(CURDATE(), INTERVAL -(#strAge1#) YEAR)
+							</isNotEmpty>
+							)	
+		GROUP BY SUBSTR(USE_HS.END_TM, 1, 8)
+	) USE_HIS
+	right join (
+		
+		SELECT DAILY, REPLACE(DAILY,'-','') END_DAILY, WEEKDAY(DAILY) DAY, DAYNAME(DAILY) DAYNAME
+		FROM (
+			SELECT DATE_ADD(CONCAT(#strYear#,#strMonth#,'01'), INTERVAL rownum-1 DAY) AS DAILY
+			FROM (
+				SELECT @rownum:=@rownum+1 rownum
+				FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 31
+			) rnum
+			WHERE rownum<![CDATA[ <= ]]>(SELECT DAYOFMONTH(LAST_DAY(CONCAT(#strYear#,#strMonth#,'01'))))	
+		) cal
+	) CAL_DAILY
+	on USE_HIS.END_TM = CAL_DAILY.END_DAILY
+	
+	</select>
+
+	<select id="states.engVillageDay" resultClass="hMap">				
+		
+		SELECT CAL_DAILY.*, USE_HIS.*
+		FROM (
+				
+				SELECT SUBSTR(USE_HS.END_TM, 1, 8) END_TM
+				<![CDATA[
+					, sum( case when GODS.SRVC_ID = 23 then 1 else 0 end ) AS ViewVOD
+					, sum( case when GODS.SRVC_ID = 24 then 1 else 0 end ) AS VieweBook
+					, sum( case when GODS.SRVC_ID = 50 then 1 else 0 end ) AS rentDVD
+					, sum( case when GODS.SRVC_ID = 49 then 1 else 0 end ) AS rentBook	
+					, sum( case when GODS.SRVC_ID = 47 then 1 else 0 end ) AS rentTablet
+				]]>
+				FROM TB_UAST_USE_HS USE_HS
+					, TB_UAST_GODS GODS
+				WHERE 1 = 1
+				AND USE_HS.END_TM LIKE CONCAT(#strYear#,#strMonth#,'%')	
+				AND USE_HS.GODS_ID = GODS.GODS_ID 
+				AND GODS.SRVC_ID between 22 and 51
+				AND USE_HS.USER_ID IN (SELECT USER_ID 
+									FROM TB_UAST_USER 
+									WHERE 1 = 1 
+									AND 1 = 1 
+									<isNotEmpty property="strSex">AND SEX = #strSex#</isNotEmpty> 
+									<isNotEmpty property="strAge1"> 
+										AND BIRTHDAY BETWEEN DATE_ADD(CURDATE(), INTERVAL -(#strAge2#) YEAR) AND DATE_ADD(CURDATE(), INTERVAL -(#strAge1#) YEAR)
+									</isNotEmpty>
+									)	
+				GROUP BY SUBSTR(USE_HS.END_TM, 1, 8)
+			) USE_HIS
+			right join (
+				
+				SELECT DAILY, REPLACE(DAILY,'-','') END_DAILY, WEEKDAY(DAILY) DAY, DAYNAME(DAILY) DAYNAME
+				FROM (
+					SELECT DATE_ADD(CONCAT(#strYear#,#strMonth#,'01'), INTERVAL rownum-1 DAY) AS DAILY
+					FROM (
+						SELECT @rownum:=@rownum+1 rownum
+						FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 31
+					) rnum
+					WHERE rownum <![CDATA[<= ]]>(SELECT DAYOFMONTH(LAST_DAY(CONCAT(#strYear#,#strMonth#,'01'))))	
+				) cal
+			) CAL_DAILY
+			on USE_HIS.END_TM = CAL_DAILY.END_DAILY	   
+			 
+	</select>	
+	
+	<select id="states.healthMonth" resultClass="hMap">
+	    
+	    SELECT CASE cal.MONTHLY
+	            when '01' then 'Jan'
+	            when '02' then 'Feb'
+	            when '03' then 'Mar'
+	            when '04' then 'Apr'
+	            when '05' then 'May'
+	            when '06' then 'Jun'
+	            when '07' then 'Jul'
+	            when '08' then 'Aug'
+	            when '09' then 'Sep'
+	            when '10' then 'Oct'
+	            when '11' then 'Nov'
+	            when '12' then 'Dec'
+	        END AS MONTH_NAME
+	    , USE_HIS.*     
+	FROM (  
+	        SELECT 
+	            SUBSTR(USE_HS.END_TM, 5, 2) MONTH
+	            , sum( if( GODS.SRVC_ID = 27, 1, 0 ) ) AS Health
+	            , sum( if( GODS.SRVC_ID = 36, 1, 0 ) ) AS TouchPrint
+	            , sum( if( GODS.SRVC_ID = 37, 1, 0 ) ) AS Print
+	        FROM TB_UAST_USE_HS USE_HS
+	            , TB_UAST_GODS GODS
+	        WHERE 1 = 1
+	        AND USE_HS.END_TM LIKE CONCAT(#strYear#,'%')    
+	        AND GODS.GODS_ID = USE_HS.GODS_ID
+	        AND GODS.SRVC_ID in (27, 36, 37)
+	        AND USE_HS.USER_ID IN (SELECT USER_ID 
+	                            FROM TB_UAST_USER 
+	                            WHERE 1 = 1 
+	                            AND 1 = 1 
+	                            AND 1 = 1 
+	                            <isNotEmpty property="strSex">AND SEX = #strSex#</isNotEmpty> 
+								<isNotEmpty property="strAge1"> 
+									AND BIRTHDAY BETWEEN DATE_ADD(CURDATE(), INTERVAL -(#strAge2#) YEAR) AND DATE_ADD(CURDATE(), INTERVAL -(#strAge1#) YEAR)
+								</isNotEmpty>
+	                            ) 
+	        GROUP BY SUBSTR(USE_HS.END_TM, 5, 2)
+	    ) USE_HIS
+	    right join (
+	        SELECT LPAD( rnum.rownum, 2, '0' ) AS MONTHLY
+	        FROM (
+	            SELECT @rownum:=@rownum+1 rownum
+	            FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 12
+	        ) rnum  
+	    ) cal
+	    on USE_HIS.MONTH = cal.MONTHLY
+	    
+	</select>
+	
+	<select id="states.healthDay" resultClass="hMap">
+	    SELECT CAL_DAILY.*, USE_HIS.*
+	    FROM (
+	        SELECT SUBSTR(USE_HS.END_TM, 1, 8) END_TM
+	            , sum( if( GODS.SRVC_ID = 27, 1, 0 ) ) AS health
+	            , sum( if( GODS.SRVC_ID = 36, 1, 0 ) ) AS TouchPrint
+	            , sum( if( GODS.SRVC_ID = 37, 1, 0 ) ) AS Print
+	        FROM TB_UAST_USE_HS USE_HS
+	            , TB_UAST_GODS GODS
+	        WHERE 1 = 1     
+	        AND USE_HS.END_TM LIKE CONCAT(#strYear#,#strMonth#,'%')  
+	        AND USE_HS.CMPL_YN = 'E'
+	        AND USE_HS.GODS_ID = GODS.GODS_ID 
+	        AND GODS.SRVC_ID IN(27,36,37)
+	        AND USE_HS.USER_ID IN (
+	        				SELECT USER_ID 
+                            FROM TB_UAST_USER 
+                            WHERE 1 = 1 
+                            AND 1 = 1 
+                            AND 1 = 1 
+                            <isNotEmpty property="strSex">AND SEX = #strSex#</isNotEmpty> 
+							<isNotEmpty property="strAge1"> 
+								AND BIRTHDAY BETWEEN DATE_ADD(CURDATE(), INTERVAL -(#strAge2#) YEAR) AND DATE_ADD(CURDATE(), INTERVAL -(#strAge1#) YEAR)
+							</isNotEmpty> 
+	        )  
+	        GROUP BY SUBSTR(USE_HS.END_TM, 1, 8)
+	    ) USE_HIS
+	    right join (
+	        SELECT DAILY,
+	               REPLACE(DAILY,'-','') END_DAILY, 
+	               WEEKDAY(DAILY) DAY, 
+	               DAYNAME(DAILY) DAYNAME
+	        FROM (
+	            SELECT DATE_ADD(CONCAT(#strYear#,#strMonth#,'01'), INTERVAL rownum-1 DAY) AS DAILY
+	            FROM (
+	                SELECT @rownum:=@rownum+1 rownum
+	                FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 31
+	            ) rnum
+	            WHERE rownum<![CDATA[ <= ]]>(SELECT DAYOFMONTH(LAST_DAY(CONCAT(#strYear#,#strMonth#,'01'))))  
+	        ) cal
+	    ) CAL_DAILY
+	    on USE_HIS.END_TM = CAL_DAILY.END_DAILY 
+          
+    </select>
+    
+	
+	
+				
+</sqlMap>

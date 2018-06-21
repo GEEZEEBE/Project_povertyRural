@@ -1,0 +1,31 @@
+@charset "utf-8";
+
+/*learning main*/
+.contMain .secSmart ul { margin-left:-10px;}
+.contMain .secSmart ul li,
+.contMain .secEnglish ul li {font-size:14px;}
+.contMain .secSmart h1 { padding-left:47px;}
+.secEnglish h1 { padding-left:20px;}
+/*smart main*/
+.smartMainimg { background:url(../images_my/learning/bg_smart_menu.png) no-repeat;}
+/*smart list*/
+.smartListNavi ul li a.engY4 { padding:13px 0 0 90px; background-position:40px 10px; line-height:16px;}
+.smartListNavi ul li a.matY4 { padding-left:88px; background-position:20px -5px;}
+.smartListNavi ul li a.sciY4 { padding-left:90px; background-position:40px 0px;}
+.smartListNavi ul li a.malY4 { padding:13px 0 0 90px; background-position:42px 10px; line-height:16px;}
+.smartListNavi ul li a.engY5 { padding:13px 0 0 90px; background-position:38px 12px; line-height:16px;}
+.smartListNavi ul li a.matY5 { padding-left:75px; background-position:30px 10px;}
+.smartListNavi ul li a.sciY5 { padding-left:90px; background-position:44px 13px;}
+.smartListNavi ul li a.malY5 { padding:13px 0 0 90px; background-position:27px -2px; line-height:16px;}
+.smartListNavi ul li a.engY6 { padding:13px 0 0 90px; background-position:43px -1px; line-height:16px;}
+.smartListNavi ul li a.matY6 { padding-left:83px; background-position:25px 12px;}
+.smartListNavi ul li a.sciY6 { padding-left:87px; background-position:55px 2px;}
+.smartListNavi ul li a.malY6 { padding:13px 0 0 90px; background-position:40px 3px; line-height:16px;}
+/*record popup*/
+.recordPopup01 .popSel label.pro { width:90px;}
+/*lesson record*/
+.recordCont .recSelect fieldset .btnSearch { background:url(../images_my/learning/btn_search.gif) no-repeat;}
+
+
+/*0401 추가*/
+.topMenu nav.naviTop { margin:5px 0 0 110px;}

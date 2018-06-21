@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<!--
+2013.01.22 jsjeon
+Item.xml - 아이템 관리
+ -->
+
+<sqlMap namespace="Item">
+	<typeAlias alias="Item" type="com.skt.mars.adm.sm.Item" />
+
+	<!-- getBoardList -->
+	<resultMap id="resultMapID" class="Item">
+		<result property="itemID" column="ITEM_ID" />
+		<result property="cntsName" column="CNTS_NAME" />
+		<result property="delYN" column="DEL_YN" />   
+		<result property="assetID" column="ASSET_ID" />
+		<result property="godsID" column="GODS_ID" />
+		<result property="frstRgstDT" column="FRST_RGST_DT" />
+        <result property="frstRgstUserID" column="FRST_RGST_USER_ID" />
+        <result property="latCrctDT" column="LAST_CRCT_DT" />
+        <result property="latCrctUserID" column="LAST_CRCT_USER_ID" />
+	</resultMap>
+
+	<!-- 아이템 목록 조회 -->
+	<select id="item.list" parameterClass="hMap" resultClass="hMap">
+		SELECT ITEM.ITEM_ID,
+               ITEM.CNTS_NAME,
+               ITEM.DEL_YN,
+               ITEM.ASSET_ID,
+               ITEM.GODS_ID,
+               DATE_FORMAT(ITEM.FRST_RGST_DT,'%Y-%m-%d') AS FRST_RGST_DT,
+               ITEM.FRST_RGST_USER_ID,
+               ITEM.LAST_CRCT_DT,
+               ITEM.LAST_CRCT_USER_ID,
+               GODS.GODS_NAME,
+               GODS.SRVC_ID,
+               ASSETS.ITEM_NM,
+               ASSETS.ASSET_TYPE_CD,
+               CODE.CODE_NAME,
+               PRIC.FLAT_RATE
+          FROM TB_UAST_ITEM AS ITEM,
+               TB_UAST_GODS AS GODS,
+               TB_UAST_ASSETS AS ASSETS,
+               TB_UAST_CODE AS CODE,
+               TB_UAST_PRIC AS PRIC
+         WHERE ITEM.GODS_ID = GODS.GODS_ID
+           AND ITEM.ASSET_ID = ASSETS.ASSET_ID
+           AND ASSETS.ASSET_TYPE_CD = CODE.COMMON_CODE_ID
+           AND ITEM.ITEM_ID = PRIC.TAGET_ID
+           AND ITEM.DEL_YN = 'N'
+         <isNotEmpty property="searchSrvcID">
+           AND GODS.SRVC_ID IN (select A.SRVC_ID
+                                  FROM TB_UAST_SRVC_CTGR AS A,
+                                       (SELECT LEFT_SRVC_ID , RIGHT_SRVC_ID FROM TB_UAST_SRVC_CTGR WHERE SRVC_ID = #searchSrvcID#) AS B
+                                 WHERE A.LEFT_SRVC_ID >= B.LEFT_SRVC_ID
+                                   AND A.RIGHT_SRVC_ID<![CDATA[ <= ]]>B.RIGHT_SRVC_ID
+                                )
+         </isNotEmpty>
+         <isNotEmpty property="searchGodsDvsn">
+           AND GODS.GODS_DVSN = #searchGodsDvsn#
+         </isNotEmpty>
+         <isNotEmpty property="searchAssetType">
+           AND ASSETS.ASSET_TYPE_CD = #searchAssetType#
+         </isNotEmpty>
+         <isNotEmpty property="searchGodsName">
+           AND GODS.GODS_NAME LIKE CONCAT('%', replace(replace(#searchGodsName#,'%','\%'),'_','\_') ,'%')
+         </isNotEmpty>
+         <isNotEmpty property="searchAssetName">
+           AND ITEM.CNTS_NAME LIKE CONCAT('%', replace(replace(#searchAssetName#,'%','\%'),'_','\_') ,'%')
+         </isNotEmpty>
+         ORDER BY ITEM.FRST_RGST_DT DESC
+	</select>
+	
+    <select id="item.list.TotalCount" parameterClass="hMap" resultClass="Integer">
+        SELECT COUNT(*) 
+          FROM TB_UAST_ITEM AS ITEM,
+               TB_UAST_GODS AS GODS,
+               TB_UAST_ASSETS AS ASSETS,
+               TB_UAST_CODE AS CODE,
+               TB_UAST_PRIC AS PRIC
+         WHERE ITEM.GODS_ID = GODS.GODS_ID
+           AND ITEM.ASSET_ID = ASSETS.ASSET_ID
+           AND ASSETS.ASSET_TYPE_CD = CODE.COMMON_CODE_ID
+           AND ITEM.ITEM_ID = PRIC.TAGET_ID
+           AND ITEM.DEL_YN = 'N'
+          <isNotEmpty property="searchSrvcID">
+           AND GODS.SRVC_ID IN (select A.SRVC_ID
+                                  FROM TB_UAST_SRVC_CTGR AS A,
+                                       (SELECT LEFT_SRVC_ID , RIGHT_SRVC_ID FROM TB_UAST_SRVC_CTGR WHERE SRVC_ID = #searchSrvcID#) AS B
+                                 WHERE A.LEFT_SRVC_ID >= B.LEFT_SRVC_ID
+                                   AND A.RIGHT_SRVC_ID<![CDATA[ <= ]]>B.RIGHT_SRVC_ID
+                                )
+         </isNotEmpty>
+         <isNotEmpty property="searchGodsDvsn">
+           AND GODS.GODS_DVSN = #searchGodsDvsn#
+         </isNotEmpty>
+         <isNotEmpty property="searchAssetType">
+           AND ASSETS.ASSET_TYPE_CD = #searchAssetType#
+         </isNotEmpty>
+         <isNotEmpty property="searchGodsName">
+           AND GODS.GODS_NAME LIKE CONCAT('%', replace(replace(#searchGodsName#,'%','\%'),'_','\_') ,'%')
+         </isNotEmpty>
+         <isNotEmpty property="searchAssetName">
+           AND ITEM.CNTS_NAME LIKE CONCAT('%', replace(replace(#searchAssetName#,'%','\%'),'_','\_') ,'%')
+         </isNotEmpty>
+    </select>
+
+	<!-- 아이템 상세정보 조회 -->
+	<select id="item.read" parameterClass="hMap" resultClass="hMap">
+		SELECT ITEM.ITEM_ID,
+               ITEM.CNTS_NAME,
+               ITEM.DEL_YN,
+               ITEM.ASSET_ID,
+               ITEM.GODS_ID,
+               DATE_FORMAT(ITEM.FRST_RGST_DT,'%Y-%m-%d') AS FRST_RGST_DT,
+               ITEM.FRST_RGST_USER_ID,
+               ITEM.LAST_CRCT_DT,
+               ITEM.LAST_CRCT_USER_ID,
+               GODS.GODS_NAME,
+               GODS.DESCRIPTION,
+               ASSETS.ITEM_NM,
+               ASSETS.ASSET_TYPE_CD,
+               CODE.CODE_NAME AS ASSET_TYPE_NAME,
+               GCODE.CODE_NAME AS GODS_TYPE_NAME,
+               PRIC.FLAT_RATE
+          FROM TB_UAST_ITEM AS ITEM,
+               TB_UAST_GODS AS GODS,
+               TB_UAST_ASSETS AS ASSETS,
+               TB_UAST_CODE AS CODE,
+               TB_UAST_CODE AS GCODE,
+               TB_UAST_PRIC AS PRIC
+         WHERE ITEM.GODS_ID = GODS.GODS_ID
+           AND GODS.GODS_DVSN = GCODE.COMMON_CODE_ID
+           AND ITEM.ASSET_ID = ASSETS.ASSET_ID
+           AND ASSETS.ASSET_TYPE_CD = CODE.COMMON_CODE_ID
+           AND ITEM.ITEM_ID = PRIC.TAGET_ID
+           AND ITEM_ID = #itemID#;
+	</select>
+
+	<!-- 아이템 등록 -->
+	<insert id="item.insert" parameterClass="Item">
+		INSERT INTO TB_UAST_ITEM (
+			ITEM_ID,
+			CNTS_NAME,
+			DEL_YN,
+			ASSET_ID,
+			GODS_ID,
+			FRST_RGST_DT,
+		    FRST_RGST_USER_ID,
+		    LAST_CRCT_DT,
+		    LAST_CRCT_USER_ID			
+		) VALUES (
+			#itemID#,
+			#cntsName#,
+			#delYN#,
+			#assetID#,
+			#godsID#,
+			SYSDATE(),
+			#frstRgstUserID#,
+			SYSDATE(),
+			#latCrctUserID#			
+		)
+	</insert>
+	
+	<!-- 아이템 수정 -->
+    <update id="item.update" parameterClass="hMap">
+        UPDATE TB_UAST_ITEM SET
+               GODS_ID = #godsID#,
+               LAST_CRCT_DT = SYSDATE(),
+               LAST_CRCT_USER_ID = #latCrctUserID#
+         WHERE ITEM_ID = #itemID#
+    </update>
+    <!-- 아이템 수정_가격수정 -->
+    <update id="item.priceUpdate" parameterClass="hMap">
+        UPDATE TB_UAST_PRIC SET
+               FLAT_RATE = #inputPrice#,
+               LAST_CRCT_DT = SYSDATE(),
+               LAST_CRCT_USER_ID = #latCrctUserID#
+         WHERE TAGET_ID = #itemID#
+           AND MANAGER_KIND = 'ITEM'
+    </update>
+	
+	
+	<!-- 아이템 삭제, flag값변경 -->
+    <update id="item.delete">
+        UPDATE TB_UAST_ITEM SET
+               DEL_YN = 'Y'
+         WHERE ITEM_ID IN (<iterate conjunction=",">#[]#</iterate>)
+    </update>
+	
+	
+
+	<!-- 아이템 목록 조회 -->
+	<select id="item.priceList" resultClass="hMap">
+		SELECT ASSETS.ASSET_TYPE_CD
+			, ASSETS_TYPE.CODE_NAME ASSET_TYPE_NM
+			, GODS.SRVC_ID
+			, CTGR.SRVC_CTGR_NM
+			, PRIC_TYPE.CODE_NAME PRIC_TYPE_NM
+			, ITEM.CNTS_NAME
+			, PRIC.*
+		FROM TB_UAST_ITEM ITEM
+			, TB_UAST_ASSETS ASSETS
+			, TB_UAST_CODE ASSETS_TYPE
+			, TB_UAST_GODS GODS
+			, TB_UAST_SRVC_CTGR CTGR
+			, TB_UAST_PRIC PRIC
+			, TB_UAST_CODE PRIC_TYPE
+		WHERE 1 = 1
+		AND ITEM.DEL_YN = 'N'
+		<isNotEmpty property="searchGodsDvsn">
+			AND ASSETS.ASSET_ID = #searchGodsDvsn#	<!-- terms ASSETS TYPE, need to change like to = --> 
+		</isNotEmpty>
+		AND ASSETS.ASSET_ID = ITEM.ASSET_ID
+		AND ASSETS.ASSET_TYPE_CD = ASSETS_TYPE.COMMON_CODE_ID
+		AND ITEM.GODS_ID = GODS.GODS_ID
+		AND GODS.SRVC_ID = CTGR.SRVC_ID
+		<isNotEmpty property="categoryValue">
+			AND CTGR.SRVC_ID = #categoryValue#	<!-- terms service catagory, need to change like to = or in	-->
+		</isNotEmpty>
+		<isNotEmpty property="searchGodsName">
+			AND ITEM.CNTS_NAME LIKE CONCAT('%', replace(replace(#searchGodsName#,'%','\%'),'_','\_'), '%')	<!-- terms item name	-->
+		</isNotEmpty>
+		AND ITEM.ASSET_ID = PRIC.TAGET_ID
+		AND PRIC.PRIC_TYPE = PRIC_TYPE.COMMON_CODE_ID
+	</select>
+	
+    <select id="item.priceList.TotalCount" resultClass="Integer">
+        SELECT count(*)
+		FROM TB_UAST_ITEM ITEM
+			, TB_UAST_ASSETS ASSETS
+			, TB_UAST_CODE ASSETS_TYPE
+			, TB_UAST_GODS GODS
+			, TB_UAST_SRVC_CTGR CTGR
+			, TB_UAST_PRIC PRIC
+			, TB_UAST_CODE PRIC_TYPE
+		WHERE 1 = 1
+		AND ITEM.DEL_YN = 'N'
+		<isNotEmpty property="searchGodsDvsn">
+			AND ASSETS.ASSET_ID = #searchGodsDvsn#	<!-- terms ASSETS TYPE, need to change like to = --> 
+		</isNotEmpty>
+		AND ASSETS.ASSET_ID = ITEM.ASSET_ID
+		AND ASSETS.ASSET_TYPE_CD = ASSETS_TYPE.COMMON_CODE_ID
+		AND ITEM.GODS_ID = GODS.GODS_ID
+		AND GODS.SRVC_ID = CTGR.SRVC_ID
+		<isNotEmpty property="categoryValue">
+			AND CTGR.SRVC_ID = #categoryValue#	<!-- terms service catagory, need to change like to = or in	-->
+		</isNotEmpty>
+		<isNotEmpty property="searchGodsName">
+			AND ITEM.CNTS_NAME LIKE CONCAT('%', replace(replace(#searchGodsName#,'%','\%'),'_','\_'), '%')	<!-- terms item name	-->
+		</isNotEmpty>
+		AND ITEM.ASSET_ID = PRIC.TAGET_ID
+		AND PRIC.PRIC_TYPE = PRIC_TYPE.COMMON_CODE_ID
+
+    </select>
+    
+    <select id="item.toalList" parameterClass="hMap" resultClass="hMap">
+		 	select  SRVC.SRVC_CTGR_NM as SRVC_CTGR_NM
+			 ,GODS_CODE.CODE_NAME as GODS_DVSN_NM
+			 , CODE.CODE_NAME as ASSET_TYPE_NM
+			 , ITEM.CNTS_NAME as CNTS_NAME
+			 , PRIC.FLAT_RATE as FLAT_RATE
+			 , ITEM.FRST_RGST_DT as  FRST_RGST_DT
+			 from TB_UAST_ITEM AS ITEM
+			 left join TB_UAST_GODS AS GODS on  ITEM.GODS_ID = GODS.GODS_ID 
+			 left join TB_UAST_CODE AS GODS_CODE on GODS.GODS_DVSN = GODS_CODE.COMMON_CODE_ID
+			 left join TB_UAST_ASSETS AS ASSETS on ITEM.ASSET_ID = ASSETS.ASSET_ID
+			 left join TB_UAST_CODE AS CODE on ASSETS.ASSET_TYPE_CD = CODE.COMMON_CODE_ID
+			 left join TB_UAST_PRIC AS PRIC on ITEM.ITEM_ID = PRIC.TAGET_ID
+			 left join (
+    	 		SELECT          NODE.SRVC_ID AS NODE_CATEGORY,          NODE.LEFT_SRVC_ID AS NODE_LFT,         NODE.RIGHT_SRVC_ID AS NODE_RGT,         PARENT.SRVC_ID AS PARENT_CATEGORY,          PARENT.LEFT_SRVC_ID AS PARENT_LFT,          PARENT.RIGHT_SRVC_ID  AS PARENT_RGT,        
+	           	CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM,          
+	          	(COUNT(PARENT.SRVC_ID) - 1) AS DEPTH      
+	           	FROM TB_UAST_SRVC_CTGR AS NODE,          
+	           	TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID      GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID
+    	
+             ) AS SRVC2 on GODS.SRVC_ID=SRVC2.NODE_CATEGORY
+             left join TB_UAST_SRVC_CTGR as SRVC on SRVC.SRVC_ID = SRVC2.PARENT_CATEGORY 
+			 where 1=1
+			 
+           AND ITEM.DEL_YN = 'N'
+         <isNotEmpty property="searchSrvcID">
+           AND GODS.SRVC_ID IN (
+									  select NODE_CATEGORY from (
+										    SELECT NODE_CATEGORY,       NODE_LFT,       NODE_RGT,       PARENT_CATEGORY,       PARENT_LFT,       PARENT_RGT,       SRVC_CTGR_NM,       DEPTH     FROM 
+										      (     
+										          SELECT          NODE.SRVC_ID AS NODE_CATEGORY,          NODE.LEFT_SRVC_ID AS NODE_LFT,         NODE.RIGHT_SRVC_ID AS NODE_RGT,         PARENT.SRVC_ID AS PARENT_CATEGORY,          PARENT.LEFT_SRVC_ID AS PARENT_LFT,          PARENT.RIGHT_SRVC_ID  AS PARENT_RGT,        
+										           CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM,          
+										          (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH      
+										           FROM TB_UAST_SRVC_CTGR AS NODE,          
+										           TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID      GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID       
+										    			         
+										       ) AS A 
+										       ,(
+										    			
+										            SELECT          @SER_LEFT:=NODE.LEFT_SRVC_ID,@SER_RIGHT:=NODE.RIGHT_SRVC_ID ,@SER_DEPTH:=(COUNT(PARENT.SRVC_ID) - 1)      
+										           FROM TB_UAST_SRVC_CTGR AS NODE,          
+										           TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+										           and NODE.SRVC_ID=#searchSrvcID#       
+										           GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID
+										                         	          
+										       ) AS b
+										       group by NODE_CATEGORY ORDER BY NODE_LFT
+										) as d   
+									   where 1=1
+									   AND d.DEPTH <![CDATA[ >= ]]> @SER_DEPTH  AND d.NODE_LFT BETWEEN @SER_LEFT AND @SER_RIGHT
+									
+                                )
+         </isNotEmpty>
+         <isNotEmpty property="searchAssetType">
+           AND ASSETS.ASSET_TYPE_CD = #searchAssetType#
+         </isNotEmpty>
+         <isNotEmpty property="searchItemName">
+           AND ITEM.CNTS_NAME LIKE CONCAT('%', replace(replace(#searchItemName#,'%','\%'),'_','\_') ,'%')
+         </isNotEmpty>
+	</select>
+	
+    <select id="item.toalList.TotalCount" parameterClass="hMap" resultClass="Integer">
+        SELECT COUNT(*) from TB_UAST_ITEM AS ITEM
+			 
+			 left join TB_UAST_GODS AS GODS on  ITEM.GODS_ID = GODS.GODS_ID 
+			 left join TB_UAST_CODE AS GODS_CODE on GODS.GODS_DVSN = GODS_CODE.COMMON_CODE_ID
+			 left join TB_UAST_ASSETS AS ASSETS on ITEM.ASSET_ID = ASSETS.ASSET_ID
+			 left join TB_UAST_CODE AS CODE on ASSETS.ASSET_TYPE_CD = CODE.COMMON_CODE_ID
+			 left join TB_UAST_PRIC AS PRIC on ITEM.ITEM_ID = PRIC.TAGET_ID
+			 left join TB_UAST_SRVC_CTGR AS SRVC on GODS.SRVC_ID=SRVC.SRVC_ID 
+			 where 1=1
+			 
+           AND ITEM.DEL_YN = 'N'
+          <isNotEmpty property="searchSrvcID">
+           AND GODS.SRVC_ID IN (
+           
+	           					select NODE_CATEGORY from (
+								    SELECT NODE_CATEGORY,       NODE_LFT,       NODE_RGT,       PARENT_CATEGORY,       PARENT_LFT,       PARENT_RGT,       SRVC_CTGR_NM,       DEPTH     FROM 
+								      (     
+								          SELECT          NODE.SRVC_ID AS NODE_CATEGORY,          NODE.LEFT_SRVC_ID AS NODE_LFT,         NODE.RIGHT_SRVC_ID AS NODE_RGT,         PARENT.SRVC_ID AS PARENT_CATEGORY,          PARENT.LEFT_SRVC_ID AS PARENT_LFT,          PARENT.RIGHT_SRVC_ID  AS PARENT_RGT,        
+								           CONCAT( REPEAT(' ', COUNT(PARENT.SRVC_ID) - 1), NODE.SRVC_CTGR_NM) AS SRVC_CTGR_NM,          
+								          (COUNT(PARENT.SRVC_ID) - 1) AS DEPTH      
+								           FROM TB_UAST_SRVC_CTGR AS NODE,          
+								           TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID      GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID       
+								    			         
+								       ) AS A 
+								       ,(
+								    			
+								            SELECT          @SER_LEFT:=NODE.LEFT_SRVC_ID,@SER_RIGHT:=NODE.RIGHT_SRVC_ID ,@SER_DEPTH:=(COUNT(PARENT.SRVC_ID) - 1)      
+								           FROM TB_UAST_SRVC_CTGR AS NODE,          
+								           TB_UAST_SRVC_CTGR AS PARENT      WHERE NODE.LEFT_SRVC_ID BETWEEN PARENT.LEFT_SRVC_ID AND PARENT.RIGHT_SRVC_ID
+								           and NODE.SRVC_ID=#searchSrvcID#       
+								           GROUP BY NODE.SRVC_ID      ORDER BY NODE.LEFT_SRVC_ID
+								                         	          
+								       ) AS b
+								       group by NODE_CATEGORY ORDER BY NODE_LFT
+								) as d   
+							   where 1=1
+							   AND d.DEPTH <![CDATA[ >= ]]> @SER_DEPTH  AND d.NODE_LFT BETWEEN @SER_LEFT AND @SER_RIGHT
+           
+           
+                                )
+         </isNotEmpty>
+         <isNotEmpty property="searchAssetType">
+           AND ASSETS.ASSET_TYPE_CD = #searchAssetType#
+         </isNotEmpty>
+         <isNotEmpty property="searchItemName">
+           AND ITEM.CNTS_NAME LIKE CONCAT('%', replace(replace(#searchItemName#,'%','\%'),'_','\_') ,'%')
+         </isNotEmpty>
+    </select>
+    
+
+</sqlMap>

@@ -1,0 +1,105 @@
+@charset utf-8;
+
+body,header,section,article,aside,hgroup,footer,address,p,div,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select {margin: 0;padding: 0;border: 0;}
+
+body h1, body h2, body h3, body h4, body h5 {margin: 0;padding: 0;border: 0;font-weight: normal;}
+body ul, body ol, body li, body dl, body dt, body dd,
+body section, body div, body header, body p {margin: 0;padding: 0;border: 0;}
+
+body {
+  margin: 0;
+  padding: 0;
+  vertical-align: middle;
+  font-family: Droid, Droid Sans, Roboto, Arial;
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust:none;
+}
+legend, caption, hr {
+  display: none;
+  overflow: hidden;
+  visibility: hidden;
+  height: 0;
+  font-size: 0;
+  line-height: 0;
+}
+table, caption, tbody, tfoot, thead, tr, th, td {
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-spacing: 0;
+  font-family: Droid, Droid Sans, Roboto, Arial;
+  font-size: 100%;
+  font-weight: normal;
+}
+img {margin: 0 !important;line-height: 0 !important;padding: 0 !important;border: 0 !important;}
+.wrap {
+  margin: 0;
+  padding: 5%;
+  vertical-align: middle;
+  overflow: hidden;
+}
+.wrap .bodywrap {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  line-height: 100%;
+  vertical-align: middle;
+  overflow: hidden;
+  border: 2px solid #989898;
+  border-radius:8px;
+}
+table {display: inline-block;width: 100%;}
+table.healthList {margin-bottom: 12%;}
+table.healthList.HL1 {margin-top: 12%;}
+
+tr.header td {clear: both;width: 100%;height: 15%;line-height: 100%;}
+tr.contents td {clear: both;width: 100%;height: 70%;line-height: 100%;}
+tr.footer td {clear: both;width: 100%;height: 15%;line-height: 100%;}
+
+tr.header hgroup {margin: 0;padding: 0;width: 100%;height: 80%;}
+tr.header hgroup h1 {float: left;margin: 2% 0 0 2%;font-family: Droid Sans, Droid, Roboto, Arial;}
+tr.header hgroup h2 {clear: both;margin: 0 auto;margin: 0 2%;padding-bottom: 4%;text-align: center;font-size: 200%;text-align: center;font-family: Droid Sans, Droid, Roboto, Arial;border-bottom: 1px dotted #9e9e9e;}
+
+tr.header dl.user {float: right;margin: 1.5% 2% 1.5% 0;padding: 0;height: 17%;}
+tr.header dl.user dt,
+tr.header dl.user dd {float: left;font-size: 130%;font-family: Droid Sans, Droid, Roboto, Arial;}
+tr.header dl.user dd {color: #919191;}
+tr.header dl.user dt {margin: 0 1.1em;}
+
+table.healthList {width: 100%}
+table.healthList tr td.image {width: 18%;}
+table.healthList tr td.text.txt1 {width: 29%;}
+table.healthList tr td.text.txt2 {width: 35%;}
+table.healthList tr td.image div {margin-left: 20%;border-left: 1px dotted #9e9e9e;}
+table.healthList tr td.image div img {width: 90%;}
+table.healthList tr td.text {position: relative;}
+
+table.healthList tr td.text h3 {position: absolute;top: 4%;left: 0;clear: left;margin: 0;padding: 4% 2% 1% 0.5%;width: 97%;height: 27%;color: #8e8e8e;font-size: 210%;font-family: Droid Sans, Droid, Roboto, Arial;letter-spacing: -2px;vertical-align: top;}
+table.healthList tr td.text.txt1 h3 {padding: 6% 2% 2% 0.5%;}
+table.healthList tr td.text div {clear: both;position: absolute;top: 55%;left: 0;margin: 0;padding: 3% 0 5% 0;width: 99%;}
+table.healthList tr td.text.txt1 div {padding: 4% 0 7% 0;}
+table.healthList tr td.text div p.value,
+table.healthList tr td.text div p.unit {float: left;}
+table.healthList tr td.text div p.value {margin: 0;padding: 0;height: 35%;color: #222222;font-size: 250%;text-align: left;font-family: Droid, Droid Sans, Roboto, Arial;font-weight: normal;letter-spacing: -1px;vertical-align: bottom;}
+table.healthList tr td.text div p.unit {margin: 0;padding: 2% 0 0 3%;height: 25%;color: #8e8e8e;font-style: normal;font-size: 200%;font-family: Droid Sans, Droid, Roboto, Arial;}
+table.healthList tr td.text.txt1 p {padding: 10% 2% 0 0;}
+
+tr.footer td {
+margin: 0;
+padding: 0.5% 0;
+border-top: 1px solid #dedede;
+box-shadow: inset 0 1px 8px 1px #e6e6e6;
+-webkit-box-shadow: inset 0 1px 8px 1px #e6e6e6;
+background-color: #f4f4f4;
+}
+tr.footer p {
+margin: 1.5% 0;
+padding: 0;
+line-height: 140%;
+color: #666666;
+font-size: 100%;
+font-family: Droid, Droid Sans, Roboto, Arial;
+text-align: center;
+}

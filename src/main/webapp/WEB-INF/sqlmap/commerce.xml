@@ -1,0 +1,1385 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="commerce">
+	<typeAlias alias="commerce" type="com.skt.mars.adm.co.Commerce" />
+	<typeAlias alias="promote" type="com.skt.mars.adm.co.Promote" />
+	<typeAlias alias="guide" type="com.skt.mars.adm.co.Guide" />
+	<typeAlias alias="jsonCommerce" type="com.skt.mars.adm.co.JsonCommerce" />
+	<typeAlias alias="jsonCommerceD" type="com.skt.mars.adm.co.JsonCommerce" />
+
+	<!-- Templete Mgr ResultMap -->
+	<resultMap id="PGADM0E01_L_01_rm" class="commerce">
+		<result property="tempId" column="TEMP_ID" />
+		<result property="tempType" column="TEMP_TYPE" />
+		<result property="tempTitl" column="TEMP_TITL" />
+		<result property="tempLang" column="TEMP_LANG" />
+		<result property="tempImg" column="TEMP_IMG" />
+		<result property="img1WidtHeig" column="IMG1_WIDT_HEIG" />
+		<result property="img2WidtHeig" column="IMG2_WIDT_HEIG" />
+		<result property="img3WidtHeig" column="IMG3_WIDT_HEIG" />
+		<result property="tempHtml" column="TEMP_HTML" />
+		<result property="textCnt" column="TEXT_CNT" />
+		<result property="imgCnt" column="IMG_CNT" />
+		<result property="dfltYn" column="DFLT_YN" />
+		<result property="delYn" column="DEL_YN" />
+		<result property="frstRgstDt" column="FRST_RGST_DT" />
+		<result property="lastCrctDt" column="LAST_CRCT_DT" />
+	</resultMap>
+	
+	<resultMap id="PGADM0E04_U_01_rm" class="commerce">
+		<result property="tempId" column="TEMP_ID" />
+		<result property="tempType" column="TEMP_TYPE" />
+		<result property="tempTitl" column="TEMP_TITL" />
+		<result property="tempLang" column="TEMP_LANG" />
+		<result property="tempImg" column="TEMP_IMG" />
+		<result property="img1WidtHeig" column="IMG1_WIDT_HEIG" />
+		<result property="img2WidtHeig" column="IMG2_WIDT_HEIG" />
+		<result property="img3WidtHeig" column="IMG3_WIDT_HEIG" />
+		<result property="tempHtml" column="TEMP_HTML" />
+		<result property="textCnt" column="TEXT_CNT" />
+		<result property="imgCnt" column="IMG_CNT" />
+		<result property="dfltYn" column="DFLT_YN" />
+		<result property="delYn" column="DEL_YN" />
+		<result property="frstRgstDt" column="FRST_RGST_DT" />
+		<result property="lastCrctDt" column="LAST_CRCT_DT" />
+		<result property="pfdImgPath" column="PFD_IMG_PATH" />
+		<result property="pfdHtmlPath" column="PFD_HTML_PATH" />
+		<result property="pfnImgName" column="PFN_IMG_NAME" />
+		<result property="pfnHtmlName" column="PFN_HTML_NAME" />
+		<result property="uniqueKeyImg" column="UNIQUE_KEY_IMG" />
+		<result property="uniqueKeyHtml" column="UNIQUE_KEY_HTML" />
+		
+		
+	</resultMap>
+	
+	<!-- Promote Mgr ResultMap 구 쿼리 
+	<resultMap id="PGADM0E10_L_01_rm" class="promote">
+		<result property="prmtId" column="PRMT_ID" />
+		<result property="userId" column="USER_ID" />
+		<result property="tempId" column="TEMP_ID" />
+		<result property="prmtType" column="PRMT_TYPE" />
+		<result property="prmtLvlType" column="PRMT_LVL_TYPE" />
+		<result property="prmtLvl" column="PRMT_LVL" />
+		<result property="prodTitl" column="PROD_TITL" />
+		<result property="prodNm" column="PROD_NM" />
+		<result property="prodSllr" column="PROD_SLLR" />
+		<result property="prodPric" column="PROD_PRIC" />
+		<result property="tlno" column="TLNO" />
+		<result property="emal" column="EMAL" />
+		<result property="prmtProdImg" column="PRMT_PROD_IMG" />
+		<result property="ThumImg" column="THUM_IMG" />
+		<result property="delYn" column="DEL_YN" />
+		<result property="frstRgstDt" column="FRST_RGST_DT" />
+		<result property="lastCrctDt" column="LAST_CRCT_DT" />
+		<result property="lastSaveYnTabletOnly" column="LAST_SAVE_YN_TABLET_ONLY" />
+		<result property="fbSnsType" column="FB_SNS_TYPE" />
+		<result property="bsSnsType" column="BS_SNS_TYPE" />
+		<result property="twSnsType" column="TW_SNS_TYPE" />
+		<result property="fbSnsInfo" column="FB_SNS_INFO" />
+		<result property="bsSnsInfo" column="BS_SNS_INFO" />
+		<result property="twSnsInfo" column="TW_SNS_INFO" />
+	</resultMap>
+	-->
+	
+	<!-- Promote Mgr ResultMap 신 쿼리-->
+	<resultMap id="PGADM0E10_L_01_rm" class="promote">
+		<result property="prmtId" column="PRMT_ID" />
+		<result property="userId" column="USER_ID" />
+		<result property="tempId" column="TEMP_ID" />
+		<result property="prmtType" column="PRMT_TYPE" />
+		<result property="prmtLvlType" column="PRMT_LVL_TYPE" />
+		<result property="prmtLvl" column="PRMT_LVL" />
+		<result property="prodTitl" column="PROD_TITL" />
+		<result property="prodNm" column="PROD_NM" />
+		<result property="prodSllr" column="PROD_SLLR" />
+		<result property="prodPric" column="PROD_PRIC" />
+		<result property="tlno" column="TLNO" />
+		<result property="emal" column="EMAL" />
+		<result property="prmtProdImg" column="PRMT_PROD_IMG" />		
+		<result property="delYn" column="DEL_YN" />
+		<result property="frstRgstDt" column="FRST_RGST_DT" />
+		<result property="lastCrctDt" column="LAST_CRCT_DT" />
+		<result property="fbSnsType" column="FB_SNS_TYPE" />
+		<result property="bsSnsType" column="BS_SNS_TYPE" />
+		<result property="twSnsType" column="TW_SNS_TYPE" />
+		<result property="fbSnsInfo" column="FB_SNS_INFO" />
+		<result property="bsSnsInfo" column="BS_SNS_INFO" />
+		<result property="twSnsInfo" column="TW_SNS_INFO" />
+	</resultMap>
+	
+	<!-- Promote Mgr View ResultMap -->
+	<resultMap id="PGADM0E12_V_01_rm" class="promote">
+		<result property="prmtId" column="PRMT_ID" />
+		<result property="userId" column="USER_ID" />
+		<result property="tempId" column="TEMP_ID" />
+		<result property="prmtType" column="PRMT_TYPE" />
+		<result property="prmtLvlType" column="PRMT_LVL_TYPE" />
+		<result property="prmtLvl" column="PRMT_LVL" />
+		<result property="prodTitl" column="PROD_TITL" />
+		<result property="prodNm" column="PROD_NM" />
+		<result property="prodSllr" column="PROD_SLLR" />
+		<result property="prodPric" column="PROD_PRIC" />
+		<result property="tlno" column="TLNO" />
+		<result property="emal" column="EMAL" />
+		<result property="prmtProdImg" column="PRMT_PROD_IMG" />				
+		<result property="frstRgstDt" column="FRST_RGST_DT" />
+		<result property="lastCrctDt" column="LAST_CRCT_DT" />		
+		<result property="prevCon" column="PREV_CON" />
+		<result property="nextCon" column="NEXT_CON" />
+	</resultMap>
+	
+	<!-- Promote Mgr View2 ResultMap -->
+	<resultMap id="PGADM0E12_V_02_rm" class="promote">
+		<result property="snsHsId" column="SNS_HS_ID" />
+		<result property="snsId" column="SNS_ID" />
+		<result property="snsType" column="SNS_TYPE" />
+		<result property="prmtId" column="PRMT_ID" />					
+		<result property="prmtSnsUrl" column="PRMT_SNS_URL" />
+		<result property="prmtSnsId" column="PRMT_SNS_ID" />
+		<result property="snsStat" column="SNS_STAT" />
+		<result property="delYn" column="DEL_YN" />
+		<result property="snsFrstRgstDt" column="FRST_RGST_DT" />
+		<result property="snsLastCrctDt" column="LAST_CRCT_DT" />		
+	</resultMap>
+	
+	<!-- Guide Mgr ResultMap -->
+	<resultMap id="PGADM0E05_L_01_rm" class="guide">
+		<result property="guidId" column="GUID_ID" />
+		<result property="guidType" column="GUID_TYPE" />
+		<result property="guidTitl" column="GUID_TITL" />
+		<result property="guidSmmr" column="GUID_SMMR" />
+		<result property="guidLang" column="GUID_LANG" />
+		<result property="guidCntsUrl" column="GUID_CNTS_URL" />
+		<result property="delYn" column="DEL_YN" />
+		<result property="frstRgstDt" column="FRST_RGST_DT" />
+		<result property="frstRgstMngrId" column="FRST_RGST_MNGR_ID" />
+		<result property="lastCrctDt" column="LAST_CRCT_DT" />
+		<result property="lastCrctMngrId" column="LAST_CRCT_MNGR_ID" />		
+		<result property="prevCon" column="PREV_CON" />
+		<result property="nextCon" column="NEXT_CON" />
+	</resultMap>
+	
+	
+	<!-- JsonGuide Mgr ResultMap -->
+	<resultMap id="PGADM0E05_L_01_JSON_rm" class="jsonCommerce">
+		<result property="guidId" column="GUID_ID" />
+		<result property="guidType" column="GUID_TYPE" />
+		<result property="guidTitl" column="GUID_TITL" />
+		<result property="guidSmmr" column="GUID_SMMR" />
+		<result property="guidLang" column="GUID_LANG" />
+		<result property="guidCntsUrl" column="GUID_CNTS_URL" />
+		<result property="delYn" column="DEL_YN" />
+		<result property="frstRgstDt" column="FRST_RGST_DT" />
+		<result property="frstRgstMngrId" column="FRST_RGST_MNGR_ID" />
+		<result property="lastCrctDt" column="LAST_CRCT_DT" />
+		<result property="lastCrctMngrId" column="LAST_CRCT_MNGR_ID" />
+	</resultMap>
+		
+
+	<select id="PGADM0E01_L_01" resultMap="PGADM0E01_L_01_rm">
+		SELECT
+				  a.temp_id,
+		          a.temp_type,
+		          a.temp_titl,
+		          a.temp_lang,
+		          a.temp_img,
+		          a.temp_html,
+		          a.text_cnt,
+		          a.img_cnt,
+		          a.img1_widt_heig,
+		          a.img2_widt_heig,
+		          a.img3_widt_heig,
+		          a.dflt_yn,
+		          a.del_yn,
+		          a.frst_rgst_dt,
+		          a.last_crct_dt
+		FROM  tb_ruac_temp a
+		WHERE 1=1
+		AND	  del_yn='N'
+		<isNotEmpty prepend="AND" property="searchSel" >
+				  temp_type=#searchSel#
+		</isNotEmpty>
+		ORDER BY temp_id DESC
+	</select>
+	
+	<!-- list paging -->
+	<select id="PGADM0E01_L_01.TotalCount" resultClass="Integer">
+		SELECT
+				  COUNT(*)
+		FROM  tb_ruac_temp a
+		WHERE 1=1
+		AND	  del_yn='N'
+		<isNotEmpty prepend="AND" property="searchSel" >
+				  temp_type=#searchSel#
+		</isNotEmpty>
+		ORDER BY temp_id DESC
+	</select>
+
+	<select id="PGADM0E04_V_01" resultMap="PGADM0E01_L_01_rm">
+		SELECT
+				  a.temp_id,
+		          a.temp_type,
+		          a.temp_titl,
+		          a.temp_lang,
+		          a.temp_img,
+		          a.temp_html,
+		          a.text_cnt,
+		          a.img_cnt,
+		          a.img1_widt_heig,
+		          a.img2_widt_heig,
+		          a.img3_widt_heig,
+		          a.dflt_yn,
+		          a.del_yn,
+		          a.frst_rgst_dt,
+		          a.last_crct_dt
+		FROM  tb_ruac_temp a
+		WHERE 1=1
+		AND	  a.temp_id = #tempId#
+	</select>
+
+	<select id="PGADM0E04_V_02" parameterClass="commerce" resultClass="Integer">
+		SELECT COUNT(*)
+		FROM  tb_ruac_temp a
+		WHERE 1=1
+		AND	  a.temp_img = #tempImg#
+		OR    a.temp_html = #tempHtml#
+	</select>
+	
+	<insert id="PGADM0E03_I_01" parameterClass="commerce">
+		INSERT INTO tb_ruac_temp( 
+					temp_id,
+		            temp_type,
+		            temp_titl,
+		            temp_lang,
+		            temp_img,
+		            temp_html,
+		            text_cnt,
+		            img_cnt,
+		            img1_widt_heig,
+		            img2_widt_heig,
+		            img3_widt_heig,
+		            dflt_yn,
+		            del_yn,
+		            frst_rgst_dt,
+		            last_crct_dt
+		)VALUES(
+					#tempId#, 
+		            #tempType#, 
+		            #tempTitl#, 
+		            #tempLang#,
+		            #tempImg#, 
+		            #tempHtml#, 
+		            #textCnt#+0, 
+		            #imgCnt#+0, 
+		            #img1WidtHeig#,
+		            #img2WidtHeig#,
+		            #img3WidtHeig#,
+		            #dfltYn#, 
+		            'N', 
+		            CURRENT_TIMESTAMP,
+		            CURRENT_TIMESTAMP
+		)
+	</insert> 
+
+	<update id="PGADM0E02_D_01">
+		UPDATE tb_ruac_temp SET
+		del_yn='Y', dflt_yn='N'
+		WHERE temp_id IN (<iterate conjunction=",">#[]#</iterate>)
+	</update>
+	
+	<update id="PGADM0E04_U_01">
+	    UPDATE tb_ruac_temp
+		SET      dflt_yn='Y'
+		WHERE  temp_type=#tempType#
+		AND      del_yn='N'
+		AND      temp_id=#tempId#
+	</update>
+	
+	<update id="PGADM0E04_U_02">
+	    UPDATE tb_ruac_temp
+		SET      dflt_yn='N'
+		<![CDATA[
+		WHERE  temp_type=#tempType#
+		AND      del_yn='N'
+		AND      temp_id!=#tempId#
+		]]>
+	</update>
+	
+	<select id="PGADM0E04_L_01" parameterClass="commerce" resultClass="Integer">
+		SELECT COUNT(*) 
+		FROM    tb_ruac_temp
+		WHERE  1=1
+		AND 	   del_yn='N'
+		AND      dflt_yn='Y'
+		<isNotEmpty prepend="AND" property="tempType" >
+		      temp_type=#tempType#
+		</isNotEmpty>
+	</select>
+	
+	
+	
+	
+	<!-- promote MGR start -->
+	<!-- Promote List  -->
+	<select id="PGADM0E10_L_01" resultMap="PGADM0E10_L_01_rm">	   
+		 SELECT PT.prmt_id, 
+		        PT.temp_id,
+		        PT.prmt_type, 
+		        PT.prmt_lvl_type,
+		        PT.prmt_lvl,
+		        PTX.prod_titl,
+		        PTX.prod_nm,
+		        PTX.prod_sllr,
+		        PTX.prod_pric,
+		        PTX.tlno, 
+		        PTX.emal, 
+		        PT.prmt_prod_img,		          
+		        001.del_yn, 
+		        PTX.frst_rgst_dt, 
+		        PTX.last_crct_dt, 		        
+		        PT.user_id,
+		        PTSH.FB_SNS_TYPE,
+		        PTSH.BS_SNS_TYPE,
+		        PTSH.TW_SNS_TYPE,
+		        PTSH.FB_SNS_INFO,
+		        PTSH.BS_SNS_INFO,
+		        PTSH.TW_SNS_INFO         
+  			FROM TB_RUAC_PRMT PT,
+       		TB_RUAC_PRMT_TXT PTX,
+			(
+				SELECT OI.PRMT_ID
+				                ,CASE WHEN OO1.SNS_TYPE='F' THEN 1 ELSE 0 END AS FB_SNS_TYPE
+				                ,CASE WHEN OO2.SNS_TYPE='B' THEN 1 ELSE 0 END AS BS_SNS_TYPE
+				                ,CASE WHEN OO3.SNS_TYPE='T' THEN 1 ELSE 0 END AS TW_SNS_TYPE
+				                ,CASE
+				                	WHEN OO1.SNS_TYPE='F' THEN CONCAT(OO1.PRMT_SNS_URL,',',OO1.LAST_CRCT_DT,',',OO1.SNS_HS_ID,',',OO1.SNS_ID)
+				                    ELSE NULL
+				                    END AS FB_SNS_INFO
+				                ,CASE
+				                    WHEN OO2.SNS_TYPE='B' THEN CONCAT(OO2.PRMT_SNS_URL,',',OO2.LAST_CRCT_DT,',',OO2.SNS_HS_ID,',',OO2.SNS_ID)
+				                    ELSE NULL
+				                    END AS BS_SNS_INFO
+				                ,CASE
+				                    WHEN OO3.SNS_TYPE='T' THEN CONCAT(OO3.PRMT_SNS_URL,',',OO3.LAST_CRCT_DT,',',OO3.SNS_HS_ID,',',OO3.SNS_ID)
+				                    ELSE NULL
+				                    END AS TW_SNS_INFO
+				
+				FROM TB_RUAC_PRMT OI
+				    LEFT JOIN TB_RUAC_PRMT_SNS_HS OO1 ON OO1.PRMT_ID = OI.PRMT_ID AND OO1.SNS_TYPE = 'F'
+				    LEFT JOIN TB_RUAC_PRMT_SNS_HS OO2 ON OO2.PRMT_ID = OI.PRMT_ID AND OO2.SNS_TYPE = 'B'
+				    LEFT JOIN TB_RUAC_PRMT_SNS_HS OO3 ON OO3.PRMT_ID = OI.PRMT_ID AND OO3.SNS_TYPE = 'T'
+				WHERE (OO1.DEL_YN = 'N' OR OO2.DEL_YN = 'N' OR OO3.DEL_YN = 'N')
+				<isNotEmpty property="searchSnsSel" >
+				AND OO1.sns_type=#searchSnsSel#
+				</isNotEmpty>
+				GROUP BY OI.PRMT_ID					
+				) PTSH
+				WHERE PT.PRMT_ID = PTX.PRMT_ID
+	  			AND PT.PRMT_ID = PTSH.PRMT_ID	  			
+				<isNotEmpty property="searchSrtDt">
+				<isNotEmpty property="searchEndDt">
+		    	AND PTX.frst_rgst_dt BETWEEN #searchSrtDt# AND #searchEndDt#
+				</isNotEmpty> 
+				</isNotEmpty>
+				<isNotEmpty property="searchTxt">
+				<isNotEmpty property="searchSel">
+		    	AND $searchSel$ LIKE CONCAT('%',#searchTxt#,'%')
+				</isNotEmpty>
+				</isNotEmpty>		
+				<isNotEmpty property="searchTxtUser">
+		    	AND (prod_titl LIKE CONCAT('%',#searchTxtUser#,'%') OR
+		    	prod_nm LIKE CONCAT('%',#searchTxtUser#,'%') OR
+		    	prod_sllr LIKE CONCAT('%',#searchTxtUser#,'%'))  
+				</isNotEmpty>
+				<isNotEmpty property="userId">
+		    	AND USER_ID = #userId#  
+				</isNotEmpty>				
+				ORDER BY PT.PRMT_ID DESC
+				</select>
+	
+	<!-- list paging -->
+	<select id="PGADM0E10_L_01.TotalCount" resultClass="Integer">
+		SELECT COUNT(*)
+		FROM   (
+	    SELECT
+				  DISTINCT
+				  a.prmt_id
+		FROM   tb_ruac_prmt a, tb_ruac_prmt_sns_hs b, TB_RUAC_PRMT_TXT c
+		WHERE 1=1
+		AND     a.prmt_id = b.prmt_id
+		AND     a.prmt_id = c.prmt_id
+		
+		<isNotEmpty property="searchSrtDt">
+			<isNotEmpty property="searchEndDt">
+		    AND date_format(a.frst_rgst_dt, '%m/%d/%Y') BETWEEN #searchSrtDt# AND #searchEndDt#
+			</isNotEmpty>
+		</isNotEmpty>
+		<isNotEmpty property="searchTxt">
+			<isNotEmpty property="searchSel">
+		    AND $searchSel$ LIKE CONCAT('%',#searchTxt#,'%')
+			</isNotEmpty>
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="searchSnsSel" >
+				  b.sns_type=#searchSnsSel#
+		</isNotEmpty>
+		<isNotEmpty property="searchTxtUser">
+		    	AND (prod_titl LIKE CONCAT('%',#searchTxtUser#,'%') OR
+		    	prod_nm LIKE CONCAT('%',#searchTxtUser#,'%') OR
+		    	prod_sllr LIKE CONCAT('%',#searchTxtUser#,'%'))  
+		</isNotEmpty>		
+		<isNotEmpty property="userId">
+    	AND USER_ID = #userId#  
+		</isNotEmpty>				
+		) AS AA
+	</select>
+	
+	<!-- Promote View  -->
+	<select id="PGADM0E12_V_01" resultMap="PGADM0E12_V_01_rm">
+	    
+	    SELECT
+				a.prmt_id,
+                a.temp_id,
+                a.prmt_type,
+                a.prmt_lvl_type,
+                a.prmt_lvl,
+                b.prod_titl,
+                b.prod_nm,
+                b.prod_sllr,
+                b.prod_pric,
+                b.tlno,
+                b.emal,
+                a.prmt_prod_img,
+                DATE_FORMAT(a.frst_rgst_dt, '%Y-%m-%d  %p %h:%i') as frst_rgst_dt,
+                DATE_FORMAT(a.last_crct_dt, '%Y-%m-%d  %p %h:%i') as last_crct_dt,                        
+                a.user_id,
+                    (SELECT CONCAT(prod_titl ,',', prmt_id) 
+					FROM tb_ruac_prmt_txt 
+					WHERE 1=1  
+					AND prmt_id = (
+							   select 
+				                       max(a.prmt_id) 
+				                FROM   tb_ruac_prmt a, tb_ruac_prmt_txt b
+		        							<![CDATA[
+		                                     WHERE 1=1		          
+		   									and a.prmt_id = b.prmt_id
+		                                    AND     #prmtId# > a.prmt_id
+		                                    ]]>
+		                                    <isNotEmpty property="searchSrtDt">
+												<isNotEmpty property="searchEndDt">
+											    AND date_format(a.last_crct_dt, '%m/%d/%Y') BETWEEN #searchSrtDt# AND #searchEndDt#
+												</isNotEmpty>
+											</isNotEmpty>
+											<isNotEmpty property="searchTxt">
+												<isNotEmpty property="searchSel">
+											    AND $searchSel$ LIKE CONCAT('%',#searchTxt#,'%')
+												</isNotEmpty>
+											</isNotEmpty>											
+											<isNotEmpty property="searchTxtUser">
+											    	AND (prod_titl LIKE CONCAT('%',#searchTxtUser#,'%') OR
+											    	prod_nm LIKE CONCAT('%',#searchTxtUser#,'%') OR
+											    	prod_sllr LIKE CONCAT('%',#searchTxtUser#,'%'))  
+											</isNotEmpty>		
+											<isNotEmpty prepend="AND" property="searchSnsSel" >
+													  a.prmt_type=#searchSnsSel#
+											</isNotEmpty>
+											<isNotEmpty property="userId">
+									    	AND a.USER_ID = #userId#  
+											</isNotEmpty>				
+		                                    )) AS prev_con,
+				 		(SELECT CONCAT(prod_titl ,',', prmt_id) 
+						FROM tb_ruac_prmt_txt 
+						WHERE 1=1  
+						AND prmt_id = (
+								   select 
+					                       min(a.prmt_id) 
+					                FROM   tb_ruac_prmt a, tb_ruac_prmt_txt b
+		         							<![CDATA[
+		                                    WHERE 1=1
+		   									and a.prmt_id = b.prmt_id
+		                                    AND     #prmtId# < a.prmt_id
+		                                     ]]>
+		                                    <isNotEmpty property="searchSrtDt">
+												<isNotEmpty property="searchEndDt">
+											    AND date_format(a.last_crct_dt, '%m/%d/%Y') BETWEEN #searchSrtDt# AND #searchEndDt#
+												</isNotEmpty>
+											</isNotEmpty>
+											<isNotEmpty property="searchTxt">
+												<isNotEmpty property="searchSel">
+											    AND $searchSel$ LIKE CONCAT('%',#searchTxt#,'%')
+												</isNotEmpty>
+											</isNotEmpty>
+																				
+											<isNotEmpty property="searchTxtUser">
+											    	AND (prod_titl LIKE CONCAT('%',#searchTxtUser#,'%') OR
+											    	prod_nm LIKE CONCAT('%',#searchTxtUser#,'%') OR
+											    	prod_sllr LIKE CONCAT('%',#searchTxtUser#,'%'))  
+											</isNotEmpty>		
+											<isNotEmpty prepend="AND" property="searchSnsSel" >
+													  a.prmt_type=#searchSnsSel#
+											</isNotEmpty>
+											<isNotEmpty property="userId">
+									    	AND a.USER_ID = #userId#  
+											</isNotEmpty>		
+		                                    )) AS next_con
+		FROM   tb_ruac_prmt a,
+               tb_ruac_prmt_txt b
+        WHERE  a.prmt_id = b.prmt_id
+		AND    a.prmt_id=#prmtId#
+	</select>
+	
+	<!-- Promote View(snsList)  -->
+	<select id="PGADM0E12_V_02" resultMap="PGADM0E12_V_02_rm">
+			SELECT 
+					   a.sns_hs_id,
+				       a.sns_id,
+				       a.sns_type,
+				       a.prmt_id,				       				       				       
+				       a.prmt_sns_url,
+				       a.prmt_sns_id,
+				       a.sns_stat,
+				       a.del_yn,
+				       a.frst_rgst_dt,
+				       a.last_crct_dt				       
+		  FROM 	   tb_ruac_prmt_sns_hs a
+		WHERE 	   1=1
+		    AND del_yn = 'N'
+			<isNotEmpty property="prmtId" >
+		    AND      prmt_id=#prmtId#
+			</isNotEmpty>
+	</select>
+	
+	<select id="PGADM0E12_V_02.TotalCount" resultClass="Integer">
+			SELECT 
+					   COUNT(*)
+		  FROM 	   tb_ruac_prmt_sns_hs a
+		WHERE 	   1=1
+			<isNotEmpty property="prmt_id" >
+		    AND      prmt_id=##
+			</isNotEmpty>
+	</select>
+	
+	<!-- Promote sns delete  -->
+	<update id="PGADM0E12_U_TW" >
+			UPDATE tb_ruac_prmt_sns_hs
+			SET DEL_YN = 'Y', 
+			last_crct_dt = CURRENT_TIMESTAMP 
+			<isNotEmpty property="snsHsId" >
+		    	WHERE sns_hs_id=#snsHsId#
+			</isNotEmpty>
+	</update>
+	
+	<!--동기화 Guide OUTList-->
+	<select id="commerce.GuideList" parameterClass="hMap" resultClass="hMap">
+	    SELECT 
+						 A.GUID_ID
+				        ,A.GUID_TYPE
+				        ,A.GUID_TITL
+				        ,A.GUID_SMMR
+				        ,A.GUID_LANG
+				        ,A.GUID_CNTS_URL
+				        ,A.DEL_YN
+				        ,CAST(A.FRST_RGST_DT AS CHAR(30)) AS FRST_RGST_DT 
+				        ,A.FRST_RGST_MNGR_ID
+				        ,CAST(A.LAST_CRCT_DT AS CHAR(30)) AS LAST_CRCT_DT
+				        ,A.LAST_CRCT_MNGR_ID	
+				        <isNotEmpty property="syncDt">
+				        ,CASE WHEN <![CDATA[FRST_RGST_DT < #syncDt#]]> AND <![CDATA[LAST_CRCT_DT > #syncDt#]]>
+				              THEN 'U'				             
+				              WHEN <![CDATA[FRST_RGST_DT > #syncDt#]]> 
+				              THEN 'I'
+				          END PROD			   
+			  			</isNotEmpty>     				         
+		  FROM        TB_RUAC_GUID A
+		  WHERE       1=1		  		  
+		  ORDER BY A.GUID_ID DESC
+	</select>
+	<!--동기화 Guide INList-->
+	<insert id="commerce.GuideList.insert" parameterClass="com.skt.mars.adm.co.JsonCommerce">
+	   	INSERT INTO TB_RUAC_GUID( 
+	    	       GUID_ID
+				  ,GUID_TYPE
+				  ,GUID_TITL
+				  ,GUID_SMMR
+				  ,GUID_LANG
+				  ,GUID_CNTS_URL
+				  ,DEL_YN
+				  ,FRST_RGST_DT
+				  ,FRST_RGST_MNGR_ID
+				  ,LAST_CRCT_DT
+				  ,LAST_CRCT_MNGR_ID	 
+	    ) VALUE (
+	    	       #GUID_ID#
+				  ,#GUID_TYPE#
+				  ,#GUID_TITL#
+				  ,#GUID_SMMR#
+				  ,#GUID_LANG#
+				  ,#GUID_CNTS_URL#
+				  ,#DEL_YN#
+		          ,SYSDATE()
+				  ,#FRST_RGST_MNGR_ID#
+		          ,SYSDATE()
+				  ,#LAST_CRCT_MNGR_ID#				
+	    )
+	  </insert> 
+	<!--동기화 Temp OUTList-->
+	<select id="commerce.TempList" parameterClass="hMap" resultClass="hMap">
+	    SELECT
+				  A.TEMP_ID
+		         ,A.TEMP_TYPE
+		         ,A.TEMP_TITL
+		         ,A.TEMP_LANG
+		         ,A.TEMP_IMG
+		         ,A.TEMP_HTML
+		         ,A.TEXT_CNT
+		         ,A.IMG_CNT
+		         ,A.IMG1_WIDT_HEIG
+		         ,A.IMG2_WIDT_HEIG
+		         ,A.IMG3_WIDT_HEIG
+		         ,A.DFLT_YN
+		         ,A.DEL_YN		         
+		         ,CAST(A.FRST_RGST_DT AS CHAR(30)) AS FRST_RGST_DT
+		         ,CAST(A.LAST_CRCT_DT CHAR(30)) AS LAST_CRCT_DT		         	        
+		          <isNotEmpty property="syncDt">
+				        ,CASE WHEN <![CDATA[CONVERT(A.FRST_RGST_DT,CHAR(256)) < #syncDt#]]> AND <![CDATA[CONVERT(A.LAST_CRCT_DT,CHAR(256)) > #syncDt#]]>
+				              THEN 'U'				             
+				              WHEN <![CDATA[CONVERT(A.FRST_RGST_DT,CHAR(256)) > #syncDt#]]> 
+				              THEN 'I'
+				          END PROD			   
+			  	  </isNotEmpty> 
+		FROM  TB_RUAC_TEMP A
+		WHERE 1=1				  
+		ORDER BY TEMP_ID DESC
+				  
+	</select>
+	
+	<!--동기화 Temp INList-->
+	<insert id="commerce.TempList.insert" parameterClass="com.skt.mars.adm.co.JsonCommerce">
+	   	INSERT INTO TB_RUAC_TEMP( 
+	    	      TEMP_ID
+		         ,TEMP_TYPE
+		         ,TEMP_TITL
+		         ,TEMP_LANG
+		         ,TEMP_IMG
+		         ,TEMP_HTML
+		         ,TEXT_CNT
+		         ,IMG_CNT
+		         ,IMG1_WIDT_HEIG
+		         ,IMG2_WIDT_HEIG
+		         ,IMG3_WIDT_HEIG
+		         ,DFLT_YN
+		         ,DEL_YN
+		         ,FRST_RGST_DT
+		         ,LAST_CRCT_DT
+		           
+	    ) VALUE (
+	    	      #TEMP_ID#
+		         ,#TEMP_TYPE#
+		         ,#TEMP_TITL#
+		         ,#TEMP_LANG#
+		         ,#TEMP_IMG#
+		         ,#TEMP_HTML#
+		         ,#TEXT_CNT#
+		         ,#IMG_CNT#
+		         ,#IMG1_WIDT_HEIG#
+		         ,#IMG2_WIDT_HEIG#
+		         ,#IMG3_WIDT_HEIG#
+		         ,#DFLT_YN#
+		         ,#DEL_YN#
+		         ,SYSDATE()
+		         ,SYSDATE()
+	    )
+	  </insert> 
+	  
+	<!--동기화 PRMT_TXT OUTList-->
+	<select id="commerce.PrmttxtList" parameterClass="hMap" resultClass="hMap">
+	    SELECT A.PRMT_TXT_ID
+      		  ,A.PRMT_ID
+      	      ,A.PROD_TITL
+       		  ,A.SUB_TITL1
+         	  ,A.SUB_TITL2
+      		  ,A.SUB_TITL3
+      		  ,A.PROD_NM
+      		  ,A.PROD_PRIC
+      		  ,A.PROD_PACK
+      		  ,A.PROD_ORGN
+      		  ,A.PROD_SLLR
+      		  ,A.TLNO
+      		  ,A.EMAL
+      		  ,A.TXT_CNT
+      		  ,A.TXT_CNTS1
+      		  ,A.TXT_CNTS2
+      		  ,A.TXT_CNTS3      		  
+      		  ,CAST(A.FRST_RGST_DT AS CHAR(30)) AS FRST_RGST_DT      		  
+      		  ,CAST(A.LAST_CRCT_DT AS CHAR(30)) AS LAST_CRCT_DT
+      		  <isNotEmpty property="syncDt">
+				        ,CASE WHEN <![CDATA[A.FRST_RGST_DT < #syncDt#]]> AND <![CDATA[A.LAST_CRCT_DT > #syncDt#]]>
+				              THEN 'U'				             
+				              WHEN <![CDATA[A.FRST_RGST_DT > #syncDt#]]> 
+				              THEN 'I'				              
+				          ELSE 'NULL'
+				          END PROD			   
+			  			</isNotEmpty> 
+		  FROM TB_RUAC_PRMT_TXT A,
+		       TB_RUAC_PRMT B
+		  WHERE       1=1	
+		    AND A.PRMT_ID = B.PRMT_ID
+		    AND B.USER_ID = #userId#	  	
+		  ORDER BY A.PRMT_TXT_ID DESC
+	</select>
+	<!--동기화 PRMT_TXT INList-->
+	<insert id="commerce.PrmttxtList.insert" parameterClass="com.skt.mars.adm.co.JsonCommerce">
+	   	INSERT INTO TB_RUAC_PRMT_TXT( 
+	    	   PRMT_TXT_ID
+      		  ,PRMT_ID
+      	      ,PROD_TITL
+       		  ,SUB_TITL1
+         	  ,SUB_TITL2
+      		  ,SUB_TITL3
+      		  ,PROD_NM
+      		  ,PROD_PRIC
+      		  ,PROD_PACK
+      		  ,PROD_ORGN
+      		  ,PROD_SLLR
+      		  ,TLNO
+      		  ,EMAL
+      		  ,TXT_CNT
+      		  ,TXT_CNTS1
+      		  ,TXT_CNTS2
+      		  ,TXT_CNTS3
+      		  ,FRST_RGST_DT
+      		  ,LAST_CRCT_DT 
+	    ) VALUE (
+	    	   #PRMT_TXT_ID#
+      		  ,#PRMT_ID#
+      	      ,#PROD_TITL#
+       		  ,#SUB_TITL1#
+         	  ,#SUB_TITL2#
+      		  ,#SUB_TITL3#
+      		  ,#PROD_NM#
+      		  ,#PROD_PRIC#
+      		  ,#PROD_PACK#
+      		  ,#PROD_ORGN#
+      		  ,#PROD_SLLR#
+      		  ,#TLNO#
+      		  ,#EMAL#
+      		  ,#TXT_CNT#
+      		  ,#TXT_CNTS1#
+      		  ,#TXT_CNTS2#
+      		  ,#TXT_CNTS3#
+	          ,SYSDATE()
+	          ,SYSDATE()			
+	    )
+	  </insert> 
+	<!--동기화 PRMT_IMG OUTList-->
+	<select id="commerce.PrmtimgList" parameterClass="hMap" resultClass="hMap">
+	    SELECT 
+						 A.PRMT_IMG_ID
+				        ,A.PRMT_ID
+				        ,A.PSIT_INFO
+				        ,A.IMG_URL
+				        ,CAST(A.FRST_RGST_DT AS CHAR(30)) AS FRST_RGST_DT				        
+				        ,CAST(A.LAST_CRCT_DT AS CHAR(30)) AS LAST_CRCT_DT				        
+				         <isNotEmpty property="syncDt">
+				        ,CASE WHEN <![CDATA[A.FRST_RGST_DT < #syncDt#]]> AND <![CDATA[A.LAST_CRCT_DT > #syncDt#]]>
+				              THEN 'U'				             
+				              WHEN <![CDATA[A.FRST_RGST_DT > #syncDt#]]> 
+				              THEN 'I'
+				          ELSE 'NULL'
+				          END PROD			   
+			  			</isNotEmpty> 		         
+		  FROM        TB_RUAC_PRMT_IMG A,
+		              TB_RUAC_PRMT B
+		  WHERE       1=1		  	
+		    AND       A.PRMT_ID = B.PRMT_ID
+		    AND       B.USER_ID = #userId#  
+		  ORDER BY A.PRMT_IMG_ID DESC
+	</select>
+	
+	<!--동기화 PRMT_IMG INList-->
+	<insert id="commerce.PrmtimgList.insert" parameterClass="com.skt.mars.adm.co.JsonCommerce">
+	   	INSERT INTO TB_RUAC_PRMT_IMG( 
+	    	  PRMT_IMG_ID
+	    	, PRMT_ID
+	    	, PSIT_INFO
+	    	, IMG_URL
+			, FRST_RGST_DT
+			, LAST_CRCT_DT				
+	    ) VALUE (
+	    	  #PRMT_IMG_ID#
+	    	, #PRMT_ID#
+	    	, #PSIT_INFO#
+	    	, #IMG_URL#
+	        , SYSDATE()
+		    , SYSDATE()		
+	    )
+	  </insert> 
+	  
+	<!--동기화 SNS_HS OUTList-->
+	<select id="commerce.SnshsList" parameterClass="hMap" resultClass="hMap">
+	    SELECT 
+						 A.SNS_HS_ID
+				        ,A.SNS_ID
+				        ,A.SNS_TYPE
+				        ,A.PRMT_ID
+				        ,A.PRMT_SNS_URL
+				        ,A.PRMT_SNS_ID
+				        ,A.SNS_STAT
+				        ,A.DEL_YN
+				        ,CAST(A.FRST_RGST_DT AS CHAR(30)) AS FRST_RGST_DT				        
+				        ,CAST(A.LAST_CRCT_DT AS CHAR(30)) AS LAST_CRCT_DT				        
+				         <isNotEmpty property="syncDt">
+				        ,CASE WHEN <![CDATA[A.FRST_RGST_DT < #syncDt#]]> AND <![CDATA[A.LAST_CRCT_DT > #syncDt#]]>
+				              THEN 'U'				             
+				              WHEN <![CDATA[A.FRST_RGST_DT > #syncDt#]]> 
+				              THEN 'I'
+				          ELSE 'NULL'    
+				          END PROD			   
+			  			</isNotEmpty>  				        				         
+		  FROM        TB_RUAC_PRMT_SNS_HS A,
+		              TB_RUAC_PRMT B
+		  WHERE       1=1		 
+		    AND       A.PRMT_ID = B.PRMT_ID
+		    AND       B.USER_ID = #userId#  
+		  ORDER BY A.SNS_HS_ID DESC
+	</select>
+	
+	<!--동기화 SNS_HS INList-->
+	<insert id="commerce.SnshsList.insert" parameterClass="com.skt.mars.adm.co.JsonCommerce">
+	   	INSERT INTO TB_RUAC_PRMT_SNS_HS( 
+	    	  SNS_HS_ID
+	    	, SNS_ID
+	    	, SNS_TYPE
+	    	, PRMT_ID
+			, PRMT_SNS_URL
+			, PRMT_SNS_ID	
+			, SNS_STAT
+			, DEL_YN
+			, FRST_RGST_DT
+			, LAST_CRCT_DT
+	    ) VALUE (
+	    	  #SNS_HS_ID#
+	    	, #SNS_ID#
+	    	, #SNS_TYPE#
+	    	, #PRMT_ID#
+			, #PRMT_SNS_URL#
+			, #PRMT_SNS_ID#
+			, #SNS_STAT#
+			, #DEL_YN#
+            ,SYSDATE()
+            ,SYSDATE()
+	    )
+	  </insert>  
+	  
+	<!--동기화 SNS_HS INList-->
+	<update id="commerce.SnshsList.update" parameterClass="com.skt.mars.adm.co.JsonCommerce">	
+	    <!-- 수정필요 -->   	
+	    UPDATE TB_RUAC_PRMT_SNS_HS SET
+            SNS_ID = #SNS_ID#,
+            SNS_TYPE = #SNS_TYPE#,
+            PRMT_ID = #PRMT_ID#,
+            PRMT_SNS_URL = #PRMT_SNS_URL#,
+            PRMT_SNS_ID = #PRMT_SNS_ID#,
+            SNS_STAT = #SNS_STAT#,
+            DEL_YN = #DEL_YN#,
+            FRST_RGST_DT = SYSDATE(),
+            LAST_CRCT_DT = SYSDATE()
+        WHERE 1=1
+           <!--<isNotEmpty property="userID">-->
+           AND SNS_HS_ID = #SNS_HS_ID#
+           <!-- </isNotEmpty>-->           
+	  </update>  
+	  
+	
+	<!--동기화 PRMT OUTList-->
+	<select id="commerce.PrmtList" parameterClass="hMap" resultClass="hMap">
+	    SELECT 
+						 A.PRMT_ID
+				        ,A.USER_ID
+				        ,A.TEMP_ID
+				        ,A.PRMT_TYPE
+				        ,A.PRMT_LVL_TYPE
+				        ,A.PRMT_LVL
+				        ,A.PRMT_PROD_IMG
+				        ,A.DEL_YN				        
+				        ,CAST(A.FRST_RGST_DT AS CHAR(30)) AS FRST_RGST_DT			        				        
+				        ,CAST(A.LAST_CRCT_DT AS CHAR(30)) AS LAST_CRCT_DT
+				         <isNotEmpty property="syncDt">
+				        ,CASE WHEN <![CDATA[FRST_RGST_DT < #syncDt#]]> AND <![CDATA[LAST_CRCT_DT > #syncDt#]]>
+				              THEN 'U'				             
+				              WHEN <![CDATA[FRST_RGST_DT > #syncDt#]]> 
+				              THEN 'I'
+				          END PROD			   
+			  			</isNotEmpty>  				        				         
+		  FROM        TB_RUAC_PRMT A
+		  WHERE       1=1		  	
+		    AND       A.USER_ID = #userId#  
+		  ORDER BY A.PRMT_ID DESC
+	</select>
+	<!--동기화 PRMT INList-->
+	<insert id="commerce.PrmtList.insert" parameterClass="com.skt.mars.adm.co.JsonCommerce">
+	   	INSERT INTO TB_RUAC_PRMT( 
+	    	  PRMT_ID
+	    	, USER_ID
+	    	, TEMP_ID
+	    	, PRMT_TYPE
+			, PRMT_LVL_TYPE
+			, PRMT_LVL
+			, PRMT_PROD_IMG
+			, DEL_YN
+			, FRST_RGST_DT
+			, LAST_CRCT_DT
+	    ) VALUE (
+	    	  #PRMT_ID#
+	    	, #USER_ID#
+	    	, #TEMP_ID#
+	    	, #PRMT_TYPE#
+			, #PRMT_LVL_TYPE#
+			, #PRMT_LVL#
+			, #PRMT_PROD_IMG#
+			, #DEL_YN#
+	        ,SYSDATE()
+		    ,SYSDATE()
+	    )
+	</insert>	
+	
+	<!--동기화 PRMT INList-->
+	<update id="commerce.PrmtList.update" parameterClass="com.skt.mars.adm.co.JsonCommerce">	
+	    <!-- 수정필요 -->   	
+	    UPDATE TB_RUAC_PRMT SET
+            USER_ID = #USER_ID#,
+            TEMP_ID = #TEMP_ID#,
+            PRMT_TYPE = #PRMT_TYPE#,
+            PRMT_LVL_TYPE = #PRMT_LVL_TYPE#,
+            PRMT_LVL = #PRMT_LVL#,
+            PRMT_PROD_IMG = #PRMT_PROD_IMG#,
+            DEL_YN = #DEL_YN#,
+            FRST_RGST_DT = SYSDATE(),
+            LAST_CRCT_DT = SYSDATE()
+        WHERE 1=1
+           <!--isNotEmpty property="userID"-->
+           AND PRMT_ID = #PRMT_ID#
+           <!-- /isNotEmpty-->           
+	  </update>  
+	
+	<!--동기화 REG_HS OUTList-->
+	<select id="commerce.ReghsList" parameterClass="hMap" resultClass="hMap">
+	    SELECT 
+						 A.PRMT_HS_ID
+				        ,A.PRMT_ID
+				        ,A.USER_ID
+				        ,A.PRMT_TYPE
+				        ,A.TEMP_ID
+				        ,A.PERF_TYPE				        
+				        ,A.PERF_DT
+				        ,'I' AS PROD						          		        				       
+		  FROM        TB_RUAC_REG_HS A		  
+		  WHERE       1=1	
+		    AND       A.USER_ID = #userId#
+		  ORDER BY A.PRMT_HS_ID DESC
+	</select>
+	
+	<!--동기화 REG_HS INList-->
+	<insert id="commerce.ReghsList.insert" parameterClass="com.skt.mars.adm.co.JsonCommerce">
+	   	INSERT INTO TB_RUAC_REG_HS( 
+	    	  PRMT_HS_ID
+	    	, PRMT_ID
+	    	, USER_ID
+	    	, PRMT_TYPE
+			, TEMP_ID
+			, PERF_TYPE	
+			, PERF_DT	
+	    ) VALUE (
+	    	  #PRMT_HS_ID#
+	    	, #PRMT_ID#
+	    	, #USER_ID#
+	    	, #PRMT_TYPE#
+			, #TEMP_ID#
+			, #PERF_TYPE#
+			, SYSDATE()
+	    )
+	  </insert>  
+	  
+	<!-- Guide List  -->
+	<select id="PGADM0E05_L_01" resultMap="PGADM0E05_L_01_rm">
+			SELECT 
+						 a.guid_id,
+				         a.guid_type,
+				         a.guid_titl,
+				         a.guid_smmr,
+				         a.guid_lang,
+				         a.guid_cnts_url,
+				         a.del_yn,
+				         a.frst_rgst_dt,
+				         a.frst_rgst_mngr_id,
+				         a.last_crct_dt,
+				         a.last_crct_mngr_id,
+				         '' as prev_con,
+				         '' as next_con
+		  FROM        tb_ruac_guid a
+		  WHERE      1=1
+		  AND          del_yn='N'
+		  ORDER BY a.GUID_TITL ASC
+	</select>
+	
+	<select id="PGADM0E05_L_01.TotalCount" resultClass="Integer">
+		  SELECT 
+						 COUNT(*)
+		  FROM        tb_ruac_guid a
+		  WHERE      1=1
+		  AND          del_yn='N'
+	</select>
+	
+	<!-- json List  -->
+	<select id="PGADM0E05_L_01_JSON" resultMap="PGADM0E05_L_01_JSON_rm">
+			SELECT 
+						 a.guid_id,
+				         a.guid_type,
+				         a.guid_titl,
+				         a.guid_smmr,
+				         a.guid_lang,
+				         a.guid_cnts_url,
+				         a.del_yn,
+				         a.frst_rgst_dt,
+				         a.frst_rgst_mngr_id,
+				         a.last_crct_dt,
+				         a.last_crct_mngr_id
+		  FROM        tb_ruac_guid a
+		  WHERE      1=1
+		  AND          del_yn='N'
+	</select>
+	
+	<select id="PGADM0E05_L_01_JSON.TotalCount" resultClass="Integer">
+		  SELECT 
+						 COUNT(*)
+		  FROM        tb_ruac_guid a
+		  WHERE      1=1
+		  AND          del_yn='N'
+	</select>
+	
+	
+	<select id="PGADM0E09_V_01" resultMap="PGADM0E05_L_01_rm">
+			SELECT 
+						 a.guid_id,
+				         a.guid_type,
+				         a.guid_titl,
+				         a.guid_smmr,
+				         a.guid_lang,
+				         a.guid_cnts_url,
+				         a.del_yn,
+				         a.frst_rgst_dt,
+				         a.frst_rgst_mngr_id,
+				         a.last_crct_dt,
+				         a.last_crct_mngr_id,
+				         <![CDATA[
+		               (select CONCAT(guid_titl ,',', guid_id)  FROM (select guid_id,guid_titl,@RNUM := @RNUM + 1 AS ROWNUM from tb_ruac_guid, ( SELECT @RNUM := 0 ) R where del_yn='N' order by guid_titl asc) g1
+						 where (select rownum from ( select guid_id,@RNUM := @RNUM + 1 AS ROWNUM from tb_ruac_guid, ( SELECT @RNUM := 0 ) R where del_yn='N' order by guid_titl asc) g2 
+						 		where g2.guid_id=#guidId#
+						        ) + 1 = g1.rownum) as prev_con,
+		               (select CONCAT(guid_titl ,',', guid_id) FROM (select guid_id,guid_titl,@RNUM := @RNUM + 1 AS ROWNUM from tb_ruac_guid, ( SELECT @RNUM := 0 ) R where del_yn='N' order by guid_titl asc) g1
+						 where (select rownum from ( select guid_id,@RNUM := @RNUM + 1 AS ROWNUM from tb_ruac_guid, ( SELECT @RNUM := 0 ) R where del_yn='N' order by guid_titl asc) g2 
+						 		where g2.guid_id=#guidId#
+						        ) -1 = g1.rownum) as next_con
+		               ]]>
+		  FROM        tb_ruac_guid a
+		  WHERE      1=1
+		  AND          del_yn='N'
+		  AND			 guid_id=#guidId#
+	</select>
+	
+	
+	<insert id="PGADM0E07_I_01">
+			insert into tb_ruac_guid(
+					guid_id,
+			        guid_type,
+			        guid_titl,
+			        guid_smmr,
+			        guid_lang,
+			        guid_cnts_url,
+			        del_yn,
+			        frst_rgst_dt,
+			        frst_rgst_mngr_id,
+			        last_crct_dt,
+			        last_crct_mngr_id 
+			)values( 
+					#guidId#,
+					#guidType#,
+			        #guidTitl#,
+			        #guidSmmr#,
+			        #guidLang#,
+			        #guidCntsUrl#,
+			        'N',
+			        current_timestamp,
+			        #frstRgstMngrId#,
+			        current_timestamp,
+			        #frstRgstMngrId#
+			)
+	</insert>
+	
+	<insert id="commerce.insertG">
+			insert into tb_ruac_guid(
+					guid_id,
+			        guid_type,
+			        guid_titl,
+			        guid_smmr,
+			        guid_lang,
+			        guid_cnts_url,
+			        del_yn,
+			        frst_rgst_dt,
+			        frst_rgst_mngr_id,
+			        last_crct_dt,
+			        last_crct_mngr_id 
+			)values( 
+					#guidId#,
+					#guidType#,
+			        #guidTitl#,
+			        #guidSmmr#,
+			        #guidLang#,
+			        #guidCntsUrl#,
+			        'N',
+			        current_timestamp,
+			        #frstRgstMngrId#,
+			        current_timestamp,
+			        #frstRgstMngrId#
+			)
+	</insert>
+	
+	<update id="PGADM0E06_D_01">
+		UPDATE tb_ruac_guid SET
+		del_yn='Y'
+		WHERE guid_id IN (<iterate conjunction=",">#[]#</iterate>)
+	</update>
+	
+	<update id="PGADM0E08_U_01">
+	    UPDATE tb_ruac_guid SET
+		           guid_type = #guidType#,
+		           guid_titl = #guidTitl#,
+		           guid_smmr = #guidSmmr#,
+		           guid_lang = #guidLang#,
+		           guid_cnts_url = #guidCntsUrl#,
+		           last_crct_dt = current_timestamp, 
+		           last_crct_mngr_id = #lastCrctMngrId# 
+		WHERE  1=1
+		AND	   guid_id = #guidId#
+	    
+	</update>
+	
+	
+	<insert id="commerce.insert.fileinfor" parameterClass="hMap">
+		insert into TB_UAST_FILE_INFOR (
+			PHYSICAL_FILE_NAME,
+			LOGICAL_FILE_NAME,
+			PHYSICAL_FILE_DIRECTORY,
+			FILE_SIZE,
+			FILE_CONTENTTYPE,
+			PHYSICAL_THUMBNAIL_DIRECTORY,
+			PHYSICAL_THUMBNAIL_FILE_NAME,
+			TAGET_ID,
+			FRST_RGST_DT,
+			FRST_RGST_USER_ID,
+			LAST_CRCT_DT,
+			LAST_CRCT_USER_ID			
+			)
+		values(
+			#attachFileName#,
+			#originalFileName#,
+			'',
+			#fileSize#,
+			#fileContentType#,
+			'',
+			'',
+			#targetID#, 
+			SYSDATE(),
+			'SYSTEM',
+			SYSDATE(),
+			'SYSTEM'			
+		)
+	</insert>
+	
+	<delete id="commerce.delete1.fileinfor">
+	    delete from TB_UAST_FILE_INFOR 
+	    where UNIQUE_KEY=#uniqueKeyImg#
+	</delete>
+	
+	<delete id="commerce.delete2.fileinfor">
+	    delete from TB_UAST_FILE_INFOR 
+	    where UNIQUE_KEY=#uniqueKeyHtml#
+	</delete>
+	
+	<select id="PGADM0E04_U_03" resultMap="PGADM0E04_U_01_rm">
+			SELECT 
+			         a.temp_id,
+			         a.temp_type,
+			         a.temp_titl,
+			         a.temp_lang,
+			         a.temp_img,
+			         a.temp_html,
+			         a.text_cnt,
+			         a.img_cnt,
+			         a.img1_widt_heig,
+			         a.img2_widt_heig,
+			         a.img3_widt_heig,
+			         a.dflt_yn,
+			         a.del_yn,
+			         a.frst_rgst_dt,
+			         a.last_crct_dt,
+			         (SELECT physical_file_directory FROM tb_uast_file_infor b WHERE b.taget_id = a.temp_id AND b.logical_file_name = a.temp_img) AS pfd_img_path,
+			         (SELECT physical_file_directory FROM tb_uast_file_infor b WHERE b.taget_id = a.temp_id AND b.logical_file_name = a.temp_html) AS pfd_html_path,
+			         (SELECT physical_file_name FROM tb_uast_file_infor b WHERE b.taget_id = a.temp_id AND b.logical_file_name = a.temp_img) AS pfn_img_name,
+			         (SELECT physical_file_name FROM tb_uast_file_infor b WHERE b.taget_id = a.temp_id AND b.logical_file_name = a.temp_html) AS pfn_html_name,
+			         (SELECT unique_key FROM tb_uast_file_infor b WHERE b.taget_id = a.temp_id AND b.logical_file_name = a.temp_img) AS unique_key_img,
+			         (SELECT unique_key FROM tb_uast_file_infor b WHERE b.taget_id = a.temp_id AND b.logical_file_name = a.temp_html) AS unique_key_html
+			 FROM tb_ruac_temp a
+			WHERE a.del_yn = 'N'
+			   AND  a.temp_id=#tempId#
+	</select>
+	
+	
+	<update id="PGADM0E04_U_04">
+	    UPDATE tb_ruac_temp SET 
+				temp_type = #tempType#, 
+				temp_titl = #tempTitl#, 
+				temp_lang = #tempLang#,
+		        temp_img = #tempImg#, 
+		        temp_html = #tempHtml#, 
+		        text_cnt = #textCnt#,
+		        img_cnt = #imgCnt#, 
+		        img1_widt_heig = #img1WidtHeig#,
+		        img2_widt_heig = #img2WidtHeig#, 
+		        img3_widt_heig = #img3WidtHeig#, 
+		        last_crct_dt = CURRENT_TIMESTAMP 
+		WHERE temp_id = #tempId#
+	</update>
+	
+	<!-- Commerce states -->
+	<select id="ADMC_M070008_commerceMonth" resultClass="hMap">
+	SELECT CASE cal.MONTHLY
+				when '01' then 'Jan'
+				when '02' then 'Feb'
+				when '03' then 'Mar'
+				when '04' then 'Apr'
+				when '05' then 'May'
+				when '06' then 'Jun'
+				when '07' then 'Jul'
+				when '08' then 'Aug'
+				when '09' then 'Sep'
+				when '10' then 'Oct'
+				when '11' then 'Nov'
+				when '12' then 'Dec'
+			END AS MONTH_NAME
+		, USE_HIS.*
+	FROM (
+			select
+        	a1.MONTHLY
+            ,a1.FACEBOOK
+            ,a1.BLOGSPOT
+            ,a1.TWITTER
+            ,a1.LABEL_COLOR_HS+a1.LABEL_BW_HS as LABEL
+            ,a1.BROCHURE_COLOR_HS+a1.BROCHURE_BW_HS as BROCHURE
+            ,a1.LABEL_COLOR_JANG as LABEL_COLOR
+            ,a1.LABEL_BW_JANG as LABEL_BW
+            ,a1.BROCHURE_COLOR_JANG as BROCHURE_COLOR
+            ,a1.BROCHURE_BW_JANG as BROCHURE_BW
+		from
+
+        (
+        SELECT
+			month(USE_HS.FRST_RGST_DT) as MONTHLY
+            , sum( if( GODS.SRVC_ID = 44, 1, 0 ) ) AS facebook
+            , sum( if( GODS.SRVC_ID = 45, 1, 0 ) ) AS blogspot
+            , sum( if( GODS.SRVC_ID = 46, 1, 0 ) ) AS twitter
+			, sum( if( GODS.SRVC_ID = 38, 1, 0 ) ) AS LABEL_COLOR_HS
+			, sum( if( GODS.SRVC_ID = 39, 1, 0 ) ) AS LABEL_BW_HS
+            , sum( if( GODS.SRVC_ID = 40, 1, 0 ) ) AS BROCHURE_COLOR_HS
+            , sum( if( GODS.SRVC_ID = 41, 1, 0 ) ) AS BROCHURE_BW_HS
+			, format(sum( if( GODS.SRVC_ID = 38, use_hs.rent_day, 0 ) ),0) AS LABEL_COLOR_JANG
+			, format(sum( if( GODS.SRVC_ID = 39, use_hs.rent_day, 0 ) ),0) AS LABEL_BW_JANG
+            , format(sum( if( GODS.SRVC_ID = 40, use_hs.rent_day, 0 ) ),0) AS BROCHURE_COLOR_JANG
+            , format(sum( if( GODS.SRVC_ID = 41, use_hs.rent_day, 0 ) ),0) AS BROCHURE_BW_JANG
+			FROM TB_UAST_USE_HS USE_HS
+				, TB_UAST_GODS GODS
+			WHERE 1 = 1
+			AND year(USE_HS.FRST_RGST_DT) = #strYear#	
+			AND GODS.GODS_ID = USE_HS.GODS_ID
+			AND GODS.SRVC_ID in (38, 39, 40, 41, 44, 45, 46)
+	        AND GODS.DEL_YN='D'
+	        AND USE_HS.USER_ID IN (SELECT USER_ID 
+									FROM TB_UAST_USER 
+									WHERE 1 = 1 									
+									<isNotEmpty property="strSex">AND SEX = #strSex#</isNotEmpty> 
+									OR BIRTHDAY BETWEEN DATE_ADD(CURDATE(), INTERVAL -0 YEAR) AND DATE_ADD(CURDATE(), INTERVAL -20 YEAR))	
+	        group by month(USE_HS.FRST_RGST_DT)
+	        ) a1
+		) USE_HIS
+		right join (
+			
+			SELECT LPAD( rnum.rownum, 2, '0' ) AS MONTHLY
+			FROM (
+				SELECT @rownum:=@rownum+1 rownum
+				FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 12
+			) rnum
+		) cal
+		on USE_HIS.MONTHLY = cal.MONTHLY
+	</select>
+	
+	<select id="ADMC_M070008_commerceDay" resultClass="hMap">
+		SELECT
+			   date_format(CAL_DAILY.DAILY,'%m/%d') DAILY
+		       ,CAL_DAILY.END_DAILY,CAL_DAILY.DAY,substr(CAL_DAILY.DAYNAME,1,3) DAYNAME
+		       ,USE_HIS.FACEBOOK
+		       ,USE_HIS.BLOGSPOT
+		       ,USE_HIS.TWITTER
+		       ,USE_HIS.LABEL_COLOR_HS+USE_HIS.LABEL_BW_HS as LABEL
+		       ,USE_HIS.BROCHURE_COLOR_HS+USE_HIS.BROCHURE_BW_HS as BROCHURE
+		       ,USE_HIS.LABEL_COLOR_JANG as LABEL_COLOR
+		       ,USE_HIS.LABEL_BW_JANG as LABEL_BW
+		       ,USE_HIS.BROCHURE_COLOR_JANG as BROCHURE_COLOR
+		       ,USE_HIS.BROCHURE_BW_JANG as BROCHURE_BW
+		FROM (
+				SELECT
+					DATE_FORMAT(USE_HS.FRST_RGST_DT,'%Y%m%d') as END_DAILY
+		            , sum( if( GODS.SRVC_ID = 44, 1, 0 ) ) AS facebook
+		            , sum( if( GODS.SRVC_ID = 45, 1, 0 ) ) AS blogspot
+		            , sum( if( GODS.SRVC_ID = 46, 1, 0 ) ) AS twitter
+					, sum( if( GODS.SRVC_ID = 38, 1, 0 ) ) AS LABEL_COLOR_HS
+					, sum( if( GODS.SRVC_ID = 39, 1, 0 ) ) AS LABEL_BW_HS
+		            , sum( if( GODS.SRVC_ID = 40, 1, 0 ) ) AS BROCHURE_COLOR_HS
+		            , sum( if( GODS.SRVC_ID = 41, 1, 0 ) ) AS BROCHURE_BW_HS
+					, format(sum( if( GODS.SRVC_ID = 38, use_hs.rent_day, 0 ) ),0) AS LABEL_COLOR_JANG
+					, format(sum( if( GODS.SRVC_ID = 39, use_hs.rent_day, 0 ) ),0) AS LABEL_BW_JANG
+		            , format(sum( if( GODS.SRVC_ID = 40, use_hs.rent_day, 0 ) ),0) AS BROCHURE_COLOR_JANG
+		            , format(sum( if( GODS.SRVC_ID = 41, use_hs.rent_day, 0 ) ),0) AS BROCHURE_BW_JANG
+				FROM TB_UAST_USE_HS USE_HS
+					, TB_UAST_GODS GODS
+				WHERE 1 = 1
+				AND year(USE_HS.FRST_RGST_DT) = #strYear# and month(USE_HS.FRST_RGST_DT) = #strMonth#
+				AND GODS.GODS_ID = USE_HS.GODS_ID
+				AND GODS.SRVC_ID in (38, 39, 40, 41, 44, 45, 46)
+		        AND GODS.DEL_YN='D'
+				AND USE_HS.USER_ID IN (SELECT USER_ID 
+									FROM TB_UAST_USER 
+									WHERE 1 = 1 									
+									<isNotEmpty property="strSex">AND SEX = #strSex#</isNotEmpty>
+									OR BIRTHDAY BETWEEN DATE_ADD(CURDATE(), INTERVAL -0 YEAR) AND DATE_ADD(CURDATE(), INTERVAL -20 YEAR))
+		        group by day(USE_HS.FRST_RGST_DT)
+			) USE_HIS
+			right join (
+				SELECT DAILY, REPLACE(DAILY,'-','') END_DAILY, WEEKDAY(DAILY) DAY, DAYNAME(DAILY) DAYNAME 
+		          FROM ( 
+		          		SELECT DATE_ADD(CONCAT(#strYear#,#strMonth#,'01'), INTERVAL rownum-1 DAY) AS DAILY 
+		                  FROM ( 
+		                  		SELECT @rownum:=@rownum+1 rownum 
+		                          FROM (SELECT @rownum:=0) r, TB_UAST_CODE limit 31 ) rnum 
+		                         WHERE rownum <![CDATA[<= ]]> (SELECT DAYOFMONTH(LAST_DAY(CONCAT(#strYear#,#strMonth#,'01')))) 
+		                ) cal
+			) CAL_DAILY
+			on USE_HIS.END_DAILY = CAL_DAILY.END_DAILY
+	</select>
+	
+
+   
+	
+</sqlMap>

@@ -1,0 +1,217 @@
+@charset "utf-8";
+
+/************************************/
+/*	Name: Malaysia Rural ATC
+/*	PART: Promotion Templete
+/************************************/
+
+/* reset */
+.templete-common-reset div, .templete-common-reset dl, .templete-common-reset dt, .templete-common-reset dd, .templete-common-reset ul, .templete-common-reset ol, .templete-common-reset li, .templete-common-reset h1, .templete-common-reset h2, .templete-common-reset h3, .templete-common-reset h4, .templete-common-reset h5, .templete-common-reset h6, .templete-common-reset pre, .templete-common-reset p, .templete-common-reset blockquote, .templete-common-reset th, .templete-common-reset td, .templete-common-reset span, .templete-common-reset img {margin:0; padding:0;}
+.templete-common-reset table, .templete-common-reset  caption, .templete-common-reset  tbody, .templete-common-reset  tfoot, .templete-common-reset  thead, .templete-common-reset  tr, .templete-common-reset  th, .templete-common-reset  td {border-collapse:collapse; border-spacing:0; margin:0; padding:0; border:0;}
+.templete-common-reset ul, .templete-common-reset ol, .templete-common-reset li {list-style-type:none;}
+.templete-common-reset img {max-width:100%; height:auto; line-height:0; border:0;}
+
+/* float clear */
+.clfix:after{clear:both; content:"."; display:block; height:0; visibility:hidden; font-size:0;}
+
+/* empty cell */
+.empty-cell {background:#d6d6d6;}
+.empty-photo {background:#f2bfb9;}
+
+/************************************/
+/* TYPE 1	
+/************************************/
+
+/*****************************
+ * 1-image type1
+ *****************************/
+#promotion-img1-type1 {position:relative; background:#fff; width:600px; height:700px; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#promotion-img1-type1 .empty-content {background:url(image/bg_promotion_cell.png) left bottom no-repeat; background-size:250px 140px;}
+#promotion-img1-type1 .tmpl-header {position:absolute; display:table; top:36px; width:100%;}
+#promotion-img1-type1 .tmpl-header strong.title {display:table-cell; background:url(image/bg_promotion_type11.png) no-repeat; width:100%; height:76px; padding-bottom:12px; vertical-align:middle; text-align:center; font-family:inherit; font-size:30px; font-weight:bold; color:#fff; line-height:30px;}
+#promotion-img1-type1 .tmpl-body {width:575px; height:681px; margin:8px 8px 8px 11px; border:1px solid #ccc; overflow:hidden;}
+#promotion-img1-type1 .tmpl-body .photo {width:514px; height:338px; margin:134px auto 0;}
+#promotion-img1-type1 .tmpl-body .photo img {width:514px; height:338px;}
+#promotion-img1-type1 .tmpl-body dl.summary {width:246px; margin:25px 30px; text-align:left;}
+#promotion-img1-type1 .tmpl-body dl.summary > dt {width:246px; height:24px; padding-bottom:10px; line-height:24px; font-size:22px; font-weight:bold; color:#333; letter-spacing:-1px;}
+#promotion-img1-type1 .tmpl-body dl.summary dd.info {font-size:14px; font-weight:bold;}
+#promotion-img1-type1 .tmpl-body dl.summary dd.info dl {float:left;}
+#promotion-img1-type1 .tmpl-body dl.summary dd.info dt {float:left; width:63px; border-bottom:1px solid #d4d4d4; text-align:left; color:#999; line-height:27px;}
+#promotion-img1-type1 .tmpl-body dl.summary dd.info dd {float:left; width:183px; border-bottom:1px solid #d4d4d4; color:#666; line-height:17px;}
+#promotion-img1-type1 .tmpl-body dl.summary dd.info dd span {display:block; width:100%; height:17px; margin:5px 0; line-height:17px;}
+#promotion-img1-type1 .tmpl-body .article {position:absolute; top:508px; left:306px; width:250px; height:140px; font-size:14px; color:#777; line-height:20px; text-align:left; overflow:hidden;}
+
+/*****************************
+ * 2-image type1
+ *****************************/
+#promotion-img2-type1 {position:relative; background:#fff; width:600px; height:700px; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#promotion-img2-type1 .empty-content {background:url(image/bg_promotion_cell.png) left bottom no-repeat; background-size:250px 245px;}
+#promotion-img2-type1 .tmpl-header {position:absolute; display:table; top:36px; width:100%;}
+#promotion-img2-type1 .tmpl-header strong.title {display:table-cell; background:url(image/bg_promotion_type11.png) no-repeat; width:100%; height:76px; padding-bottom:12px; vertical-align:middle; text-align:center; font-family:inherit; font-size:30px; font-weight:bold; color:#fff; line-height:30px;}
+#promotion-img2-type1 .tmpl-body {width:575px; height:681px; margin:8px 8px 8px 11px; border:1px solid #ccc; overflow:hidden;}
+#promotion-img2-type1 .tmpl-body .photo {float:left; width:247px; height:247px; margin:134px 0 0 30px;}
+#promotion-img2-type1 .tmpl-body .photo img {display:block; width:247px; height:247px;}
+#promotion-img2-type1 .tmpl-body .photo img:first-child {margin-bottom:20px;}
+#promotion-img2-type1 .tmpl-body dl.summary {float:left; width:246px; margin:133px 0 0 20px; text-align:left;}
+#promotion-img2-type1 .tmpl-body dl.summary > dt {width:246px; height:24px; padding-bottom:10px; line-height:24px; font-size:22px; font-weight:bold; color:#333; letter-spacing:-1px;}
+#promotion-img2-type1 .tmpl-body dl.summary dd.info {font-size:14px; font-weight:bold;}
+#promotion-img2-type1 .tmpl-body dl.summary dd.info dl {float:left;}
+#promotion-img2-type1 .tmpl-body dl.summary dd.info dt {float:left; width:63px; border-bottom:1px solid #d4d4d4; text-align:left; color:#999; line-height:27px;}
+#promotion-img2-type1 .tmpl-body dl.summary dd.info dd {float:left; width:183px; border-bottom:1px solid #d4d4d4; color:#666; line-height:17px;}
+#promotion-img2-type1 .tmpl-body dl.summary dd.info dd span {display:block; width:100%; height:17px; margin:5px 0; line-height:17px;}
+#promotion-img2-type1 .tmpl-body .article {position:absolute; top:408px; left:306px; width:250px; height:245px; font-size:14px; color:#777; line-height:20px; text-align:left; overflow:hidden;}
+
+/*****************************
+ * 3-image type1
+ *****************************/
+#promotion-img3-type1 {position:relative; background:#fff; width:600px; height:700px; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#promotion-img3-type1 .empty-content {background:url(image/bg_promotion_cell.png) left bottom no-repeat; background-size:250px 160px;}
+#promotion-img3-type1 .tmpl-header {position:absolute; display:table; top:36px; width:100%;}
+#promotion-img3-type1 .tmpl-header strong.title {display:table-cell; background:url(image/bg_promotion_type11.png) no-repeat; width:100%; height:76px; padding-bottom:12px; vertical-align:middle; text-align:center; font-family:inherit; font-size:30px; font-weight:bold; color:#fff; line-height:30px;}
+#promotion-img3-type1 .tmpl-body {width:575px; height:681px; margin:8px 8px 8px 11px; border:1px solid #ccc; overflow:hidden;}
+#promotion-img3-type1 .tmpl-body .photo01 {float:left; width:247px; height:335px; margin:134px 0 0 30px;}
+#promotion-img3-type1 .tmpl-body .photo01 img {display:block; width:247px; height:335px;}
+#promotion-img3-type1 .tmpl-body .photo02 {width:575px; height:161px; margin:20px 0 0 30px;}
+#promotion-img3-type1 .tmpl-body .photo02 img {display:block; float:left; width:247px; height:161px;}
+#promotion-img3-type1 .tmpl-body .photo02 img:first-child {margin-right:20px;}
+#promotion-img3-type1 .tmpl-body dl.summary {float:left; width:246px; margin:133px 0 0 20px; text-align:left;}
+#promotion-img3-type1 .tmpl-body dl.summary > dt {width:246px; height:24px; padding-bottom:10px; line-height:24px; font-size:22px; font-weight:bold; color:#333; letter-spacing:-1px;}
+#promotion-img3-type1 .tmpl-body dl.summary dd.info {font-size:14px; font-weight:bold;}
+#promotion-img3-type1 .tmpl-body dl.summary dd.info dl {float:left;}
+#promotion-img3-type1 .tmpl-body dl.summary dd.info dt {float:left; width:63px; border-bottom:1px solid #d4d4d4; text-align:left; color:#999; line-height:27px;}
+#promotion-img3-type1 .tmpl-body dl.summary dd.info dd {float:left; width:183px; border-bottom:1px solid #d4d4d4; color:#666; line-height:17px;}
+#promotion-img3-type1 .tmpl-body dl.summary dd.info dd span {display:block; width:100%; height:17px; margin:5px 0; line-height:17px;}
+#promotion-img3-type1 .tmpl-body .article {position:absolute; top:308px; left:306px; width:250px; height:160px; font-size:14px; color:#777; line-height:20px; text-align:left; overflow:hidden;}
+
+
+/************************************/
+/* TYPE 2	
+/************************************/
+
+/*****************************
+ * 1-image type2
+ *****************************/
+#promotion-img1-type2 {position:relative; background:#fff; width:598px; height:698px; border:1px solid #ccc; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#promotion-img1-type2 .empty-content {background:url(image/bg_promotion_cell.png) left bottom no-repeat; background-size:250px 140px;}
+#promotion-img1-type2 .tmpl-header {display:table; background:url(image/bg_promotion_type12.png) no-repeat; width:598px;}
+#promotion-img1-type2 .tmpl-header strong.title {display:table-cell; width:100%; height:105px; padding-top:15px; vertical-align:middle; text-align:center; font-family:inherit; font-size:30px; font-weight:bold; color:#fff; line-height:30px;}
+#promotion-img1-type2 .tmpl-body {width:538px; height:548px; margin:0 auto; border-top:1px solid #ccc; border-bottom:1px solid #ccc; overflow:hidden;}
+#promotion-img1-type2 .tmpl-body dl.summary {width:265px; height:164px; margin-top:20px; border-right:1px solid #ccc; text-align:left;}
+#promotion-img1-type2 .tmpl-body dl.summary > dt {height:24px; padding-bottom:10px; line-height:24px; font-size:22px; font-weight:bold; color:#333; letter-spacing:-1px;}
+#promotion-img1-type2 .tmpl-body dl.summary dd.info {font-size:14px; font-weight:bold;}
+#promotion-img1-type2 .tmpl-body dl.summary dd.info dl {float:left;}
+#promotion-img1-type2 .tmpl-body dl.summary dd.info dt {float:left; background:url(image/ico_blackdot.png) left center no-repeat; width:63px; padding-left:10px; text-align:left; color:#999; line-height:27px;}
+#promotion-img1-type2 .tmpl-body dl.summary dd.info dd {float:left; width:192px; color:#666; line-height:17px;}
+#promotion-img1-type2 .tmpl-body dl.summary dd.info dd span {display:block; width:100%; height:17px; margin:5px 0; line-height:17px;}
+#promotion-img1-type2 .tmpl-body .article {position:absolute; top:140px; left:306px; width:250px; height:140px; font-size:14px; color:#777; line-height:20px; overflow:hidden; text-align:left;}
+#promotion-img1-type2 .tmpl-body .photo {width:538px; height:338px; margin:10px auto 0;}
+#promotion-img1-type2 .tmpl-body .photo img {width:538px; height:338px;}
+
+/*****************************
+ * 2-image type2
+ *****************************/
+#promotion-img2-type2 {position:relative; background:#fff; width:598px; height:698px; border:1px solid #ccc; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#promotion-img2-type2 .empty-content {background:url(image/bg_promotion_cell.png) left bottom no-repeat; background-size:250px 320px;}
+#promotion-img2-type2 .tmpl-header {display:table; background:url(image/bg_promotion_type12.png) no-repeat; width:598px;}
+#promotion-img2-type2 .tmpl-header strong.title {display:table-cell; width:100%; height:105px; padding-top:15px; vertical-align:middle; text-align:center; font-family:inherit; font-size:30px; font-weight:bold; color:#fff; line-height:30px;}
+#promotion-img2-type2 .tmpl-body {width:538px; height:548px; margin:0 auto; border-top:1px solid #ccc; border-bottom:1px solid #ccc; overflow:hidden;}
+#promotion-img2-type2 .tmpl-body dl.summary {width:265px; height:170px; margin-top:20px; text-align:left;}
+#promotion-img2-type2 .tmpl-body dl.summary > dt {height:24px; padding-bottom:10px; line-height:24px; font-size:22px; font-weight:bold; color:#333; letter-spacing:-1px;}
+#promotion-img2-type2 .tmpl-body dl.summary dd.info {font-size:14px; font-weight:bold;}
+#promotion-img2-type2 .tmpl-body dl.summary dd.info dl {float:left;}
+#promotion-img2-type2 .tmpl-body dl.summary dd.info dt {float:left; background:url(image/ico_blackdot.png) left center no-repeat; width:63px; padding-left:10px; text-align:left; color:#999; line-height:27px;}
+#promotion-img2-type2 .tmpl-body dl.summary dd.info dd {float:left; width:192px; color:#666; line-height:17px;}
+#promotion-img2-type2 .tmpl-body dl.summary dd.info dd span {display:block; width:100%; height:17px; margin:5px 0; line-height:17px;}
+#promotion-img2-type2 .tmpl-body .article {width:250px; height:320px; font-size:14px; color:#777; line-height:20px; overflow:hidden; text-align:left;}
+#promotion-img2-type2 .tmpl-body .photo {position:absolute; top:136px; left:298px; width:254px; padding:0 0 0 15px; border-left:1px solid #ccc;}
+#promotion-img2-type2 .tmpl-body .photo img {display:block; width:254px; height:250px;}
+#promotion-img2-type2 .tmpl-body .photo img:first-child {margin-bottom:15px;}
+
+/*****************************
+ * 3-image type2
+ *****************************/
+#promotion-img3-type2 {position:relative; background:#fff; width:598px; height:698px; border:1px solid #ccc; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#promotion-img3-type2 .empty-content {background:url(image/bg_promotion_cell.png) left bottom no-repeat; background-size:250px 140px;}
+#promotion-img3-type2 .tmpl-header {display:table; background:url(image/bg_promotion_type12.png) no-repeat; width:598px;}
+#promotion-img3-type2 .tmpl-header strong.title {display:table-cell; width:100%; height:105px; padding-top:15px; vertical-align:middle; text-align:center; font-family:inherit; font-size:30px; font-weight:bold; color:#fff; line-height:30px;}
+#promotion-img3-type2 .tmpl-body {width:538px; height:548px; margin:0 auto; border-top:1px solid #ccc; border-bottom:1px solid #ccc; overflow:hidden;}
+#promotion-img3-type2 .tmpl-body .left-box {width:268px; padding-bottom:9px; border-bottom:1px solid #ccc;}
+#promotion-img3-type2 .tmpl-body dl.summary {width:265px; height:170px; margin-top:20px; text-align:left;}
+#promotion-img3-type2 .tmpl-body dl.summary > dt {height:24px; padding-bottom:10px; line-height:24px; font-size:22px; font-weight:bold; color:#333; letter-spacing:-1px;}
+#promotion-img3-type2 .tmpl-body dl.summary dd.info {font-size:14px; font-weight:bold;}
+#promotion-img3-type2 .tmpl-body dl.summary dd.info dl {float:left;}
+#promotion-img3-type2 .tmpl-body dl.summary dd.info dt {float:left; background:url(image/ico_blackdot.png) left center no-repeat; width:63px; padding-left:10px; text-align:left; color:#999; line-height:27px;}
+#promotion-img3-type2 .tmpl-body dl.summary dd.info dd {float:left; width:192px; color:#666; line-height:17px;}
+#promotion-img3-type2 .tmpl-body dl.summary dd.info dd span {display:block; width:100%; height:17px; margin:5px 0; line-height:17px;}
+#promotion-img3-type2 .tmpl-body .article {width:250px; height:140px; font-size:14px; color:#777; line-height:20px; overflow:hidden; text-align:left;}
+#promotion-img3-type2 .tmpl-body .photo01 {position:absolute; top:136px; left:298px; width:254px; height:325px; padding:0 0 0 15px; border-left:1px solid #ccc;}
+#promotion-img3-type2 .tmpl-body .photo01 img {display:block; width:254px; height:325px;}
+#promotion-img3-type2 .tmpl-body .photo02 {margin-top:15px;}
+#promotion-img3-type2 .tmpl-body .photo02 img {display:block; float:left; width:254px; height:177px;}
+#promotion-img3-type2 .tmpl-body .photo02 img:first-child {width:269px; margin-right:15px;}
+
+
+/************************************/
+/* TYPE 3	
+/************************************/
+
+/*****************************
+ * 1-image type3
+ *****************************/
+#promotion-img1-type3 {position:relative; background:#fff; width:598px; height:694px; border:1px solid #ccc; border-top:5px solid #ea002c; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#promotion-img1-type3 .empty-content {background:url(image/bg_promotion_cell.png) left bottom no-repeat; background-size:250px 140px;}
+#promotion-img1-type3 .tmpl-header {width:598px;}
+#promotion-img1-type3 .tmpl-header .photo {width:538px; height:338px; margin:40px auto 0;}
+#promotion-img1-type3 .tmpl-header .photo img {width:538px; height:338px;}
+#promotion-img1-type3 .tmpl-header strong.title {display:block; width:536px; padding:0.5em 0; margin:20px auto 10px; border:1px solid #ccc; text-align:center; font-family:inherit; font-size:29px; font-weight:bold; color:#eb0404; line-height:29px;}
+#promotion-img1-type3 .tmpl-body {width:538px; height:548px; margin:0 auto; overflow:hidden;}
+#promotion-img1-type3 .tmpl-body dl.summary {float:left; width:246px; margin:15px 0; text-align:left;}
+#promotion-img1-type3 .tmpl-body dl.summary > dt {width:246px; height:24px; padding-bottom:10px; line-height:24px; font-size:22px; font-weight:bold; color:#666; letter-spacing:-1px;}
+#promotion-img1-type3 .tmpl-body dl.summary dd.info {font-size:14px; font-weight:bold;}
+#promotion-img1-type3 .tmpl-body dl.summary dd.info dl {float:left;}
+#promotion-img1-type3 .tmpl-body dl.summary dd.info dt {float:left; width:63px; border-bottom:1px solid #d4d4d4; text-align:left; color:#999; line-height:27px;}
+#promotion-img1-type3 .tmpl-body dl.summary dd.info dd {float:left; width:183px; border-bottom:1px solid #d4d4d4; color:#666; line-height:17px;}
+#promotion-img1-type3 .tmpl-body dl.summary dd.info dd span {display:block; width:100%; height:17px; margin:5px 0; line-height:17px;}
+#promotion-img1-type3 .tmpl-body .article {float:left; width:250px; height:140px; margin-left:30px; margin-top:20px; font-size:14px; color:#777; line-height:20px; overflow:hidden; text-align:left;}
+
+/*****************************
+ * 2-image type3
+ *****************************/
+#promotion-img2-type3 {position:relative; background:#fff; width:598px; height:694px; border:1px solid #ccc; border-top:5px solid #ea002c; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#promotion-img2-type3 .empty-content {background:url(image/bg_promotion_cell.png) left bottom no-repeat; background-size:250px 140px;}
+#promotion-img2-type3 .tmpl-header {width:598px;}
+#promotion-img2-type3 .tmpl-header .photo {width:538px; height:338px; margin:40px auto 0;}
+#promotion-img2-type3 .tmpl-header .photo img {display:block; float:left; width:268px; height:338px;}
+#promotion-img2-type3 .tmpl-header .photo img:first-child {margin-right:2px;}
+#promotion-img2-type3 .tmpl-header strong.title {display:block; width:536px; padding:0.5em 0; margin:20px auto 10px; border:1px solid #ccc; text-align:center; font-family:inherit; font-size:29px; font-weight:bold; color:#eb0404; line-height:29px;}
+#promotion-img2-type3 .tmpl-body {width:538px; height:548px; margin:0 auto; overflow:hidden;}
+#promotion-img2-type3 .tmpl-body dl.summary {float:left; width:246px; margin:15px 0; text-align:left;}
+#promotion-img2-type3 .tmpl-body dl.summary > dt {width:246px; height:24px; padding-bottom:10px; line-height:24px; font-size:22px; font-weight:bold; color:#666; letter-spacing:-1px;}
+#promotion-img2-type3 .tmpl-body dl.summary dd.info {font-size:14px; font-weight:bold;}
+#promotion-img2-type3 .tmpl-body dl.summary dd.info dl {float:left;}
+#promotion-img2-type3 .tmpl-body dl.summary dd.info dt {float:left; width:63px; border-bottom:1px solid #d4d4d4; text-align:left; color:#999; line-height:27px;}
+#promotion-img2-type3 .tmpl-body dl.summary dd.info dd {float:left; width:183px; border-bottom:1px solid #d4d4d4; color:#666; line-height:17px;}
+#promotion-img2-type3 .tmpl-body dl.summary dd.info dd span {display:block; width:100%; height:17px; margin:5px 0; line-height:17px;}
+#promotion-img2-type3 .tmpl-body .article {float:left; width:250px; height:140px; margin-left:30px; margin-top:20px; font-size:14px; color:#777; line-height:20px; overflow:hidden; text-align:left;}
+
+/*****************************
+ * 3-image type3
+ *****************************/
+#promotion-img3-type3 {position:relative; background:#fff; width:598px; height:694px; border:1px solid #ccc; border-top:5px solid #ea002c; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#promotion-img3-type3 .empty-content {background:url(image/bg_promotion_cell.png) left bottom no-repeat; background-size:250px 140px;}
+#promotion-img3-type3 .tmpl-header {width:598px;}
+#promotion-img3-type3 .tmpl-header .photo {width:538px; height:338px; margin:40px auto 0;}
+#promotion-img3-type3 .tmpl-header .photo img {display:block; float:left; width:268px; height:168;}
+#promotion-img3-type3 .tmpl-header .photo img:first-child {height:338px; margin-right:2px;}
+#promotion-img3-type3 .tmpl-header .photo img:last-child {float:left; height:168; margin-top:2px;}
+#promotion-img3-type3 .tmpl-header strong.title {display:block; width:536px; padding:0.5em 0; margin:20px auto 10px; border:1px solid #ccc; text-align:center; font-family:inherit; font-size:29px; font-weight:bold; color:#eb0404; line-height:29px;}
+#promotion-img3-type3 .tmpl-body {width:538px; height:548px; margin:0 auto; overflow:hidden;}
+#promotion-img3-type3 .tmpl-body dl.summary {float:left; width:246px; margin:15px 0; text-align:left;}
+#promotion-img3-type3 .tmpl-body dl.summary > dt {width:246px; height:24px; padding-bottom:10px; line-height:24px; font-size:22px; font-weight:bold; color:#666; letter-spacing:-1px;}
+#promotion-img3-type3 .tmpl-body dl.summary dd.info {font-size:14px; font-weight:bold;}
+#promotion-img3-type3 .tmpl-body dl.summary dd.info dl {float:left;}
+#promotion-img3-type3 .tmpl-body dl.summary dd.info dt {float:left; width:63px; border-bottom:1px solid #d4d4d4; text-align:left; color:#999; line-height:27px;}
+#promotion-img3-type3 .tmpl-body dl.summary dd.info dd {float:left; width:183px; border-bottom:1px solid #d4d4d4; color:#666; line-height:17px;}
+#promotion-img3-type3 .tmpl-body dl.summary dd.info dd span {display:block; width:100%; height:17px; margin:5px 0; line-height:17px;}
+#promotion-img3-type3 .tmpl-body .article {float:left; width:250px; height:140px; margin-left:30px; margin-top:20px; font-size:14px; color:#777; line-height:20px; overflow:hidden; text-align:left;}
+

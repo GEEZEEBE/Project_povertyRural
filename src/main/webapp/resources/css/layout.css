@@ -1,0 +1,148 @@
+@charset "utf-8";
+
+@import url('common.css');
+
+/* login layout */
+.mainLogin {height: 72px;background: url(../images/bg_login_nav.gif) repeat-x left top;overflow: hidden;}
+.mainLogin .mainNav {margin: 0 auto;padding: 12px 27px;width: 918px;}
+.container.login {margin-bottom: 8%;}
+.container.login div {margin: 0 auto;margin-top: 8%;width: 504px;height: 391px;background: url(../images/bg_login.gif) no-repeat left top;overflow: hidden;}
+.container.login div fieldset h2 {padding: 34px 0 0 31px;}
+.container.login div fieldset dl {margin: 0 auto;margin-top: 90px;width: 326px;overflow: hidden;}
+.container.login div fieldset dl dt,
+.container.login div fieldset dl dd {float: left;margin-bottom: 12px;}
+.container.login div fieldset dl dt.findidpw,
+.container.login div fieldset dl dd.btnlogin {margin-top: 8px;margin-bottom: 0;}
+.container.login div fieldset dl dt {clear: left;width: 84px;}
+.container.login div fieldset dl dd {width: 242px;}
+.container.login div fieldset dl dt.findidpw {width: 184px;}
+.container.login div fieldset dl dd.btnlogin {width: 142px;}
+.container.login div fieldset dl dt.findidpw img {margin-top: 15px;}
+.container.login div fieldset dl dt img {display:inline-block;margin-top: 6px;}
+.container.login div fieldset dl dd {text-align: right;}
+.container.login div fieldset dl dd input {display: block;float: right;padding: 4px;width: 228px;border: 1px solid #dfdfe3;}
+.container.login h3 {clear: both;margin: 0 auto;margin-top: 110px;width: 105px;}
+/* login layout - find id/password */
+.container.login .idpwfind fieldset p {margin: 0 auto;margin-top: 58px;text-align: center;overflow: hidden;}
+.container.login .idpwfind fieldset p {padding: 0 40px;}
+.container.login .idpwfind fieldset p span {display:block;margin: 0 auto;padding: 0;text-align: left;text-align: left;}
+.container.login .idpwfind fieldset p span.forget {margin-bottom: 16px;padding: 0;font-size: 18px;color: #505050;text-align: left;font-family: "Arial Rounded MT Bold";}
+.container.login .idpwfind fieldset dl {margin: 0 auto;margin-top: 39px;width: 354px;}
+.container.login .idpwfind fieldset dl dt {width: 64px;}
+.container.login .idpwfind fieldset dl dd {width: 290px;}
+.container.login .idpwfind fieldset dl dd input {margin: 0;padding:4px;width: 206px;}
+.container.login .idpwfind fieldset dl dd input:focus {color: #000;}
+.container.login .idpwfind fieldset dl dd input,
+.container.login .idpwfind fieldset dl dd a {display:inline-block;float: left;}
+.container.login .idpwfind fieldset p.goLogin {clear: both;margin: 0 40px;margin-top: 24px;padding: 0;padding-top: 20px;border-top:1px solid #dbdbdb;}
+.container.login .idpwfind fieldset p.goLogin span,
+.container.login .idpwfind fieldset p.goLogin a {display: block;float: left;}
+.container.login .idpwfind fieldset p.goLogin span {margin: 5px 10px 0 0;}
+/* login layout - email success */
+.container.login .success fieldset p {padding: 0 38px;}
+.container.login .success fieldset p span {display:block;margin: 0 auto;text-align: center;text-align: left;}
+.container.login .success fieldset p span.sendmail {margin-top: 70px;font-size: 18px;color: #505050;text-align: center;font-family: "Arial Rounded MT Bold";}
+.container.login .success fieldset p span.email {margin: 33px 0 27px;font-size: 18px;color: #ff5400;text-align: center;font-family: "Arial Rounded MT Bold";}
+.container.login .success fieldset a {display:block;margin: 0 auto;margin-top: 5px;width: 142px;}
+.container.login .success fieldset p.goLogin {clear: both;margin: 0 40px;margin-top: 5px;padding: 0;padding-top: 5px;border-top:1px solid #dbdbdb;}
+.container.login .success fieldset p.goLogin span,
+.container.login .success fieldset p.goLogin a {display: block;float: left;}
+.container.login .success fieldset p.goLogin span {margin: 10px 10px 0 0;}
+/* main layout */
+header.main {height:101px;background:url(../images/bg_header.gif) repeat-x;}
+header.main .logInfo {width:935px;height:30px;margin:0 auto;padding-right: 37px;overflow: hidden;}
+header.main .logInfo a.logoutBtn {float:right;margin-top:10px;display:inline-block; color:#fff; font-weight:bold; text-align:center; width:107px; height:20px; line-height:18px;background:url(../images/bg_logout.gif) no-repeat;}
+header.main .logInfo a:hover {text-decoration:none;}
+header.main .logInfo .logDate {float:right;margin:10px 10px 0 0;height: 12px;line-height: 12px;vertical-align: top;}
+header.main .logInfo .logDate span {display:inline-block;float: left;padding-left: 5px;font-size:11px;font-weight:bold;}
+header.main .logInfo .logDate span.name {display:inline-block;color:#000;background: url(../images/bg_logout_line.gif) no-repeat 9px 2px;padding-left: 21px;}
+/* main layout - top menu */
+header.main nav {margin:0 auto;width:972px;height:71px;overflow: hidden;background: url(../images/bg_mnshadow.gif) no-repeat 180px bottom;}
+header.main nav.main {background: none;}
+header.main nav h1 {display:inline-block;float:left;margin-top: 13px;width: 180px;height: 45px;text-align: center;}
+header.main nav ul {float:right;width: 792px;}
+header.main nav ul li {float: left;width: 109px;background: url(../images/bg_nav_line.gif) no-repeat left 20px;padding-left: 2px;}
+header.main nav ul li a {display:inline-block;padding-top: 17px;width: 100%;height: 44px;text-align:center;font-size:13px;color:#858585;font-weight:bold;}
+header.main nav ul li a.valign {padding-top: 24px;height: 37px;}
+header.main nav ul li a:hover {color: #dd1532;text-decoration: none;border-bottom: 5px solid #e60000;}
+header.main nav ul li a.hover {color: #dd1532;text-decoration: none;border-bottom: 5px solid #e60000;}
+/* main layout - contents */
+.container {margin: 0 auto;padding-top: 19px;width: 972px;vertical-align: top;overflow: hidden;}
+.container article {margin-bottom: 31px;}
+.container article h1 {margin-left: 28px;padding: 0 0 5px 12px;width: 419px;height: 23px;line-height: 23px;vertical-align: top;color: #4e4f51;font-size: 14px;font-family: "Arial Rounded MT Bold";vertical-align: top;}
+.container article h1 span {display: inline-block;float: right;margin: 2px 5px 0 0;color: #666;font-size: 11px;}
+.container article h1 span em {font-size: 10px;color: #e60000;}
+/* main layout - table */
+article {float: left;}
+.noticeList {width: 487px;}
+.membersList {width: 485px;}
+.useList {clear: left;width: 487px;}
+.companyList {width: 485px;}
+table.boardList.notice,
+table.boardList.use {margin: 0 auto;width: 431px;}
+table.boardList.members,
+table.boardList.company {margin-left: 28px;width: 431px;}
+/* main layout - file upload/download */
+.container .guestGroup {clear: both;margin: 0 auto;margin-bottom: 24px;height: 55px;line-height: 55px;overflow: hidden;text-align: center;}
+.container .guestGroup ul {display: inline-block;margin: 0 auto;height: 55px;line-height: 55px;}
+.container .guestGroup ul li {float: left;text-align: center;}
+.container .guestGroup ul li.updown {width: 480px;padding-top: 10px;}
+.container .guestGroup ul li.updown ol li div p {padding: 0 15px;}
+.container .guestGroup ul li ol {display: inline-block;margin: 0 auto;}
+.container .guestGroup ul li ol li {background: url(../images/bg_speed.gif) repeat-x;height: 45px;line-height: 45px;}
+.container .guestGroup ul li ol li.download p {background: url(../images/bg_speed_line.gif) no-repeat right 10px;padding-right: 2px;}
+.container .guestGroup ul li ol li.download div {background: url(../images/bg_speed_left.gif) no-repeat left top;}
+.container .guestGroup ul li ol li.upload div {background: url(../images/bg_speed_right.gif) no-repeat right top;}
+.container .guestGroup ul li ol li div p span {display: inline-block;padding: 0 8px;height: 20px;line-height: 20px;font-size: 9px;}
+.container .guestGroup ul li ol li div p em {display: inline-block;padding: 0 8px;color: #e03131;font-size: 15px;font-weight: bold;letter-spacing: 0;}
+.container .guestGroup ul li ol li.upload div p em {color: #4f4f4f;}
+/* main layout - visitors 
+.container .guestGroup ul li.side {float: right;width: 230px;vertical-align: top;}
+.container .guestGroup ul li dl {display: inline-block;float: right;width: 230px;height: 55px;line-height: 55px;}
+.container .guestGroup ul li dt {clear: right;float: left;width: 150px;height: 30px;line-height: 30px;font-size: 10px;color: #515151;font-weight: bold;text-align: left;}
+.container .guestGroup ul li dd {float: left;width: 80px;height: 30px;line-height: 30px;color: #e61a1a;font-weight: bold;font-size: 21px;text-align: right;}
+.container .guestGroup ul li dt span {display: inline-block;height: 30px;}
+.container .guestGroup ul li dd span {display: inline-block;height: 30px;color: #383838;font-weight: bold;font-size: 21px;text-align: right;}
+.container .guestGroup ul li dt.dottline,
+.container .guestGroup ul li dd.dottline {border-bottom: 1px dotted #ebebeb;}
+*/
+/* sub page layout */
+body {background: url(../images/bg_left.gif) repeat-x left 101px;}
+body.bgNone {background: none;}
+.subContainer {clear: both;position: relative;width: 972px;overflow: hidden;vertical-align: top;}
+.subContainer .contents {position: relative;float: left;width: 792px;min-height: 547px;overflow: hidden;vertical-align: top;background: #fff url(../images/bg_subshadow.gif) no-repeat left top;}
+.whiteBG {position: fixed;top: 0;right: 0;z-index: -99;width: 70%;height: 100%;background-color: #fff;}
+.subContainer .contents header {margin: 0;padding: 0;margin-left: 32px;background: none;width: 711px;height: 7px;line-height: 7px;}
+/* sub page layout - leftmenu */
+.subContainer .left {float: left;position: relative;width: 180px;height: 547px;line-height: 547px;vertical-align: top;background: url(../images/bg_left.gif) repeat-x left top;overflow: hidden;}
+
+.subContainer .left hgroup {margin: 0 auto;margin-top: 36px;width: 156px;vertical-align: top;}
+.subContainer .left hgroup h2 {margin: 0 auto;margin-bottom: 13px;width: 144px;height: 47px;line-height: 16px;color: #333;font-size: 24px;font-family: "Arial Rounded MT Bold";border-bottom: 1px dotted #cbcbcb;}
+.subContainer .left hgroup h2 span {color: #828282;font-size: 13px;}
+.subContainer .left hgroup h3 {vertical-align: top;overflow: hidden;}
+.subContainer .left hgroup h3 a {display: block;margin-bottom: 7px;padding: 5px 12px 5px 14px;width: 130px;min-height: 16px;line-height: 16px;color: #a7a7a7;font-size: 14px;font-family: "Arial Rounded MT Bold";text-align: left;overflow: hidden;}
+.subContainer .left hgroup h3 a:hover {color: #fff;font-size: 14px;font-family: "Arial Rounded MT Bold";background: #dd1532;border-radius:4px;text-decoration: none;}
+.subContainer .left hgroup h3 a.hover {color: #fff;font-size: 14px;font-family: "Arial Rounded MT Bold";background: #dd1532;border-radius:4px;text-decoration: none;}
+/* sub page layout - depth */
+dl.linemap {margin-top: 36px;height: 6px;line-height: 6px;}
+dl.linemap dt {width: 0;height: 0;visibility: hidden;}
+dl.linemap dd,
+dl.linemap dd a {display: inline-block;margin: 0; padding: 0;height: 5px;line-height: 5px;color: #999;font-size: 10px;}
+dl.linemap em {color: #494949;text-decoration: underline;}
+/* sub page layout - title & search */
+.subtitle {clear: left;margin-top: 28px;margin-left: 32px;width: 711px;overflow: hidden;}
+.subtitle hgroup {float: left;margin: 0;padding: 0;}
+.subtitle h2 {margin: 0;padding: 0 0 7px 0;height: 16px;line-height: 16px;color: #dd1532;font-size: 15px;font-weight: normal;}
+.subtitle h3 {margin: 0;padding: 0 0 23px 0;height: 16px;line-height: 16px;}
+.subtitle p.sch {clear: both;float: right;margin-top: -10px;}
+.subtitle.receipt p.sch {clear: left;float: left;margin-top: 6px;margin-bottom: 12px;padding-left: 0;}
+.subtitle.receipt p.sch span, .subtitle.receipt p.sch input, .subtitle.receipt p.sch button {display: block;float: left;}
+.subtitle.receipt p.sch span {margin-top: 5px;width: 85px;height: 14px;line-height: 14px;color: #6e6e6e;font-family: "Arial Rounded MT Bold";}
+.subtitle.receipt p.sch input {width: 165px;}
+.subtitle p.sch select, .subtitle p.sch input, .subtitle p.sch button {display: block;float: left;}
+.subtitle p.sch select {min-width: 53px;height: 18px;line-height: 18px;border: 1px solid #dfdfe3;}
+.subtitle p.sch select option {padding-left: 4px;font-size: 11px;}
+.subtitle p.sch input {margin-left: -1px;width: 130px;height: 22px;line-height: 22px;border: 1px solid #dfdfe3;}
+.subtitle p.sch button {margin-left: -1px;width: 47px;height: 24px;line-height: 24px;background: #7a7c83 url(../images/icon_search.gif) no-repeat center 4px;border: 1px solid #6d6e74;}
+/* footer */
+footer {clear: both;height: 77px;border-top: 1px solid #d8d8d8;}

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi">
+<title>Health</title>
+<link rel="stylesheet" href="css/print2.css" />
+<script type="text/javascript" charset="utf-8" src="../js/jquery-1.8.1.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/print.js"></script>
+</head>
+<body>
+<section class="wrap">
+  <section class="bodywrap">
+
+    <table class="healthTable">
+      <caption>Rekod Kesihatan</caption>
+      <tr class="header">
+        <td>
+          <hgroup>
+            <h1><img src="images/print/logo_skcbc.gif" alt="LOGO SK CBC" /></h1>
+            <h2>Rekod Kesihatan</h2>
+          </hgroup>
+          <dl class="user">
+            <dt>Nama : </dt>
+            <dd id="name"></dd>
+            <dt>Tarikh : </dt>
+            <dd id="date"></dd>
+          </dl>
+        </td>
+      </tr>
+      <tr class="contents">
+        <td>
+          <table class="healthList  HL1">
+            <caption>Health list</caption>
+            <colgroup>
+              <col width="18%" />
+              <col width="29%" />
+              <col width="20%" />
+              <col width="35%" />
+            </colgroup>
+            <tr>
+              <td class="image">
+                <div><img src="images/print/height_img.png" alt="Image height" /></div>
+              </td>
+              <td class="text txt1">
+                <h3>Tinggi</h3>
+                <div><p class="value" id="height"></p><p class="unit">cm</p></div>
+              </td>
+              <td class="image">
+                <div><img src="images/print/weight_img.png" alt="Image weight" /></div>
+              </td>
+              <td class="text txt2">
+                <h3>Berat</h3>
+                <div><p class="value" id="weight"></p><p class="unit">kg</p></div>
+              </td>
+            </tr>
+          </table>
+          <hr />
+          <table class="healthList">
+            <tr>
+              <td class="image">
+                <div><img src="images/print/obesity_img.png" alt="Image obesity" /></div>
+              </td>
+              <td class="text txt1">
+                <h3>Obesiti</h3>
+                <div><p class="value" id="obesity"></p><p class="unit"></p></div>
+              </td>
+              <td class="image">
+                <div><img src="images/print/temperature_img.png" alt="Image temperature" /></div>
+              </td>
+              <td class="text txt2">
+                <h3>Suhu Badan</h3>
+                <div><p class="value" id="temperature"></p><p class="unit">C</p></div>
+              </td>
+            </tr>
+            <tr><td colspan="4" class="blank"></td></tr>
+          </table>
+          <hr />
+          <table class="healthList HL2">
+            <tr>
+              <td class="image">
+                <div><img src="images/print/systol_img.png" alt="Image systol" /></div>
+              </td>
+              <td class="text txt1">
+                <h3>Sistol</h3>
+                <div><p class="value" id="systol"></p><p class="unit">mmHg</p></div>
+              </td>
+              <td class="image">
+                <div><img src="images/print/diastol_img.png" alt="Image diastol" /></div>
+              </td>
+              <td class="text txt2">
+                <h3>Diastol</h3>
+                <div><p class="value" id="diastol"></p><p class="unit">mmHg</p></div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr class="footer">
+        <td>
+          <p>
+      Ini ialah Rekod Kesihatan melalui kaedah ukur sendiri di Servis Kesihatan<br />
+      Memandangkan ia diukur sendiri, keputusan mungkin dipengaruhi oleh pengukuran dan persekitaran.<br />
+      Ini bukan bahan rujukan perubatan dan hanya untuk simpanan sendiri.
+      <p>
+        </td>
+      </tr>
+    </table>
+
+  </section>
+</section>
+</body>
+</html>

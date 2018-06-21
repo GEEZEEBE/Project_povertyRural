@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Using">
+
+	<!-- table schema -->
+	<resultMap id="resultMapID" class="com.skt.mars.adm.bm.Using">
+		<result property="useHsNmbrID" column="USE_HS_NMBR_ID" />
+		<result property="strtTM" column="STRT_TM" />
+		<result property="endTM" column="FORMAT_END_TM" />
+		<!-- result property="cmplYN" column="CMPL_YN" />
+		<result property="payKind" column="PAY_KIND" />
+		<result property="pricUnit" column="PRIC_UNIT" />
+		<result property="depositRate" column="DEPOSIT_RATE" /-->
+		<result property="mixedName" column="MIXED_NAME" />
+		<result property="serviceCatagory" column="SERVICE_CATAGORY" />
+		<result property="pkKeyID" column="PK_KEYID" />
+	</resultMap>
+    
+    <select id="using.list.TotalCount" parameterClass="hMap" resultClass="Integer">
+        SELECT Count(*)  
+		 FROM TB_UAST_USER AS USER
+		WHERE 1=1 
+		and AUTHORITY in ('U')
+		and USER.USER_ID IN (SELECT a.USER_ID
+									          FROM TB_UAST_USE_HS a
+									          			, TB_UAST_GODS GODS
+									          			, TB_UAST_USER USER
+									          WHERE 1 = 1
+									          	and USER.USER_ID = a.USER_ID
+									          	AND A.GODS_ID = GODS.GODS_ID
+												AND GODS.SRVC_ID in  (37,48,49,50,31,47,42,32,53,23,24,38,39,40,41,44,45,46,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21) 
+										        <isNotEmpty property="STRT_TM">
+										          AND a.STRT_TM >= #STRT_TM#
+												</isNotEmpty>
+												<isNotEmpty property="END_TM">		
+										          AND a.END_TM <![CDATA[<=]]> #END_TM#
+												</isNotEmpty>
+												<isNotEmpty property="serTxt">
+											    and ( USER.USER_ID LIKE CONCAT('%', replace(replace(#serTxt#,'%','\%'),'_','\_'), '%') or USER.NAME LIKE CONCAT('%', replace(replace(#serTxt#,'%','\%'),'_','\_'), '%') )
+												</isNotEmpty>
+												<isNotEmpty property="bill"></isNotEmpty>
+										        GROUP BY a.USER_ID)
+    </select>
+
+    <!-- user list using service  -->
+	<select id="using.list" resultClass="hMap">
+		 SELECT USER.USER_ID    , USER.NAME   
+		 FROM TB_UAST_USER AS USER
+		WHERE 1=1 
+		and AUTHORITY in ('U')
+		and USER.USER_ID IN (SELECT a.USER_ID
+									          FROM TB_UAST_USE_HS a
+									          			, TB_UAST_GODS GODS
+									          			, TB_UAST_USER USER
+									          WHERE 1 = 1
+									          	and USER.USER_ID = a.USER_ID
+									          	AND A.GODS_ID = GODS.GODS_ID
+												AND GODS.SRVC_ID in  (37,48,49,50,31,47,42,32,53,23,24,38,39,40,41,44,45,46,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21) 
+										        <isNotEmpty property="STRT_TM">
+										          AND a.STRT_TM >= #STRT_TM#
+												</isNotEmpty>
+												<isNotEmpty property="END_TM">		
+										          AND a.END_TM <![CDATA[<=]]> #END_TM#
+												</isNotEmpty>
+												<isNotEmpty property="serTxt">
+											    and ( USER.USER_ID LIKE CONCAT('%', replace(replace(#serTxt#,'%','\%'),'_','\_'), '%') or USER.NAME LIKE CONCAT('%', replace(replace(#serTxt#,'%','\%'),'_','\_'), '%') )
+												</isNotEmpty>
+												<isNotEmpty property="bill"></isNotEmpty>
+										        GROUP BY a.USER_ID)
+	</select>
+
+	<select id="using.usingList_back" resultClass="hMap">
+		SELECT CTGR.SRVC_ID, CTGR.SRVC_CTGR_NM
+                , USE_HS.*
+		FROM (
+		                        SELECT node.SRVC_ID, node.SRVC_CTGR_NM
+		                        FROM TB_UAST_SRVC_CTGR AS node,
+		                                TB_UAST_SRVC_CTGR AS parent,
+		                                TB_UAST_SRVC_CTGR AS sub_parent,
+		                                (
+		                                        SELECT node.SRVC_CTGR_NM, (COUNT(parent.SRVC_CTGR_NM) - 1) AS depth
+		                                        FROM TB_UAST_SRVC_CTGR AS node,
+		                                        TB_UAST_SRVC_CTGR AS parent
+		                                        WHERE node.left_srvc_id BETWEEN parent.left_srvc_id AND
+		parent.RIGHT_SRVC_ID
+												<isNotEmpty property="srvcID">
+		                                        and node.SRVC_ID = #srvcID#        <!-- terms(1- CBC Basic, 3 -'Smart Class', 22 -'English Village',26- 'Commerce Service,27- 'Health Service')-->
+		                                        </isNotEmpty>
+		                                        GROUP BY node.SRVC_CTGR_NM
+		                                )AS sub_tree
+		                        WHERE node.left_srvc_id BETWEEN parent.left_srvc_id AND
+		parent.RIGHT_SRVC_ID
+		                                AND node.left_srvc_id BETWEEN sub_parent.left_srvc_id AND
+		sub_parent.RIGHT_SRVC_ID
+		                                AND sub_parent.SRVC_CTGR_NM = sub_tree.SRVC_CTGR_NM
+		                        GROUP BY node.SRVC_CTGR_NM
+		                        ) CTGR
+		            , TB_UAST_GODS GODS
+		            , TB_UAST_USE_HS USE_HS
+		WHERE 1 = 1
+		AND CTGR.SRVC_ID = GODS.SRVC_ID
+		AND GODS.GODS_ID = USE_HS.GODS_ID
+		<isNotEmpty property="userID">
+		AND USE_HS.USER_ID = #userID#        <!-- terms : user ID(test - kut0100, kut0101 -->
+		</isNotEmpty>
+		ORDER BY CTGR.SRVC_CTGR_NM, USE_HS.STRT_TM
+	</select>
+	
+	<select id="using.usingList" resultClass="hMap"  remapResults="true">
+		SELECT TOT.*
+				, PAYMENT.*
+				, IFNULL(PAYMENT.DPST_AMT,0) CHARGE_AMT
+		FROM (
+				SELECT STR_TO_DATE(USE_HS.END_TM,'%Y%m%d%H%i%s') END_TM_date
+						,STR_TO_DATE(USE_HS.STRT_TM,'%Y%m%d%H%i%s') STRT_TM_DATE
+						, DATEDIFF(STR_TO_DATE(END_TM,'%Y%m%d'), STR_TO_DATE(STRT_TM,'%Y%m%d'))  AS USING_DATE
+		                , CASE
+							when CT_GODS.SRVC_ID = 31 then 
+									TIMEDIFF(STR_TO_DATE(SUBSTR(END_TM, 9,6),'%H%i%s'), STR_TO_DATE(SUBSTR(STRT_TM,9,6),'%H%i%s'))
+							else STR_TO_DATE(SUBSTR(END_TM, 9,6),'%H%i%s')
+						  end AS USING_TIME
+						, USE_HS.*
+						, CT_GODS.GODS_NAME, CT_GODS.CNTS_NAME, CT_GODS.SRVC_ID
+				FROM (
+						select GODS.GODS_ID, GODS.GODS_NAME, GODS.SRVC_ID , GODS.DEL_YN
+								, ITEM.ITEM_ID, CNTS_NAME, ITEM.DEL_YN ITEM_DEL_YN
+								, IFNULL(ITEM.ITEM_ID,GODS.GODS_ID) TAGET_ID
+						from (
+						            select *
+						             from TB_UAST_ITEM
+						             where 1 = 1
+						             and del_yn in ('N', 'H', 'D')
+						             ) ITEM
+						          right join  (
+										select *
+										from	TB_UAST_GODS
+										where 1 = 1
+									<dynamic prepend="and SRVC_ID IN">	<!--  terms LogAccessManager, LogAccessUser -->
+										<iterate property="srvcID" open="(" conjunction="," close=")">#srvcID[]#</iterate>
+									</dynamic>
+										<!-- and SRVC_ID in (#srvcID#) -->
+						             	and del_yn in ('N', 'H', 'D')
+									) GODS
+									on GODS.GODS_ID = ITEM.GODS_ID
+						) CT_GODS
+						<!-- , TB_UAST_PRIC PRIC -->
+						, TB_UAST_USE_HS USE_HS 
+				WHERE 1 = 1
+		          AND USE_HS.STRT_TM <![CDATA[>=]]> #STRT_TM#
+		          AND USE_HS.END_TM <![CDATA[<=]]> #END_TM#
+				<!-- AND CT_GODS.TAGET_ID = PRIC.TAGET_ID --> 
+				AND USE_HS.GODS_ID = CT_GODS.GODS_ID
+				<isNotEmpty property="itemUsingYN">
+				AND USE_HS.ITEM_ID = CT_GODS.ITEM_ID	<!-- terms switch USE_HS.ITEM_ID --> 
+				</isNotEmpty>
+				<isEmpty property="itemUsingYN">
+				AND USE_HS.ITEM_ID is null 	<!-- terms switch USE_HS.ITEM_ID -->
+				</isEmpty>
+				 AND USE_HS.USER_ID = #userID# 	<!-- terms kut0103 -->
+				AND USE_HS.CMPL_YN in ('S', 'E','N','Y') <!-- Need to delete parameter  'N','Y' -->
+				) TOT
+				left join
+				TB_UAST_PAYMENT PAYMENT
+				on TOT.USE_HS_NMBR_ID = PAYMENT.USE_HS_NMBR_ID
+				order by TOT.SRVC_ID, TOT.FRST_RGST_DT desc
+
+	</select>
+
+	<select id="payment.productItemList" resultMap="resultMapID">
+		SELECT SRVC.parentNM as SERVICE_CATAGORY
+				, MIX_DATA.*
+		FROM (
+			SELECT STR_TO_DATE(MIXED.END_TM, '%Y%m%d') FORMAT_END_TM
+					, MIXED.*
+			FROM (
+				<!-- GET PRODECT / ITEM NAME -->
+				SELECT GODS.GODS_NAME, ITEM.CNTS_NAME, GODS.SRVC_ID
+					, IF(USE_HS.ITEM_ID IS NULL, GODS.GODS_NAME, ITEM.CNTS_NAME) MIXED_NAME
+					, USE_HS.*
+				FROM TB_UAST_GODS GODS
+					<!-- NOT PAYMENT LIST -->
+					,(SELECT USE_HS.*, USE_HS.USE_HS_NMBR_ID AS PK_KEYID	
+					FROM TB_UAST_USE_HS USE_HS
+						LEFT OUTER JOIN TB_UAST_PAYMENT PAYMENT
+						ON USE_HS.USE_HS_NMBR_ID = PAYMENT.USE_HS_NMBR_ID
+					WHERE 1 = 1
+					AND PAYMENT.USE_HS_NMBR_ID is NULL
+					<!-- AND USE_HS.CMPL_YN = 'E'  need to remove comment tag-->
+					AND USE_HS.CMPL_YN IN ('S','E') 
+					<isNotEmpty property="userID">
+					AND USE_HS.USER_ID IN (SELECT USER_ID FROM TB_UAST_USER WHERE USER_ID = #userID#)
+					</isNotEmpty>
+					) USE_HS
+					LEFT OUTER JOIN TB_UAST_ITEM ITEM
+					ON USE_HS.ITEM_ID = ITEM.ITEM_ID
+					and ITEM.del_yn in ('N', 'H', 'D')
+				WHERE GODS.GODS_ID = USE_HS.GODS_ID
+					and GODS.SRVC_ID not in (29,30)
+				) MIXED
+			WHERE 1 = 1
+			<isNotEmpty property="itemName">
+			AND MIXED.MIXED_NAME LIKE CONCAT('%', #itemName#, '%')
+			</isNotEmpty>
+				) MIX_DATA
+				, (
+				SELECT node.SRVC_ID, parent.SRVC_CTGR_NM parentNM,  node.SRVC_CTGR_NM childNM, (COUNT(parent.SRVC_CTGR_NM) - 1) AS depth
+				FROM TB_UAST_SRVC_CTGR AS node,
+				TB_UAST_SRVC_CTGR AS parent
+				WHERE node.LEFT_SRVC_ID BETWEEN parent.LEFT_SRVC_ID AND parent.RIGHT_SRVC_ID
+				GROUP BY node.SRVC_CTGR_NM
+				) SRVC
+		WHERE MIX_DATA.SRVC_ID = SRVC.SRVC_ID
+		order by MIX_DATA.STRT_TM desc
+	</select>		
+	
+	<select id="refund.productItemList" resultMap="resultMapID">
+		SELECT SRVC.parentNM as SERVICE_CATAGORY
+				, MIX_DATA.*
+		FROM (
+					SELECT STR_TO_DATE(MIXED.END_TM, '%Y%m%d') FORMAT_END_TM
+							, MIXED.*
+					FROM (
+						<!-- GET PRODECT / ITEM NAME -->
+						SELECT GODS.GODS_NAME, ITEM.CNTS_NAME, GODS.SRVC_ID
+							, IF(USE_HS.ITEM_ID IS NULL, GODS.GODS_NAME, ITEM.CNTS_NAME) MIXED_NAME
+							, USE_HS.*
+						FROM TB_UAST_GODS GODS
+							<!-- NOT PAYMENT LIST -->
+							,(SELECT USE_HS.*, PAYMENT.ACPT_ID AS PK_KEYID
+							FROM TB_UAST_USE_HS USE_HS
+								,TB_UAST_PAYMENT PAYMENT
+							WHERE 1 = 1
+							AND USE_HS.USE_HS_NMBR_ID = PAYMENT.USE_HS_NMBR_ID
+							AND USE_HS.CMPL_YN = 'E'
+							AND PAYMENT.RETURN_DT IS NULL
+							<!-- and GODS.SRVC_ID in (4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21) -->
+							<isNotEmpty property="userID">
+							AND USE_HS.USER_ID IN (SELECT USER_ID FROM TB_UAST_USER WHERE USER_ID = #userID#)
+							</isNotEmpty>
+							<!-- AND USE_HS.CMPL_YN = 'E'  need to remove comment tag-->
+							) USE_HS
+							LEFT OUTER JOIN TB_UAST_ITEM ITEM
+							ON USE_HS.ITEM_ID = ITEM.ITEM_ID
+							and ITEM.del_yn in ('N', 'H', 'D')
+						WHERE GODS.GODS_ID = USE_HS.GODS_ID
+						and GODS.SRVC_ID not in (29,30)
+						) MIXED
+					WHERE 1 = 1
+				<isNotEmpty property="itemName">
+				AND MIXED.MIXED_NAME LIKE CONCAT('%', #itemName#, '%')
+				</isNotEmpty>
+				) MIX_DATA
+				, (
+				SELECT node.SRVC_ID, parent.SRVC_CTGR_NM parentNM,  node.SRVC_CTGR_NM childNM, (COUNT(parent.SRVC_CTGR_NM) - 1) AS depth
+				FROM TB_UAST_SRVC_CTGR AS node,
+				TB_UAST_SRVC_CTGR AS parent
+				WHERE node.LEFT_SRVC_ID BETWEEN parent.LEFT_SRVC_ID AND parent.RIGHT_SRVC_ID
+				GROUP BY node.SRVC_CTGR_NM
+				) SRVC
+		WHERE MIX_DATA.SRVC_ID = SRVC.SRVC_ID
+		order by MIX_DATA.STRT_TM desc
+	</select>		
+
+	<select id="using.today.visitor" resultClass="hMap">
+		select 
+				(select ifnull(count(*),0) 
+				from TB_UAST_GODS GODS
+						, tb_uast_use_hs use_hs
+				where 1 = 1
+				and gods.srvc_id in ('29', '30')
+				and gods.gods_id = use_hs.gods_id
+				and gods.del_yn in ('N', 'H', 'D')
+				and STRT_TM like CONCAT((DATE_FORMAT(SYSDATE(), '%Y%m%d')), '%')	
+				) toDay
+				, (select ifnull(count(*),0) 
+				from TB_UAST_GODS GODS
+						, tb_uast_use_hs use_hs
+				where 1 = 1
+				and gods.srvc_id in ('29', '30')
+				and gods.gods_id = use_hs.gods_id
+				and gods.del_yn in ('N', 'H', 'D')
+				and STRT_TM like CONCAT((DATE_FORMAT(DATE_ADD(SYSDATE(), INTERVAL -1 DAY),'%Y%m%d')), '%')	
+				) previousDay
+	</select>	
+	
+	<!-- using service history -->
+	<insert id="using.insertBySrvID" parameterClass="hMap">
+	   	insert into tb_uast_use_hs( 
+	    	USE_HS_NMBR_ID,
+	    	STRT_TM,
+	    	END_TM,
+	    	CMPL_YN,
+	    	PAY_KIND,
+	    	PRIC_TYPE,
+	    	PRIC_UNIT,
+	    	FLAT_RATE,
+	    	DEPOSIT_RATE,
+	    	RENT_DAY,
+	    	USER_ID,
+	    	GODS_ID,
+	    	ITEM_ID,
+	    	FRST_RGST_DT,
+	    	FRST_RGST_USER_ID,
+	    	LAST_CRCT_DT,
+	    	LAST_CRCT_USER_ID 
+	    )
+		select #useHsNmbrID#
+				, DATE_FORMAT(SYSDATE(), '%Y%m%d%H%i%s%f')
+			<isNotEmpty property="END_TM">		
+	          	, #END_TM#
+			</isNotEmpty>
+			<isNull property="END_TM">		
+	          	, null
+			</isNull>
+				, #endYN#
+				, pric.PAY_KIND
+				, pric.PRIC_TYPE
+				, pric.PRIC_UNIT
+				, pric.FLAT_RATE
+				, pric.DEPOSIT_RATE
+				, pric.RENT_DAY
+				, #userid#
+				, gods.gods_id
+				, null
+				, SYSDATE()
+				, #userid#
+				,  SYSDATE()
+				, #userid#
+		from TB_UAST_GODS GODS
+				, TB_UAST_PRIC pric
+		where 1 = 1
+		and gods.srvc_id = #srvcID#
+		and gods.gods_id = pric.taget_id
+		and gods.del_yn in ('N', 'H', 'D')
+	    	    	
+	</insert>	
+	
+	<!-- insert using service of PC -->
+	<insert id="using.insertPCusingBySrvID" parameterClass="hMap">
+	   	insert into tb_uast_use_hs( 
+	    	USE_HS_NMBR_ID,
+	    	STRT_TM,
+	    	END_TM,
+	    	CMPL_YN,
+	    	PAY_KIND,
+	    	PRIC_TYPE,
+	    	PRIC_UNIT,
+	    	FLAT_RATE,
+	    	DEPOSIT_RATE,
+	    	RENT_DAY,
+	    	USER_ID,
+	    	GODS_ID,
+	    	ITEM_ID,
+	    	FRST_RGST_DT,
+	    	FRST_RGST_USER_ID,
+	    	LAST_CRCT_DT,
+	    	LAST_CRCT_USER_ID 
+	    )
+		select #useHsNmbrID#
+				, DATE_FORMAT(SYSDATE(), '%Y%m%d%H%i%s%f')
+				, null
+				, #endYN#
+				, pric.PAY_KIND
+				, pric.PRIC_TYPE
+				, pric.PRIC_UNIT
+				, pric.FLAT_RATE
+				, pric.DEPOSIT_RATE
+				, pric.RENT_DAY
+				, #userid#
+				, ITEM.gods_id
+				, ITEM.item_id
+				, SYSDATE()
+				, #userid#
+				,  SYSDATE()
+				, #userid#
+		from TB_UAST_ITEM ITEM
+				, TB_UAST_ASSETS ASSETS 
+				,TB_UAST_GODS GODS
+				, TB_UAST_PRIC pric
+		where 1 = 1
+		AND ASSETS.ITEM_01 = #macaddress#
+		AND ASSETS.ASSET_ID = ITEM.ASSET_ID
+		AND ASSETS.DEL_YN = 'N' 
+		and ITEM.item_id = pric.taget_id
+		and ITEM.del_yn in ('N', 'H', 'D')
+		and GODS.GODS_ID = ITEM.GODS_ID
+		AND GODS.SRVC_ID = #srvcID#
+	</insert>	
+
+	<update id="using.updateBySrvID" parameterClass="hMap">
+		update tb_uast_use_hs set
+			END_TM = DATE_FORMAT(SYSDATE(), '%Y%m%d%H%i%s%f'),
+			CMPL_YN = #endYN#,
+			LAST_CRCT_DT= SYSDATE(),
+			LAST_CRCT_USER_ID = #userid#			
+		where USE_HS_NMBR_ID=(#useHsNmbrID#)
+	</update>
+
+	<select id="englishvillage.select.limit" resultClass="hMap">
+			<!-- SELECT A.ASSET_ID,
+			       A.CNTS_NAME,
+			       B.ITEM_ID,
+			       B.COUNT,
+			       C.*
+			  FROM TB_UAST_ITEM AS A,
+			        (
+			        SELECT ITEM_ID,
+			               COUNT(ITEM_ID) AS COUNT
+			          FROM TB_UAST_USE_HS
+			         WHERE ITEM_ID IN(SELECT ITEM_ID 
+			         							FROM TB_UAST_ITEM 
+			         							WHERE GODS_ID IN (SELECT GODS_ID FROM TB_UAST_GODS WHERE SRVC_ID = #srvcID#))
+			         GROUP BY ITEM_ID
+			        ) AS B,
+			        TB_UAST_FILE_INFOR AS C
+			 WHERE A.ITEM_ID = B.ITEM_ID
+			   AND A.ASSET_ID = C.TAGET_ID
+			 ORDER BY B.COUNT
+			 LIMIT 3 -->
+			SELECT A.ASSET_ID,
+			       A.CNTS_NAME,
+			       A.ITEM_ID,
+			       B.COUNT,
+			       C.*,
+                   ASSET.ITEM_02,
+                   ASSET.ITEM_03
+			  FROM TB_UAST_ITEM AS A
+			       LEFT OUTER JOIN
+			        (
+			        SELECT ITEM_ID,
+			               COUNT(ITEM_ID) AS COUNT
+			          FROM TB_UAST_USE_HS
+			         WHERE ITEM_ID IN(SELECT ITEM_ID FROM TB_UAST_ITEM WHERE GODS_ID IN (SELECT GODS_ID FROM TB_UAST_GODS WHERE SRVC_ID = #srvcID#))
+			         GROUP BY ITEM_ID
+			        ) AS B
+			        ON A.ITEM_ID = B.ITEM_ID
+			        LEFT OUTER JOIN
+			        <!-- TB_UAST_FILE_INFOR AS C -->
+			        (SELECT * FROM TB_UAST_FILE_INFOR WHERE FILE_TYPE='main') AS C
+			        ON A.ASSET_ID = C.TAGET_ID,
+                    TB_UAST_ASSETS AS ASSET
+			 WHERE A.ASSET_ID = ASSET.ASSET_ID
+			   AND A.GODS_ID = (SELECT GODS_ID FROM TB_UAST_GODS WHERE SRVC_ID = #srvcID#)
+			 ORDER BY B.COUNT DESC
+			 LIMIT 3
+	</select>
+	
+	
+	<update id="using.billSave" parameterClass="hMap">
+		update tb_uast_use_hs set BILLING_YN='Y' where USER_ID=(#strUserID#)
+	</update>
+	
+</sqlMap>

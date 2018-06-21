@@ -1,0 +1,216 @@
+@charset "utf-8";
+
+/************************************/
+/*	Name: Malaysia Rural ATC
+/*	PART: Brochure Templete
+/************************************/
+
+/* reset */
+.templete-common-reset div, .templete-common-reset dl, .templete-common-reset dt, .templete-common-reset dd, .templete-common-reset ul, .templete-common-reset ol, .templete-common-reset li, .templete-common-reset h1, .templete-common-reset h2, .templete-common-reset h3, .templete-common-reset h4, .templete-common-reset h5, .templete-common-reset h6, .templete-common-reset pre, .templete-common-reset p, .templete-common-reset blockquote, .templete-common-reset th, .templete-common-reset td, .templete-common-reset span, .templete-common-reset img {margin:0; padding:0;}
+.templete-common-reset table, .templete-common-reset  caption, .templete-common-reset  tbody, .templete-common-reset  tfoot, .templete-common-reset  thead, .templete-common-reset  tr, .templete-common-reset  th, .templete-common-reset  td {border-collapse:collapse; border-spacing:0; margin:0; padding:0; border:0;}
+.templete-common-reset ul, .templete-common-reset ol, .templete-common-reset li {list-style-type:none;}
+.templete-common-reset img {max-width:100%; height:auto; line-height:0; border:0;}
+
+/* float clear */
+.clfix:after{clear:both; content:"."; display:block; height:0; visibility:hidden; font-size:0;}
+
+/* empty cell */
+.empty-cell {background:#d6d6d6;}
+.empty-photo {background:#f2bfb9;}
+
+
+/************************************/
+/* TYPE 1	
+/************************************/
+
+/*****************************
+ * 1-image type1
+ *****************************/
+#brochure-img1-type1 {position:relative; background:#fff; width:1240px; height:1754px; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#brochure-img1-type1 .empty-content {background:url(image/bg_brochure_cell.png) left bottom no-repeat;}
+#brochure-img1-type1 .tmpl-body {position:relative; width:1119px; height:100%; margin:0 auto; overflow:hidden;}
+#brochure-img1-type1 .tmpl-body strong.title {display:block; width:100%; min-height:167px; margin-top:55px; margin-bottom:25px; text-align:left; font-family:inherit; font-size:167px; font-weight:bold; color:#ea002c; line-height:150px;}
+#brochure-img1-type1 .tmpl-body .photo {width:1119px; height:808px; overflow:hidden;}
+#brochure-img1-type1 .tmpl-body .photo img {width:1119px; height:808px;}
+#brochure-img1-type1 .tmpl-body .subtitle {margin-top:40px; color:#000; font-size:40px; font-weight:bold; text-align:left;}
+#brochure-img1-type1 .tmpl-body .article {min-height:168px; margin-top:20px; font-size:30px; color:#777; line-height:42px; text-align:left;}
+#brochure-img1-type1 .tmpl-body ul.info {position:absolute; left:0; bottom:80px; text-align:left;}
+#brochure-img1-type1 .tmpl-body ul.info li {float:left; width:357px; height:126px; margin-right:24px; border-top:6px solid #000; border-bottom:2px solid #000; line-height:normal;}
+#brochure-img1-type1 .tmpl-body ul.info li:last-child {margin-right:0px;}
+#brochure-img1-type1 .tmpl-body ul.info li dl {margin-top:20px; color:#333;}
+#brochure-img1-type1 .tmpl-body ul.info li dt {font-size:30px; font-weight:bold; letter-spacing:-1px; line-height:normal;}
+#brochure-img1-type1 .tmpl-body ul.info li dd {font-size:26px; line-height:45px;}
+
+/*****************************
+ * 2-image type1
+ *****************************/
+#brochure-img2-type1 {position:relative; background:#fff; width:1240px; height:1754px; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#brochure-img2-type1 .empty-content {background:url(image/bg_brochure_cell.png) left bottom no-repeat;}
+#brochure-img2-type1 .tmpl-body {position:relative; width:1119px; height:100%; margin:0 auto; overflow:hidden;}
+#brochure-img2-type1 .tmpl-body strong.title {display:block; width:100%; min-height:167px; margin-top:55px; margin-bottom:25px; text-align:left; font-family:inherit; font-size:167px; font-weight:bold; color:#ea002c; line-height:150px;}
+#brochure-img2-type1 .tmpl-body .photo-l {float:left; width:736px; height:1110px; overflow:hidden;}
+#brochure-img2-type1 .tmpl-body .photo-l img {width:736px; height:1110px;}
+#brochure-img2-type1 .tmpl-body .photo-r {float:left; width:359px; height:1110px; margin-left:24px; overflow:hidden;}
+#brochure-img2-type1 .tmpl-body .photo-r .img-box {width:359px; height:442px;}
+#brochure-img2-type1 .tmpl-body .photo-r img {width:359px; height:442px;}
+#brochure-img2-type1 .tmpl-body .subtitle {margin-top:20px; color:#000; font-size:40px; font-weight:bold; text-align:left;}
+#brochure-img2-type1 .tmpl-body .article {height:550px; margin-top:10px; font-size:30px; color:#777; line-height:42px; overflow:hidden; text-align:left;}
+#brochure-img2-type1 .tmpl-body ul.info {position:absolute; left:0; bottom:80px; text-align:left;}
+#brochure-img2-type1 .tmpl-body ul.info li {float:left; width:357px; height:126px; margin-right:24px; border-top:6px solid #000; border-bottom:2px solid #000; line-height:normal;}
+#brochure-img2-type1 .tmpl-body ul.info li:last-child {margin-right:0px;}
+#brochure-img2-type1 .tmpl-body ul.info li dl {margin-top:20px; color:#333;}
+#brochure-img2-type1 .tmpl-body ul.info li dt {font-size:30px; font-weight:bold; letter-spacing:-1px; line-height:normal;}
+#brochure-img2-type1 .tmpl-body ul.info li dd {font-size:26px; line-height:45px;}
+
+/*****************************
+ * 3-image type1
+ *****************************/
+#brochure-img3-type1 {position:relative; background:#fff; width:1240px; height:1754px; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#brochure-img3-type1 .empty-content {background:url(image/bg_brochure_cell.png) left bottom no-repeat;}
+#brochure-img3-type1 .tmpl-body {position:relative; width:1119px; height:100%; margin:0 auto; overflow:hidden;}
+#brochure-img3-type1 .tmpl-body strong.title {display:block; width:100%; min-height:167px; margin-top:55px; margin-bottom:25px; text-align:left; font-family:inherit; font-size:167px; font-weight:bold; color:#ea002c; line-height:150px;}
+#brochure-img3-type1 .tmpl-body .photo-l {float:left; width:736px; height:1110px; overflow:hidden;}
+#brochure-img3-type1 .tmpl-body .photo-l img {width:736px; height:1110px;}
+#brochure-img3-type1 .tmpl-body .photo-r {float:left; width:359px; height:1110px; margin-left:24px; overflow:hidden;}
+#brochure-img3-type1 .tmpl-body .photo-r .img-box {display:block; width:359px; height:311px;}
+#brochure-img3-type1 .tmpl-body .photo-r .img-box img {display:block; width:359px; height:311px;}
+#brochure-img3-type1 .tmpl-body .photo-r .img-box:first-child {height:442px; margin-bottom:28px;}
+#brochure-img3-type1 .tmpl-body .photo-r .img-box:first-child img {height:442px;}
+#brochure-img3-type1 .tmpl-body .subtitle {margin-top:20px; color:#000; font-size:40px; font-weight:bold; text-align:left;}
+#brochure-img3-type1 .tmpl-body .article {height:550px; margin-top:10px; font-size:30px; color:#777; line-height:42px; overflow:hidden; text-align:left;}
+#brochure-img3-type1 .tmpl-body ul.info {position:absolute; left:0; bottom:80px; text-align:left;}
+#brochure-img3-type1 .tmpl-body ul.info li {float:left; width:357px; height:126px; margin-right:24px; border-top:6px solid #000; border-bottom:2px solid #000; line-height:normal;}
+#brochure-img3-type1 .tmpl-body ul.info li:last-child {margin-right:0px;}
+#brochure-img3-type1 .tmpl-body ul.info li dl {margin-top:20px; color:#333;}
+#brochure-img3-type1 .tmpl-body ul.info li dt {font-size:30px; font-weight:bold; letter-spacing:-1px; line-height:normal;}
+#brochure-img3-type1 .tmpl-body ul.info li dd {font-size:26px; line-height:45px;}
+
+
+/************************************/
+/* TYPE 2	
+/************************************/
+/*****************************
+ * 1-image type2
+ *****************************/
+#brochure-img1-type2 {position:relative; background:#fff; width:1240px; height:1754px; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#brochure-img1-type2 .empty-content {background:url(image/bg_brochure_cell.png) left bottom no-repeat;}
+#brochure-img1-type2 .tmpl-body {position:relative; width:1119px; height:100%; margin:0 auto; overflow:hidden;}
+#brochure-img1-type2 .tmpl-body strong.title {display:block; background:#000; padding:23px 30px; min-height:107px; margin-top:80px; margin-bottom:27px; text-align:left; font-family:inherit; font-size:120px; font-weight:bold; color:#fff; line-height:105px;}
+#brochure-img1-type2 .tmpl-body .photo {width:1119px; height:840px; padding-bottom:32px; border-bottom:1px solid #bfbfbf; overflow:hidden;}
+#brochure-img1-type2 .tmpl-body .photo img {width:1119px; height:840px;}
+#brochure-img1-type2 .tmpl-body .subtitle {margin-top:33px; color:#000; font-size:43px; font-weight:bold; text-align:left;}
+#brochure-img1-type2 .tmpl-body .article {min-height:168px; margin-top:15px; font-size:30px; color:#777; line-height:42px; text-align:left;}
+#brochure-img1-type2 .tmpl-body ul.info {position:absolute; left:0; bottom:80px; text-align:left;}
+#brochure-img1-type2 .tmpl-body ul.info li {float:left; background:#e5e5e5; width:361px; height:126px; margin-right:18px; line-height:normal;}
+#brochure-img1-type2 .tmpl-body ul.info li:last-child {margin-right:0px;}
+#brochure-img1-type2 .tmpl-body ul.info li dl {margin-top:20px; margin-left:25px; color:#333;}
+#brochure-img1-type2 .tmpl-body ul.info li dt {font-size:30px; font-weight:bold; letter-spacing:-1px; line-height:normal;}
+#brochure-img1-type2 .tmpl-body ul.info li dd {font-size:26px; line-height:45px;}
+
+/*****************************
+ * 2-image type2
+ *****************************/
+#brochure-img2-type2 {position:relative; background:#fff; width:1240px; height:1754px; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#brochure-img2-type2 .empty-content {background:url(image/bg_brochure_cell.png) left bottom no-repeat;}
+#brochure-img2-type2 .tmpl-body {position:relative; width:1119px; height:100%; margin:0 auto; overflow:hidden;}
+#brochure-img2-type2 .tmpl-body strong.title {display:block; background:#000; padding:23px 30px; min-height:107px; margin-top:80px; margin-bottom:27px; text-align:left; font-family:inherit; font-size:120px; font-weight:bold; color:#fff; line-height:105px;}
+#brochure-img2-type2 .tmpl-body > .photo {width:1119px; height:765px; padding-bottom:32px; border-bottom:1px solid #bfbfbf; overflow:hidden;}
+#brochure-img2-type2 .tmpl-body > .photo img {width:1119px; height:765px;}
+#brochure-img2-type2 .tmpl-body .pcontent {margin-top:29px; margin-left:0;}
+#brochure-img2-type2 .tmpl-body .pcontent .photo {float:left; width:471px; height:329px;}
+#brochure-img2-type2 .tmpl-body .pcontent .photo img {width:471px; height:329px;}
+#brochure-img2-type2 .tmpl-body .pcontent .dsc {float:left; width:605px; margin-left:35px;}
+#brochure-img2-type2 .tmpl-body .subtitle {margin-top:0; color:#000; font-size:43px; line-height:40px; font-weight:bold; text-align:left;}
+#brochure-img2-type2 .tmpl-body .article {height:250px; margin-top:20px; font-size:30px; color:#777; line-height:42px; overflow:hidden; text-align:left;}
+#brochure-img2-type2 .tmpl-body ul.info {position:absolute; left:0; bottom:80px; text-align:left;}
+#brochure-img2-type2 .tmpl-body ul.info li {float:left; background:#e5e5e5; width:361px; height:126px; margin-right:18px; line-height:normal;}
+#brochure-img2-type2 .tmpl-body ul.info li:last-child {margin-right:0px;}
+#brochure-img2-type2 .tmpl-body ul.info li dl {margin-top:20px; margin-left:25px; color:#333;}
+#brochure-img2-type2 .tmpl-body ul.info li dt {font-size:30px; font-weight:bold; letter-spacing:-1px; line-height:normal;}
+#brochure-img2-type2 .tmpl-body ul.info li dd {font-size:26px; line-height:45px;}
+
+/*****************************
+ * 3-image type2
+ *****************************/
+#brochure-img3-type2 {position:relative; background:#fff; width:1240px; height:1754px; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#brochure-img3-type2 .empty-content {background:url(image/bg_brochure_cell.png) left bottom no-repeat;}
+#brochure-img3-type2 .tmpl-body {position:relative; width:1119px; height:100%; margin:0 auto; overflow:hidden;}
+#brochure-img3-type2 .tmpl-body strong.title {display:block; background:#000; padding:23px 30px; min-height:107px; margin-top:80px; margin-bottom:27px; text-align:left; font-family:inherit; font-size:120px; font-weight:bold; color:#fff; line-height:105px;}
+#brochure-img3-type2 .tmpl-body > .photo {width:1119px; height:591px; padding-bottom:32px; border-bottom:1px solid #bfbfbf; overflow:hidden;}
+#brochure-img3-type2 .tmpl-body > .photo img {width:1119px; height:591px;}
+#brochure-img3-type2 .tmpl-body .pcontent {margin-top:25px; margin-left:0;}
+#brochure-img3-type2 .tmpl-body .pcontent:first-child {margin-top:29px;}
+#brochure-img3-type2 .tmpl-body .pcontent .photo {float:left; width:355px; height:237px;}
+#brochure-img3-type2 .tmpl-body .pcontent .photo img {width:355px; height:237px;}
+#brochure-img3-type2 .tmpl-body .pcontent .dsc {float:left; width:720px; margin-left:35px;}
+#brochure-img3-type2 .tmpl-body .subtitle {margin-top:0; color:#000; font-size:43px; line-height:40px; font-weight:bold; text-align:left;}
+#brochure-img3-type2 .tmpl-body .article {height:170px; margin-top:20px; font-size:30px; color:#777; line-height:42px; overflow:hidden; text-align:left;}
+#brochure-img3-type2 .tmpl-body ul.info {position:absolute; left:0; bottom:80px; text-align:left;}
+#brochure-img3-type2 .tmpl-body ul.info li {float:left; background:#e5e5e5; width:361px; height:126px; margin-right:18px; line-height:normal;}
+#brochure-img3-type2 .tmpl-body ul.info li:last-child {margin-right:0px;}
+#brochure-img3-type2 .tmpl-body ul.info li dl {margin-top:20px; margin-left:25px; color:#333;}
+#brochure-img3-type2 .tmpl-body ul.info li dt {font-size:30px; font-weight:bold; letter-spacing:-1px; line-height:normal;}
+#brochure-img3-type2 .tmpl-body ul.info li dd {font-size:26px; line-height:45px;}
+
+
+/************************************/
+/* TYPE 3	
+/************************************/
+/*****************************
+ * 1-image type3
+ *****************************/
+#brochure-img1-type3 {position:relative; background:#fff; width:1240px; height:1754px; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#brochure-img1-type3 .empty-content {background:url(image/bg_brochure_cell.png) left bottom no-repeat;}
+#brochure-img1-type3 .tmpl-body {position:relative; width:1120px; height:100%; margin:0 auto; overflow:hidden;}
+#brochure-img1-type3 .tmpl-body .photo {width:1120px; height:914px; margin-top:80px; margin-left:0px; overflow:hidden;}
+#brochure-img1-type3 .tmpl-body .photo img {width:1120px; height:914px;}
+#brochure-img1-type3 .tmpl-body strong.title {display:block; width:100%; min-height:75px; padding:28px 0; margin-top:30px; margin-bottom:28px; border-top:1px solid #999; border-bottom:1px solid #999; text-align:center; font-family:inherit; font-size:75px; font-weight:bold; color:#ea002c; line-height:67px; letter-spacing:-1px;}
+#brochure-img1-type3 .tmpl-body .subtitle {margin-top:40px; color:#000; font-size:40px; font-weight:bold; text-align:center;}
+#brochure-img1-type3 .tmpl-body .article {min-height:168px; margin-top:30px; font-size:30px; color:#777; line-height:42px; text-align:left;}
+#brochure-img1-type3 .tmpl-body ul.info {position:absolute; left:0; bottom:80px; text-align:left;}
+#brochure-img1-type3 .tmpl-body ul.info li {float:left; background:#e5e5e5; width:361px; height:126px; margin-right:18px; line-height:normal;}
+#brochure-img1-type3 .tmpl-body ul.info li:last-child {margin-right:0px;}
+#brochure-img1-type3 .tmpl-body ul.info li dl {margin-top:20px; margin-left:25px; color:#333;}
+#brochure-img1-type3 .tmpl-body ul.info li dt {font-size:30px; font-weight:bold; letter-spacing:-1px; line-height:normal;}
+#brochure-img1-type3 .tmpl-body ul.info li dd {font-size:26px; line-height:45px;}
+
+/*****************************
+ * 2-image type3
+ *****************************/
+#brochure-img2-type3 {position:relative; background:#fff; width:1240px; height:1754px; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#brochure-img2-type3 .empty-content {background:url(image/bg_brochure_cell.png) left bottom no-repeat;}
+#brochure-img2-type3 .tmpl-body {position:relative; width:1120px; height:100%; margin:0 auto; overflow:hidden;}
+#brochure-img2-type3 .tmpl-body .photo {width:1120px; height:452px; margin-top:80px; margin-left:0px; overflow:hidden;}
+#brochure-img2-type3 .tmpl-body .photo img {width:1120px; height:452px;}
+#brochure-img2-type3 .tmpl-body .photo2 {width:1120px; height:452px; margin-top:25px; margin-left:0; overflow:hidden;}
+#brochure-img2-type3 .tmpl-body .photo2 img {width:1120px; height:452px;}
+#brochure-img2-type3 .tmpl-body strong.title {display:block; width:100%; min-height:75px; padding:28px 0; margin-top:30px; margin-bottom:28px; border-top:1px solid #999; border-bottom:1px solid #999; text-align:center; font-family:inherit; font-size:75px; font-weight:bold; color:#ea002c; line-height:67px; letter-spacing:-1px;}
+#brochure-img2-type3 .tmpl-body .subtitle {margin-top:40px; color:#000; font-size:40px; font-weight:bold; text-align:center;}
+#brochure-img2-type3 .tmpl-body .article {min-height:168px; margin-top:30px; font-size:30px; color:#777; line-height:42px; text-align:left;}
+#brochure-img2-type3 .tmpl-body ul.info {position:absolute; left:0; bottom:80px; text-align:left;}
+#brochure-img2-type3 .tmpl-body ul.info li {float:left; background:#e5e5e5; width:361px; height:126px; margin-right:18px; line-height:normal;}
+#brochure-img2-type3 .tmpl-body ul.info li:last-child {margin-right:0px;}
+#brochure-img2-type3 .tmpl-body ul.info li dl {margin-top:20px; margin-left:25px; color:#333;}
+#brochure-img2-type3 .tmpl-body ul.info li dt {font-size:30px; font-weight:bold; letter-spacing:-1px; line-height:normal;}
+#brochure-img2-type3 .tmpl-body ul.info li dd {font-size:26px; line-height:45px;}
+
+/*****************************
+ * 3-image type3
+ *****************************/
+#brochure-img3-type3 {position:relative; background:#fff; width:1240px; height:1754px; font-family:Roboto, sans-serif !important; overflow:hidden;}
+#brochure-img3-type3 .empty-content {background:url(image/bg_brochure_cell.png) left bottom no-repeat;}
+#brochure-img3-type3 .tmpl-body {position:relative; width:1120px; height:100%; margin:0 auto; overflow:hidden;}
+#brochure-img3-type3 .tmpl-body .photo {width:1120px; height:452px; margin-top:80px; margin-left:0px; overflow:hidden;}
+#brochure-img3-type3 .tmpl-body .photo img {width:1120px; height:452px;}
+#brochure-img3-type3 .tmpl-body .photo2 {width:1120px; height:452px; margin-top:25px; margin-left:0; overflow:hidden;}
+#brochure-img3-type3 .tmpl-body .photo2 .img-box {float:left; width:560px; height:452px;}
+#brochure-img3-type3 .tmpl-body .photo2 .img-box img {display:block; width:560px; height:452px;}
+#brochure-img3-type3 .tmpl-body strong.title {display:block; width:100%; min-height:75px; padding:28px 0; margin-top:30px; margin-bottom:28px; border-top:1px solid #999; border-bottom:1px solid #999; text-align:center; font-family:inherit; font-size:75px; font-weight:bold; color:#ea002c; line-height:67px; letter-spacing:-1px;}
+#brochure-img3-type3 .tmpl-body .subtitle {margin-top:40px; color:#000; font-size:40px; font-weight:bold; text-align:center;}
+#brochure-img3-type3 .tmpl-body .article {min-height:168px; margin-top:30px; font-size:30px; color:#777; line-height:42px; text-align:left;}
+#brochure-img3-type3 .tmpl-body ul.info {position:absolute; left:0; bottom:80px; text-align:left;}
+#brochure-img3-type3 .tmpl-body ul.info li {float:left; background:#e5e5e5; width:361px; height:126px; margin-right:18px; line-height:normal;}
+#brochure-img3-type3 .tmpl-body ul.info li:last-child {margin-right:0px;}
+#brochure-img3-type3 .tmpl-body ul.info li dl {margin-top:20px; margin-left:25px; color:#333;}
+#brochure-img3-type3 .tmpl-body ul.info li dt {font-size:30px; font-weight:bold; letter-spacing:-1px; line-height:normal;}
+#brochure-img3-type3 .tmpl-body ul.info li dd {font-size:26px; line-height:45px;}

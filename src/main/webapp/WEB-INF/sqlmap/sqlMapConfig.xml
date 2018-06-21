@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMapConfig
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+    <typeAlias alias="hMap" type="java.util.HashMap"/>
+    
+	<sqlMap resource="../sqlmap/board.xml" />
+	<sqlMap resource="../sqlmap/user.xml" />
+	<sqlMap resource="../sqlmap/operator.xml" />
+	<sqlMap resource="../sqlmap/item.xml" />
+	<sqlMap resource="../sqlmap/adm-op.xml" />
+	<sqlMap resource="../sqlmap/adm-asset.xml" />
+	<sqlMap resource="../sqlmap/adm-assetUtil.xml" />
+	<sqlMap resource="../sqlmap/adm-cost.xml" />
+	<sqlMap resource="../sqlmap/adm-states.xml" />
+	<sqlMap resource="../sqlmap/commerce.xml" />
+	<sqlMap resource="../sqlmap/category.xml" />
+	<sqlMap resource="../sqlmap/pcMonitoring.xml" />
+	<sqlMap resource="../sqlmap/gods.xml" />
+	<sqlMap resource="../sqlmap/commonCode.xml" />
+	<sqlMap resource="../sqlmap/usr-free.xml" />
+	<sqlMap resource="../sqlmap/price.xml" />
+	<sqlMap resource="../sqlmap/using.xml" />
+	<sqlMap resource="../sqlmap/myPage.xml" />
+	<sqlMap resource="../sqlmap/myUsePage.xml" />
+	<sqlMap resource="../sqlmap/payment.xml" />
+	<sqlMap resource="../sqlmap/smartClass.xml" />
+	<sqlMap resource="../sqlmap/englishVillage.xml" />
+	<sqlMap resource="../sqlmap/traffic.xml" />
+</sqlMapConfig>
